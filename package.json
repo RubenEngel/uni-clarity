@@ -14,14 +14,14 @@
     "react-key-index": "^0.1.1",
     "react-scripts": "3.4.1",
     "uuid": "^8.2.0",
-    "homepage": "https://RubenEngel.github.io/uni-clarity"
+    "homepage": "https://rubenengel.github.io/uni-clarity/"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
