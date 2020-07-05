@@ -14,7 +14,7 @@
     "react-key-index": "^0.1.1",
     "react-scripts": "3.4.1",
     "uuid": "^8.2.0",
-    "homepage": "https://RubenEngel.github.io/uni-clarity"
+    "homepage": "https://rubenengel.github.io/uni-clarity"
   },
   "scripts": {
     "start": "react-scripts start",
