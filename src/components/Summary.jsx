@@ -4,15 +4,15 @@ import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
 
 
-function Summary (props) {
+const Summary = (props) => {
     
     const [view, setView] = useState("1")
 
-    const handleChange = (event) => {
+    function handleChange(event) {
         setView(event.target.value)
     }
 
-    function SummarySection(props) {
+    const SummarySection = (props) => {
 
         return(
                 <div>
@@ -26,9 +26,6 @@ function Summary (props) {
         )
     }
 
-
- 
-
     return (
       <Card >
 
@@ -41,8 +38,8 @@ function Summary (props) {
           <Card.Body>
               <div className="view-button">
                 <ToggleButtonGroup type="radio" name="summary_view" defaultValue={1}>
-                    <ToggleButton variant="light" value={1} onChange={handleChange}>Total</ToggleButton>
-                    <ToggleButton variant="light" value={2} onChange={handleChange}>Weekly</ToggleButton>
+                    <ToggleButton variant="light" value={1} onChange={(e) => setView(e.target.value)}>Total</ToggleButton>
+                    <ToggleButton variant="light" value={2} onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
                 </ToggleButtonGroup>
               </div>
 

@@ -15,6 +15,7 @@ html {
 .summary{
     position: fixed;
     right: 0;
+    top: 20vh;
 }
 
 .summary .row{
@@ -219,8 +220,8 @@ section:before {
 }
 
 .input-box {
-    padding: 0 30px;
-    max-width: 275px;
+    /* padding: 0 30px; */
+    max-width: 200px;
     margin: 0 auto;
 }
 
@@ -300,14 +301,25 @@ section:before {
   #expenses-section .row {
     padding:0;
 }
+
+#expenses-section h2 {
+    margin-bottom: -30px;
+}
+
+#expenses-section h3 {
+    margin-top: 75px;
+}
   
 .column-heading {
     float:left;
 }
 
-.expense-card {
-    margin-bottom:30px;
+/* .expense-card {
 
+}  */
+
+.expense-card-footer {
+    border-radius: 1.2rem !important; 
 }
 
 th {
@@ -332,9 +344,13 @@ td {
     font-size: 1.5rem;
 }
 
-.expense-view-toggle{
-    
+.delete-icon:hover {
+    color: red;
 }
+
+/* .expense-view-toggle{
+    
+} */
 
 .expense-total{
     font-size: 1.5rem;

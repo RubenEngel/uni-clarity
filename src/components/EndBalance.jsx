@@ -1,17 +1,19 @@
-import React from "react"
+import React, { useContext} from "react"
+import SubmitContext from "../context/submit-context"
 
-function EndBalance(props) {
+const EndBalance = (props) => {
+
+    const { end_balance } = useContext(SubmitContext)
+
     return (
     
     <div className="row">
-
             <p className="input-description col-lg-6">End Balance</p>
 
             <div className="col-lg-6">
-                <p className="end-value" ><span className="end-value-currency">£ </span>{props.endBalance}</p>
+                <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p>
             </div>
-        
-        </div>
+    </div>
 
     )
 }

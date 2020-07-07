@@ -1,17 +1,22 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useContext} from "react"
+import SubmitContext from "../context/submit-context"
 
-function NumberInput(props) {
+const NumberInput = (props) => {
     
-    useEffect(props.updateEndBalance)
+    const { submitValue, updateEndBalance } = useContext(SubmitContext)
 
-    const [inputValue, setInputValue] = useState()
+    const [inputValue, setInputValue] = useState("")
 
     function handleChange(event) {
         const newInputValue = event.target.value
 
         setInputValue(newInputValue)
-        props.submitValue(event)
+        submitValue(event)
     }
+
+    useEffect(() => {
+        updateEndBalance()
+    })
     
     return (
         <div className="input-group mb-3 input-box">

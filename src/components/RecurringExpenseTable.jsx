@@ -1,11 +1,14 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useContext} from "react"
 import {Card, Table, ToggleButton, ToggleButtonGroup} from "react-bootstrap"
+import SubmitContext from "../context/submit-context"
 
-function RecurringExpenseTable(props) {
 
-    useEffect(props.updateEndBalance)
+const RecurringExpenseTable = (props) => {
 
-    function Expense(props) {
+
+    const {recurringExpenseArray, deleteRecurringExpense} = useContext(SubmitContext)
+
+    const Expense = (props) => {
 
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -15,15 +18,15 @@ function RecurringExpenseTable(props) {
         <tr>
             <td>{capitalizeFirstLetter(props.expenseName)}</td>
             <td>£ {props.expenseCost}</td>
-            <td><i className="fas fa-times" id={props.id} onClick={() => props.deleteRecurringExpense(props.id)}></i></td>
+            <td><i className="fas fa-times delete-icon" id={props.id} onClick={() => deleteRecurringExpense(props.id)}></i></td>
         </tr>)
     }
     
 
-    // Chnage monthly/weekly view of table
+    // Monthly/weekly view of table
     const [view, setView] = useState("1")
 
-    const handleChange = (event) => {
+    function handleChange(event) {
         setView(event.target.value)
     }
 
@@ -42,32 +45,30 @@ function RecurringExpenseTable(props) {
                     </thead>
                     <tbody>
                         {view === "1" ? 
-                            props.recurringExpenseArray.map((expense) => (
+                            recurringExpenseArray.map((expense) => (
                                 <Expense
                                 key={expense.key}
                                 id={expense.key}
                                 expenseName={expense.name}
                                 expenseCost={(+expense.cost*4.35).toFixed(2)}
-                                deleteRecurringExpense={props.deleteRecurringExpense}
                                 />
                                 )) :
-                            props.recurringExpenseArray.map((expense) => (
+                            recurringExpenseArray.map((expense) => (
                                 <Expense
                                 key={expense.key}
                                 id={expense.key}
                                 expenseName={expense.name}
                                 expenseCost={(+expense.cost).toFixed(2)}
-                                deleteRecurringExpense={props.deleteRecurringExpense}
                                 />
                                 ))  
                         }
 
                     </tbody>
                 </Table>
-                <Card.Footer>
+                <Card.Footer className="expense-card-footer">
                         <ToggleButtonGroup type="radio" name="recurring_expenses_view" defaultValue={1}>
-                            <ToggleButton variant="light" value={1} onChange={handleChange}>Monthly</ToggleButton>
-                            <ToggleButton variant="light" value={2} onChange={handleChange}>Weekly</ToggleButton>
+                            <ToggleButton variant="light" value={1} onChange={(e) => setView(e.target.value)}>Monthly</ToggleButton>
+                            <ToggleButton variant="light" value={2} onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
                         </ToggleButtonGroup>
                 </Card.Footer>
             </Card>

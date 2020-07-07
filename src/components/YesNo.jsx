@@ -1,13 +1,20 @@
-import React from "react"
+import React, {useContext, useEffect} from "react"
 import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
+import SubmitContext from "../context/submit-context"
+
 
 function YesNo(props) {
     
+    const {updateEndBalance, toggleShowBills} = useContext(SubmitContext)
     
-    const handleChange = (event) => {
-        props.toggleShowBills(event)
+    function handleChange(event) {
+        toggleShowBills(event)
     }
+
+    useEffect(() => {
+        updateEndBalance()
+    })
 
     return (
         <div>

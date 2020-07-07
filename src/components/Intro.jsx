@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Intro() {
+const Intro = () => {
     return (
 
     <div className="container-fluid">

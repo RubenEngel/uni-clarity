@@ -12,8 +12,10 @@ import RecurringExpenseTable from "./components/RecurringExpenseTable"
 import Summary from './components/Summary'
 import ExpenseInput from './components/ExpenseInput'
 import OneOffExpenseTable from "./components/OneOffExpenseTable"
+import SubmitContext from "./context/submit-context"
 
-function App() {
+
+const App = () => {
 
 //-------------------------------------------------- Object of User Inputs
 
@@ -32,12 +34,12 @@ function App() {
             }
     );
     
-    function submitValue(event) {
-        const inputName = event.target.name
-        const value = event.target.value
-        setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )
-        }
-
+        function submitValue(event) {
+            const inputName = event.target.name
+            const value = event.target.value
+            setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )
+            }
+   
 
 //-------------------------------------------------- Recurring Expenses
 
@@ -52,7 +54,6 @@ function App() {
         }
 
     function deleteRecurringExpense(id) {
-        console.log(id)
         setRecurringExpenseArray( prevArray => {
             return prevArray.filter( expense => {
                 return expense.key !== id
@@ -61,6 +62,7 @@ function App() {
         console.log(recurringExpenseArray)
 
         }
+
 
 //--------------------------------------------------One-Off Expenses
 
@@ -102,14 +104,14 @@ function App() {
         const total_rent_bills = Math.round(total_rent + total_bills)
         const weekly_food = (+inputObject.food_cost) 
         const total_food = weekly_food * total_weeks()
-        const disposable_cash = +inputObject.disposable_cash
-        const current_balance = +inputObject.current_balance
         const weekly_recurring_expenses = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_recurring_expenses = weekly_recurring_expenses*total_weeks()
         const total_one_off_expenses = oneOffExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_expenses = total_recurring_expenses + total_one_off_expenses
+        const disposable_cash = +inputObject.disposable_cash
+        const current_balance = +inputObject.current_balance
         const end_balance = Math.round(total_income + current_balance - total_rent - total_bills - total_food - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
-        
+
 
         function updateEndBalance() {
             setEndBalance(end_balance)
@@ -120,10 +122,10 @@ function App() {
 
         const [showBills, setShowBills] = useState(true)
 
-        const toggleShowBills = (event) => {
+        function toggleShowBills(event) {
             if (event.target.value === "1") {
                 setShowBills(false)
-                setInputObject( (prevObject) => ({...prevObject, bills_cost: 0 })   )
+                setInputObject( (prevObject) => ({...prevObject, bills_cost: 0 }) )
             } else if (event.target.value === "2") {
                 setShowBills(true)
             }
@@ -133,23 +135,38 @@ function App() {
 // ------------------------------------- Start of main site body
     return (
     
+        <SubmitContext.Provider 
+        value={{
+            submitValue, 
+            updateEndBalance, 
+            toggleShowBills, 
+            submitRecurringExpense, 
+            deleteRecurringExpense, 
+            submitOneOffExpense, 
+            deleteOneOffExpense, 
+            end_balance,
+            oneOffExpenseArray,
+            recurringExpenseArray
+        }}
+        >
+
         <div className="row">
 
 
-            {/* -------------------------------------Summary Div ------------------------------------*/}
+            {/* -------------------------------------Summary Div ----------------------------*/}
             <div className="summary col-md-4">
                 <Summary 
-                total_weeks={total_weeks} 
-                total_income={total_income}
-                total_rent_bills={total_rent_bills}
-                total_food={total_food} 
-                total_expenses = {total_expenses}
-                disposable_cash={disposable_cash}
-                end_balance={end_balance}
+                    total_weeks={total_weeks} 
+                    total_income={total_income}
+                    total_rent_bills={total_rent_bills}
+                    total_food={total_food} 
+                    total_expenses = {total_expenses}
+                    disposable_cash={disposable_cash}
+                    end_balance={end_balance}
                 />
             </div>
 
-            {/*--------------------------------- Main Div-------------------------------------- */}
+            {/*--------------------------------------- Main Div------------------------------*/}
             <div className="col-md-8">
 
                 {/* --------------------------------------------NavBar --------------------------------------------*/}
@@ -160,11 +177,15 @@ function App() {
                     <Intro/>
                 </section>
 
-                {/* ------------------------------------------Date input ----------------------------------------*/}
+                {/* ------------------------------------------Date input ------------------------------------------*/}
                 <div className="row">
                         <Card>
-                            <DateInput submitValue={submitValue} defaultStartDate="2020-10-01" defaultEndDate="2021-05-31" updateEndBalance={updateEndBalance}/>
+                            <DateInput 
+                            defaultStartDate={inputObject.start_date} 
+                            defaultEndDate={inputObject.end_date}/>
                         </Card>
+
+                        
                 </div>
 
                 {/* ----------------------------------------Income Section ----------------------------------------*/}
@@ -188,8 +209,6 @@ function App() {
                             inputType="money"
                             detail="Per Academic Year"
                             id="maintenance_loan"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}
                             /> 
                             
                         {/* Additional Income*/}
@@ -199,8 +218,6 @@ function App() {
                             inputType="money"
                             detail="Per Academic Year"
                             id="additional_income"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}
                             /> 
                             
 
@@ -222,16 +239,12 @@ function App() {
                             detail="Each Payment"
                             inputType="money" 
                             id="rent_cost"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}
                             /> 
 
                         {/* Remaining Months Rent to Pay */}
                         <InputCard name="Remaining Rental Payments" 
                             inputType="length"
                             id="rent_payments"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}
                             /> 
                         
                         {/* Bills Included in Rent? */}
@@ -239,17 +252,16 @@ function App() {
                             name="Bills Included in Rent?" 
                             yesNoDefault={2}
                             id="bills_included"
-                            toggleShowBills={toggleShowBills}
-                            updateEndBalance={updateEndBalance}/> 
+                            /> 
                         
                         {/* Household Bills Cost */}
                         
                         {(showBills && 
                             <div id="household-bills-div">
                             <InputCard
-                                name="Household Bills"
+                                name="Average Household Bills"
                                 example="i.e Energy, Water and Broadband"
-                                average="(Average: £50 per Month)"
+                                average="(usually ~£50 per month)"
                                 inputType="money"
                                 monthlyWeeklyDefault={1}
                                 id="bills_cost"
@@ -276,10 +288,9 @@ function App() {
                             name="How much do you typically spend on food in a week?"
                             inputType="money"
                             id="food_cost"
-                            average="(Average: £40 a week)"
+                            average="(usually ~£40 a week)"
                             detail="Per Week"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}/>
+                            />
 
                     </div>
                 </section>
@@ -295,18 +306,23 @@ function App() {
                         <h3>Recurring Expenses</h3>
                         <p className="example">e.g Haircut, Mobile Contract, Gym</p>
 
-                        <ExpenseInput id="recurring_expense" updateEndBalance={updateEndBalance} submitRecurringExpense={submitRecurringExpense} monthlyWeeklyDefault={1} />
+                        <ExpenseInput 
+                            id="recurring_expense" 
+                            monthlyWeeklyDefault={1} 
+                            />
 
-                        <RecurringExpenseTable deleteRecurringExpense={deleteRecurringExpense} updateEndBalance={updateEndBalance} recurringExpenseArray={recurringExpenseArray} />
+                        <RecurringExpenseTable />
 
                         {/* One-Off Expenses */}
 
                         <h3>One-Off Expenses</h3>
                         <p className="example">e.g Christmas, Term-time Holiday</p>
 
-                        <ExpenseInput id="one_off_expense" updateEndBalance={updateEndBalance} submitOneOffExpense={submitOneOffExpense}/>
+                        <ExpenseInput 
+                            id="one_off_expense" 
+                            />
 
-                        <OneOffExpenseTable deleteOneOffExpense={deleteOneOffExpense} updateEndBalance={updateEndBalance} oneOffExpenseArray={oneOffExpenseArray} />
+                        <OneOffExpenseTable />
 
                     </div>
                 </section>
@@ -316,22 +332,22 @@ function App() {
 
                     <div className="container-fluid">
 
-                        <SectionHeading name="Results" icon="fas fa-piggy-bank icon"/>
+                        <SectionHeading 
+                            name="Results" 
+                            icon="fas fa-piggy-bank icon"
+                            />
 
                         <InputCard 
                             name="Start Balance" 
                             inputType="money"
-                            defaultValue="0"
                             id="current_balance"
-                            submitValue={submitValue}
-                            updateEndBalance={updateEndBalance}
                             />
 
-                        <ResultsCard endBalance={ endBalance } submitValue={submitValue} updateEndBalance={updateEndBalance}/>
+                        <ResultsCard endBalance={ endBalance }/>
 
                         <Alert className="card alert" variant="primary">
                             <p>
-                                It is recommended to create a weekly automatic payment to a seperate card for your disposable cash budget.
+                                It's recommended to create a weekly automatic payment to a seperate card for your disposable cash budget.
                             </p>
                         </Alert>
 
@@ -343,7 +359,7 @@ function App() {
                         
 
         </div>
-            
+        </SubmitContext.Provider>
 
     )
 }

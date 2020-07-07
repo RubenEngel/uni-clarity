@@ -1,14 +1,11 @@
-import React, {useState} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import InputName from './InputName'
 import {Card, Button, ToggleButton, ToggleButtonGroup, Row} from "react-bootstrap"
-import { useEffect } from "react"
+import SubmitContext from "../context/submit-context"
 
+const ExpenseInput = (props) => {
 
-function ExpenseInput (props) {
-
-    useEffect(props.updateEndBalance)
-
-    // State of name and cost inputs
+    const {submitOneOffExpense, submitRecurringExpense, updateEndBalance} = useContext(SubmitContext)
 
     const [name, setName] = useState("")
     const [cost, setCost] = useState("")
@@ -17,7 +14,6 @@ function ExpenseInput (props) {
 
     function handleAdd() {
         
-
         if (cost === "" || name === "") {
             return alert("Please enter a value for both 'Name' and 'Cost'")
         }
@@ -31,12 +27,11 @@ function ExpenseInput (props) {
         setName("")
         setCost("")
         
-
         if (props.id === "recurring_expense") {
-            props.submitRecurringExpense(name, weeklyCost)
+            submitRecurringExpense(name, weeklyCost)
         } 
         else if (props.id === "one_off_expense") {
-            props.submitOneOffExpense(name, cost)
+            submitOneOffExpense(name, cost)
         }
         
     }
@@ -47,6 +42,12 @@ function ExpenseInput (props) {
         }
     }
 
+    useEffect(() => {
+        updateEndBalance()
+    })
+
+
+    
         return (
             <div className="row">
             <Card body>

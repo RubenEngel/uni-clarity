@@ -1,10 +1,11 @@
 
-import React, {useState} from "react"
-import { useEffect } from "react"
+import React, {useState, useEffect, useContext} from "react"
+import SubmitContext from "../context/submit-context"
 
 
-function DisposableCash(props) {
+const DisposableCash = (props) => {
 
+  const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
   const [disposableCash, setDisposableCash] = useState("0")
 
@@ -12,10 +13,12 @@ function DisposableCash(props) {
     const newInputValue = event.target.value
 
     setDisposableCash(newInputValue)
-    props.submitValue(event)
+    submitValue(event)
 }
 
-  useEffect(props.updateEndBalance)
+    useEffect(() => {
+      updateEndBalance()
+    })
 
     return (
         <div className="row">

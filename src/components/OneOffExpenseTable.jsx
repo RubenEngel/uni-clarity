@@ -1,11 +1,13 @@
-import React, {useEffect} from "react"
+import React, {useContext} from "react"
 import {Card, Table} from "react-bootstrap"
+import SubmitContext from "../context/submit-context"
 
-function OneOffExpenseTable(props) {
+const OneOffExpenseTable = (props) => {
 
-    useEffect(props.updateEndBalance)
 
-    function Expense(props) {
+    const {oneOffExpenseArray, deleteOneOffExpense} = useContext(SubmitContext)
+
+    const Expense = (props) => {
 
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -15,7 +17,7 @@ function OneOffExpenseTable(props) {
         <tr>
             <td>{capitalizeFirstLetter(props.expenseName)}</td>
             <td>£ {props.expenseCost}</td>
-            <td><i className="fas fa-times" id={props.id} onClick={() => props.deleteOneOffExpense(props.id)}></i></td>
+            <td><i className="fas fa-times delete-icon" id={props.id} onClick={() => deleteOneOffExpense(props.id)}></i></td>
         </tr>)
     }
 
@@ -33,13 +35,12 @@ function OneOffExpenseTable(props) {
                         </tr>
                     </thead>
                     <tbody>
-                            {props.oneOffExpenseArray.map((expense) => (
+                            {oneOffExpenseArray.map((expense) => (
                                 <Expense
                                 key={expense.key}
                                 id={expense.key}
                                 expenseName={expense.name}
                                 expenseCost={(+expense.cost).toFixed(2)}
-                                deleteOneOffExpense={props.deleteOneOffExpense}
                                 />))}
                     </tbody>
                 </Table>

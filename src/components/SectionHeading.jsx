@@ -1,6 +1,6 @@
 import React from "react"
 
-function SectionHeading(props) {
+const SectionHeading = (props) => {
 	return(<h2>{props.name}<i className={props.icon}></i></h2>)
 }
 
