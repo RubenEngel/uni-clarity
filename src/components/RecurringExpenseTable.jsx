@@ -26,10 +26,6 @@ const RecurringExpenseTable = (props) => {
     // Monthly/weekly view of table
     const [view, setView] = useState("1")
 
-    function handleChange(event) {
-        setView(event.target.value)
-    }
-
 
     return (
 

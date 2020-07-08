@@ -55,7 +55,7 @@ const Summary = (props) => {
                 <Row>
                     <h3 style={{margin: '5px 0'}}>Weekly Dispoable: </h3><p className="summary-money"><span className="pound">£</span>{props.disposable_cash}</p>
                     <br/>
-                    <h3 style={{marginBottom: '10px'}}>End Balance: </h3> <p className="summary-money"><span className="pound">£</span>{props.end_balance === true && props.end_balance}</p>
+                    <h3 style={{marginBottom: '10px'}}>End Balance: </h3> <p className="summary-money"><span className="pound">£</span>{(props.end_balance > 0 || props.end_balance < 0 || props.end_balance === 0 ) && props.end_balance }</p>
                 </Row>
 
           </Card.Body>

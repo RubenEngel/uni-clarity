@@ -3,7 +3,7 @@ import SubmitContext from "../context/submit-context"
 
 const NumberInput = (props) => {
     
-    const { submitValue, updateEndBalance, inputObject } = useContext(SubmitContext)
+    const { submitValue, updateEndBalance } = useContext(SubmitContext)
 
     const [inputValue, setInputValue] = useState("")
 

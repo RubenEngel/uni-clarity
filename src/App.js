@@ -287,10 +287,11 @@ const [showBills, setShowBills] = useState(true)
 
                     {/* Rent Payment Method */}
                     <RentPayments
-                    defaultLastPayment={inputObject.last_rent_payment}
-                    defaultContractStartDate={inputObject.contract_start}
-                    defaultContractEndDate={inputObject.contract_end}
-                    />
+                        defaultNextPayment={inputObject.next_rent_payment}
+                        defaultLastPayment={inputObject.last_rent_payment}
+                        defaultContractStartDate={inputObject.contract_start}
+                        defaultContractEndDate={inputObject.contract_end}
+                        />
 
                     </div>
                     }

@@ -3,7 +3,7 @@ import SubmitContext from "../context/submit-context"
 
     const DateRangeInput = (props) => {
 
-        const {submitValue, updateEndBalance, inputObject} = useContext(SubmitContext)
+        const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
             const [startDate, setStartDate] = useState(props.startDate)

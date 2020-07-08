@@ -8,7 +8,7 @@ import DateRangeInput from "./DateRangeInput"
 
 const RentPayments = (props) => {
     
-    const {updateEndBalance, submitValue, inputObject, setInputObject} = useContext(SubmitContext)
+    const {updateEndBalance, submitValue, setInputObject} = useContext(SubmitContext)
 
     useEffect(() => {
         updateEndBalance()
@@ -76,6 +76,7 @@ const RentPayments = (props) => {
                         date1_id="next_rent_payment"
                         date2_name="Last/End Payment"
                         date2_id="last_rent_payment"
+                        startDate={props.defaultNextPayment}
                         endDate={props.defaultLastPayment} 
                         />
 
