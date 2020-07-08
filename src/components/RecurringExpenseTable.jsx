@@ -34,7 +34,7 @@ const RecurringExpenseTable = (props) => {
     return (
 
         <div>
-            <Card className="expense-card">
+            <Card className="recurring-expense-card">
                 <Table >
                     <thead>
                         <tr>
@@ -50,7 +50,7 @@ const RecurringExpenseTable = (props) => {
                                 key={expense.key}
                                 id={expense.key}
                                 expenseName={expense.name}
-                                expenseCost={(+expense.cost*4.35).toFixed(2)}
+                                expenseCost={(+expense.cost*4.345).toFixed(2)}
                                 />
                                 )) :
                             recurringExpenseArray.map((expense) => (

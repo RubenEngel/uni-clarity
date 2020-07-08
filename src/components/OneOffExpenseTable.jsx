@@ -25,7 +25,7 @@ const OneOffExpenseTable = (props) => {
     return (
 
         <div>
-            <Card className="expense-card">
+            <Card >
                 <Table >
                     <thead>
                         <tr>

@@ -3,7 +3,6 @@ import InputName from './InputName'
 import MoneyInput from './MoneyInput'
 import MonthlyWeekly from './MonthlyWeekly'
 import {Card} from "react-bootstrap"
-import YesNo from "./YesNo"
 import NumberInput from "./NumberInput"
 
 
@@ -18,11 +17,6 @@ const InputCard = (props) => {
                 name={props.name} 
                 example={props.example}
                 average={props.average}/>
-
-            {props.yesNoDefault && 
-                <YesNo  
-                    id={props.id} 
-                    defaultValue={props.yesNoDefault}/>}
 
             {props.inputType === "money" && 
                 <MoneyInput 

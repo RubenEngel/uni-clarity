@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react"
+import React, {useState, useEffect, useContext, useRef} from "react"
 import InputName from './InputName'
 import {Card, Button, ToggleButton, ToggleButtonGroup, Row} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
@@ -21,7 +21,7 @@ const ExpenseInput = (props) => {
         let weeklyCost = cost;
         if (props.id === "recurring_expense") {
         if (period === "1") {
-            weeklyCost = cost / 4.35
+            weeklyCost = cost / 4.345
         }}
         
         setName("")
@@ -34,7 +34,9 @@ const ExpenseInput = (props) => {
             submitOneOffExpense(name, cost)
         }
         
+        setInputFocus(inputRef)
     }
+
 
     function handleKey(event) {
         if (event.key === 'Enter') {
@@ -42,16 +44,30 @@ const ExpenseInput = (props) => {
         }
     }
 
+    // ------------------------Update end balance on changes
     useEffect(() => {
         updateEndBalance()
     })
 
-
+  
+    //------------------------- Hook for focuses back on name input after submit
+    const useFocus = () => {
+        const htmlElRef = useRef(null)
+        const setFocus = () => {htmlElRef.current &&  htmlElRef.current.focus()}
     
+        return [ htmlElRef, setFocus ] 
+    }
+
+    const [inputRef, setInputFocus] = useFocus()
+
+
+
+
         return (
             <div className="row">
             <Card body>
-                <InputName  name="Create an Expense"/>
+                <InputName  
+                name="Create an Expense"/>
 
                 <form>
 
@@ -60,6 +76,7 @@ const ExpenseInput = (props) => {
                 <Row className="create-expense-row">
                     <p className="input-description col-6">Name:</p>
                     <input
+                    ref={inputRef}
                     type="text"
                     value={name}
                     onChange={(event) => setName(event.target.value)}

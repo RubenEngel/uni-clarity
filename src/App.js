@@ -5,7 +5,7 @@ import Intro from "./components/Intro"
 import SectionHeading from "./components/SectionHeading"
 import {Card} from "react-bootstrap"
 import ResultsCard from './components/ResultsCard'
-import DateInput from "./components/DateInput"
+import DateRangeInput from "./components/DateRangeInput"
 import {Alert} from "react-bootstrap"
 import InputCard from "./components/InputCard"
 import RecurringExpenseTable from "./components/RecurringExpenseTable"
@@ -13,6 +13,10 @@ import Summary from './components/Summary'
 import ExpenseInput from './components/ExpenseInput'
 import OneOffExpenseTable from "./components/OneOffExpenseTable"
 import SubmitContext from "./context/submit-context"
+import YesNoRent from "./components/YesNoRent"
+import YesNoBills from "./components/YesNoBills"
+import RentPayments from "./components/RentPayments"
+import InputName from './components/InputName';
 
 
 const App = () => {
@@ -22,15 +26,24 @@ const App = () => {
     const [inputObject, setInputObject] = useState(
         {   start_date: "2020-10-01",
             end_date: "2021-05-31",
-            maintenance_loan: "0",
-            additional_income: "0",
-            rent_cost: "0",
-            rent_payments: "0",
-            bills_cost: "0",
+
+            maintenance_loan: "",
+            additional_income: "",
+
+            rent_cost: "",
+            rent_cost_MonthlyWeekly: "1",
+            next_rent_payment: "",
+            last_rent_payment: "2021-06-30",
+            contract_start: "2020-07-01",
+            contract_end: "2021-06-30",
+            total_payments: "",
+            payments_left: "",
+            bills_cost: "",         
             bills_cost_MonthlyWeekly: "1",
-            food_cost: "0",
-            current_balance: "0",
-            disposable_cash: "0"
+
+            food_cost: "",
+            current_balance: "",
+            disposable_cash: ""
             }
     );
     
@@ -59,8 +72,6 @@ const App = () => {
                 return expense.key !== id
             })
         })
-        console.log(recurringExpenseArray)
-
         }
 
 
@@ -86,9 +97,18 @@ const App = () => {
 
         }
 
+//------------------------------------------------- Toggle show/hide rent and bills
+
+const [showRent, setShowRent] = useState(true)
+
+const [showBills, setShowBills] = useState(true)
+
+
+
+
 //------------------------------------------------------- Results Calculations 
 
-        const [endBalance, setEndBalance] = useState("0")
+     
 
         const total_weeks = () => {
             const d1 = new Date(inputObject.start_date)
@@ -98,52 +118,63 @@ const App = () => {
             return Math.round(weeks)
         }
 
+        const weeks = (start, end) => {
+                const d1 = new Date(start)
+                const d2 = new Date(end)
+                const diff = Math.abs(d2 - d1)
+                const weeks = diff/(1000*60*60*24*7)
+                return Math.round(weeks)
+        }
+
+        // Income Calcs
         const total_income = (+inputObject.maintenance_loan) + (+inputObject.additional_income)
-        const total_rent = (+inputObject.rent_cost) * (+inputObject.rent_payments)
-        const total_bills = (inputObject.bills_cost_MonthlyWeekly === "1" ? (+inputObject.bills_cost / 4.35) : (+inputObject.bills_cost)) * total_weeks()
+        // Rent Calcs
+        const rent_weeks = inputObject.rent_payment_period &&
+                            (inputObject.rent_payment_period === "monthly" ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
+                        :    weeks(inputObject.contract_start, inputObject.contract_end));
+        const weekly_rent = inputObject.rent_cost_MonthlyWeekly === "1" ? (+inputObject.rent_cost / 4.345) : (+inputObject.rent_cost)
+        const total_rent = showRent === true ? 
+                            (inputObject.rent_payment_period === "monthly" ? weekly_rent * rent_weeks : ((weekly_rent * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
+                        :   0
+        const total_bills = (inputObject.bills_cost_MonthlyWeekly === "1" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost)) * total_weeks()
         const total_rent_bills = Math.round(total_rent + total_bills)
+        // Food Calcs
         const weekly_food = (+inputObject.food_cost) 
         const total_food = weekly_food * total_weeks()
+        // Expense Calcs
         const weekly_recurring_expenses = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_recurring_expenses = weekly_recurring_expenses*total_weeks()
         const total_one_off_expenses = oneOffExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_expenses = total_recurring_expenses + total_one_off_expenses
+        // Results Calcs
         const disposable_cash = +inputObject.disposable_cash
         const current_balance = +inputObject.current_balance
         const end_balance = Math.round(total_income + current_balance - total_rent - total_bills - total_food - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
 
+// ---------------------------End Balance state
+
+        const [endBalance, setEndBalance] = useState()
 
         function updateEndBalance() {
             setEndBalance(end_balance)
+            // console.log(inputObject)
         }
  
-
-//------------------------------------------------- Toggle show/hide household bills
-
-        const [showBills, setShowBills] = useState(true)
-
-        function toggleShowBills(event) {
-            if (event.target.value === "1") {
-                setShowBills(false)
-                setInputObject( (prevObject) => ({...prevObject, bills_cost: 0 }) )
-            } else if (event.target.value === "2") {
-                setShowBills(true)
-            }
-        }
-
 
 // ------------------------------------- Start of main site body
     return (
     
         <SubmitContext.Provider 
         value={{
+            setInputObject,
             submitValue, 
-            updateEndBalance, 
-            toggleShowBills, 
+            updateEndBalance,
             submitRecurringExpense, 
             deleteRecurringExpense, 
             submitOneOffExpense, 
-            deleteOneOffExpense, 
+            deleteOneOffExpense,
+            setShowBills,
+            setShowRent,
             end_balance,
             oneOffExpenseArray,
             recurringExpenseArray
@@ -167,7 +198,7 @@ const App = () => {
             </div>
 
             {/*--------------------------------------- Main Div------------------------------*/}
-            <div className="col-md-8">
+            <div className="main col-md-8">
 
                 {/* --------------------------------------------NavBar --------------------------------------------*/}
                 <Navbar/> 
@@ -180,9 +211,18 @@ const App = () => {
                 {/* ------------------------------------------Date input ------------------------------------------*/}
                 <div className="row">
                         <Card>
-                            <DateInput 
-                            defaultStartDate={inputObject.start_date} 
-                            defaultEndDate={inputObject.end_date}/>
+                            <InputName 
+                            name="Select how long you want your budgeting to last"
+                            />
+                            <DateRangeInput 
+                            date1_name="Start Date"
+                            date2_name="End Date"
+                            date1_id="start_date"
+                            date2_id="end_date"
+                            startDate={inputObject.start_date} 
+                            endDate={inputObject.end_date}
+                            />
+                            <p className="date-range"> Date Range: {total_weeks()} Weeks</p>
                         </Card>
 
                         
@@ -231,35 +271,39 @@ const App = () => {
 
                         <SectionHeading name="Rent & Bills" icon="fas fa-home icon"/> 
                         
+                    {/* Paying own rent? */}
+                    <YesNoRent />
 
-                        {/* Rent Cost */}
-                        <InputCard 
-                            name="Personal Rental Cost"
-                            example="i.e. not including parental contribution"
-                            detail="Each Payment"
-                            inputType="money" 
-                            id="rent_cost"
-                            /> 
+                    {showRent === true && 
+                    <div className="rent-div">
 
-                        {/* Remaining Months Rent to Pay */}
-                        <InputCard name="Remaining Rental Payments" 
-                            inputType="length"
-                            id="rent_payments"
-                            /> 
-                        
+                    {/* Rent Cost */}
+                    <InputCard 
+                        name="Rent Cost (per student)"
+                        inputType="money" 
+                        monthlyWeeklyDefault={1}
+                        id="rent_cost"
+                        />
+
+                    {/* Rent Payment Method */}
+                    <RentPayments
+                    defaultLastPayment={inputObject.last_rent_payment}
+                    defaultContractStartDate={inputObject.contract_start}
+                    defaultContractEndDate={inputObject.contract_end}
+                    />
+
+                    </div>
+                    }
+
                         {/* Bills Included in Rent? */}
-                        <InputCard 
-                            name="Bills Included in Rent?" 
-                            yesNoDefault={2}
-                            id="bills_included"
-                            /> 
+                        <YesNoBills /> 
                         
                         {/* Household Bills Cost */}
                         
-                        {(showBills && 
+                        {(showBills === true && 
                             <div id="household-bills-div">
                             <InputCard
-                                name="Average Household Bills"
+                                name="Average Household Bills (per student)"
                                 example="i.e Energy, Water and Broadband"
                                 average="(usually ~£50 per month)"
                                 inputType="money"
@@ -270,6 +314,11 @@ const App = () => {
                             </div>
                             )}
 
+                    
+                        {/* <Card>
+                        <h3><i className="fas fa-home icon"></i>Section Summary:</h3> 
+                        <p className="summary-money"><span className="pound">£</span>{total_rent_bills}</p>
+                        </Card> */}
 
                     </div>
 
@@ -288,7 +337,7 @@ const App = () => {
                             name="How much do you typically spend on food in a week?"
                             inputType="money"
                             id="food_cost"
-                            average="(usually ~£40 a week)"
+                            average="(usually ~£40 per week)"
                             detail="Per Week"
                             />
 

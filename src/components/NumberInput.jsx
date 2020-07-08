@@ -3,14 +3,12 @@ import SubmitContext from "../context/submit-context"
 
 const NumberInput = (props) => {
     
-    const { submitValue, updateEndBalance } = useContext(SubmitContext)
+    const { submitValue, updateEndBalance, inputObject } = useContext(SubmitContext)
 
     const [inputValue, setInputValue] = useState("")
 
     function handleChange(event) {
-        const newInputValue = event.target.value
-
-        setInputValue(newInputValue)
+        setInputValue(event.target.value)
         submitValue(event)
     }
 
@@ -24,7 +22,7 @@ const NumberInput = (props) => {
             name={props.id}
             type="number"
             min="0"
-            className="form-control"
+            className="form-control number-input"
             aria-label="Remaining rent payments"
             value={inputValue}
             onChange={handleChange}/>

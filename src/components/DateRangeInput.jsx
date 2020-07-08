@@ -1,23 +1,23 @@
 import React, {useState, useEffect, useContext} from "react"
 import SubmitContext from "../context/submit-context"
 
-    const DateInput = (props) => {
+    const DateRangeInput = (props) => {
 
-        const {submitValue, updateEndBalance} = useContext(SubmitContext)
+        const {submitValue, updateEndBalance, inputObject} = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
-            const [startDate, setStartDate] = useState(props.defaultStartDate)
+            const [startDate, setStartDate] = useState(props.startDate)
 
             function handleStartChange(event) {
                 const newStartDate = event.target.value
 
                 setStartDate(newStartDate)
-                props.submitValue(event)
+                submitValue(event)
             }
 
     
     // ------------------------------------------- End date state
-            const [endDate, setEndDate] = useState(props.defaultEndDate)
+            const [endDate, setEndDate] = useState(props.endDate)
 
             function handleEndChange(event) {
                 const newEndDate = event.target.value
@@ -35,37 +35,31 @@ import SubmitContext from "../context/submit-context"
 
         return (
             <div className="form-group row">
-
                 <div className="col-md-6">
-                    <label htmlFor="start-date-input" className="col-form-label input-description">Start Date</label>
-                    <div>
+                    <label htmlFor="start-date-input" className="col-form-label input-description">{props.date1_name}</label>
                         <input
-                            name="start_date"
+                            name={props.date1_id}
                             className="form-control"
                             type="date"
                             value={startDate}
                             onChange={handleStartChange}
-                            id="start_date"
+                            id={props.date1_id}
                             />
-                    </div>
                 </div>
 
                 <div className="col-md-6">
-                    <label htmlFor="end-date-input" className="col-form-label input-description">End Date</label>
-                    <div>
+                    <label htmlFor="end-date-input" className="col-form-label input-description">{props.date2_name}</label>
                         <input
-                            name="end_date"
+                            name={props.date2_id}
                             className="form-control"
                             type="date"
                             value={endDate}
                             onChange={handleEndChange}
-                            id="end_date"
+                            id={props.date2_id}
                             />
-                    </div>
                 </div>
-
             </div>
         )
 }
 
-export default DateInput
+export default DateRangeInput
