@@ -7,8 +7,11 @@ const MonthlyWeekly = (props) => {
 
     const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
+    // const [period, setPeriod] = useState(props.userMonthlyWeekly)
+
     function handleChange(event) {
         submitValue(event)
+        // setPeriod(event.target.value)
     }
 
     useEffect(() => {
@@ -17,9 +20,9 @@ const MonthlyWeekly = (props) => {
 
         return (
             <div>
-            <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'} defaultValue={props.default}>
-                <ToggleButton variant="light" value={1} onChange={handleChange}>Monthly</ToggleButton>
-                <ToggleButton variant="light" value={2} onChange={handleChange}>Weekly</ToggleButton>
+            <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'} defaultValue={props.userMonthlyWeekly}>
+                <ToggleButton variant="light" value="monthly" onChange={handleChange}>Monthly</ToggleButton>
+                <ToggleButton variant="light" value="weekly" onChange={handleChange}>Weekly</ToggleButton>
             </ToggleButtonGroup>
         </div>
         )

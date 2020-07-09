@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react"
+import React, {useContext, useEffect} from "react"
 import {ToggleButtonGroup, Card, Row, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -8,37 +8,26 @@ import DateRangeInput from "./DateRangeInput"
 
 const RentPayments = (props) => {
     
-    const {updateEndBalance, submitValue, setInputObject} = useContext(SubmitContext)
+    const {updateEndBalance, submitValue, inputObject} = useContext(SubmitContext)
 
     useEffect(() => {
         updateEndBalance()
     })
 
+
+
     // -------------------------------------------- Method switch
     
-    const [rentMethod, setRentMethod] = useState()
+    // const [rentMethod, setRentMethod] = useState(props.initialMethod)
 
     function handleMonthlyRent(event) {
         submitValue(event)
-        setRentMethod("monthly")
-        setInputObject(
-            (prevObject) => ({
-                ...prevObject,
-                total_payments: "",
-                payments_left: "",
-            })
-        )
+        // setRentMethod("monthly")
     }
 
     function handleTermlyRent(event) {
         submitValue(event)
-        setRentMethod("termly")
-        setInputObject(
-            (prevObject) => ({
-                ...prevObject,
-                next_rent_payment: "",
-            })
-        )
+        // setRentMethod("termly")
     }
 
 
@@ -55,20 +44,20 @@ const RentPayments = (props) => {
              <InputName  
                 name="How often do you send rent payments?"
                 />
-            <ToggleButtonGroup className="rent-payments" type="radio" name="rent_payment_period">
+            <ToggleButtonGroup className="rent-payments" type="radio" name="rent_payment_period" defaultValue={props.rentMethod}>
                 <ToggleButton variant="light" value="monthly" onChange={handleMonthlyRent}>Every Month</ToggleButton>
                 <ToggleButton variant="light" value="termly" onChange={handleTermlyRent}>Every Term/Quarter</ToggleButton>
             </ToggleButtonGroup>
             
                 
-                {rentMethod && (
-                    rentMethod === "monthly" ? 
+                {props.rentMethod && (
+                    props.rentMethod === "monthly" ? 
                     /* Monthly Render */
                     <Card.Body>
                         <div className="form-group row">
                             <p>Specific dates are not crucial here (if they aren't known). 
                             <br/><strong>Example: </strong>
-                            If your next payment is in October and your last is in June, you can use the 30th of each month below.
+                            If your next payment is in October and your last is in May, you can use the 30th of each month below.
                             </p>
                         </div>
                     <DateRangeInput 
@@ -76,8 +65,8 @@ const RentPayments = (props) => {
                         date1_id="next_rent_payment"
                         date2_name="Last/End Payment"
                         date2_id="last_rent_payment"
-                        startDate={props.defaultNextPayment}
-                        endDate={props.defaultLastPayment} 
+                        startDate={props.initialNextPayment}
+                        endDate={props.initialLastPayment} 
                         />
 
                         
@@ -90,17 +79,21 @@ const RentPayments = (props) => {
                         date1_id="contract_start"
                         date2_name="Contract End"
                         date2_id="contract_end"
-                        startDate={props.defaultContractStartDate} 
-                        endDate={props.defaultContractEndDate}
+                        startDate={props.initialContractStart} 
+                        endDate={props.initialContractEndDate}
                         />
 
                         <InputName name="Total number of payments"/>
-                        <NumberInput id="total_payments"/>
+                        <NumberInput 
+                        id="total_payments"
+                        userValue={inputObject.total_payments}/>
                         <p className="detail">Payments</p>
 
 
                         <InputName name="Number of payments still to make"/>
-                        <NumberInput id="payments_left" />
+                        <NumberInput 
+                        id="payments_left"
+                        userValue={inputObject.payments_left} />
                         <p className="detail">Payments</p>
 
 

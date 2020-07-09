@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import { Card, Row } from "react-bootstrap"
+import { Card, Row, Alert } from "react-bootstrap"
 import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
 
@@ -14,12 +14,14 @@ const Summary = (props) => {
     const SummarySection = (props) => {
 
         return(
+            // props.total > 0 && 
                 <div>
                     <Row className="summary-heading">
                             <h3 style={{margin: '5px 0'}}><i className={props.icon}></i>{props.title}: </h3>
-                            {view === "1" ? 
-                            <p className="summary-money"><span className="pound">£</span>{props.total > 0 && Math.round(props.total)}</p> :
-                            <p className="summary-money"><span className="pound">£</span>{props.total > 0 && (Math.round(props.total / props.total_weeks()))}</p>
+                            { isNaN(props.total) ? <p className="warning">Complete Section</p> :
+                            (view === "1" ? 
+                            <p className="summary-money"><span className="pound">£</span>{Math.round(props.total)}</p> :
+                            <p className="summary-money"><span className="pound">£</span>{(Math.round(props.total / props.total_weeks()))}</p>)
                             }
                     </Row>
                 </div>  
@@ -55,7 +57,10 @@ const Summary = (props) => {
                 <Row>
                     <h3 style={{margin: '5px 0'}}>Weekly Dispoable: </h3><p className="summary-money"><span className="pound">£</span>{props.disposable_cash}</p>
                     <br/>
-                    <h3 style={{marginBottom: '10px'}}>End Balance: </h3> <p className="summary-money"><span className="pound">£</span>{(props.end_balance > 0 || props.end_balance < 0 || props.end_balance === 0 ) && props.end_balance }</p>
+                    <h3 style={{marginBottom: '10px'}}>End Balance: </h3> 
+                    {isNaN(props.end_balance) ? <p className="warning">Complete Rent Section</p>:
+                    <p className="summary-money"><span className="pound">£</span>{props.end_balance}</p>}
+                    
                 </Row>
 
           </Card.Body>

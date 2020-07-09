@@ -5,7 +5,7 @@ const NumberInput = (props) => {
     
     const { submitValue, updateEndBalance } = useContext(SubmitContext)
 
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState(props.userValue)
 
     function handleChange(event) {
         setInputValue(event.target.value)

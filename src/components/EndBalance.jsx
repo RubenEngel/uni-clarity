@@ -2,7 +2,7 @@ import React, {useContext} from "react"
 import SubmitContext from "../context/submit-context"
 import {Alert} from "react-bootstrap"
 
-const EndBalance = (props) => {
+const EndBalance = () => {
 
     const { end_balance } = useContext(SubmitContext)
 
@@ -12,13 +12,10 @@ const EndBalance = (props) => {
             <p className="input-description col-lg-6">End Balance</p>
 
             <div className="col-lg-6">
-                { end_balance ? 
-                <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p> :
-                <Alert variant="warning" >Rent Section Incomplete</Alert>
-                // <p className="end-value" style={{color: "goldenrod"}}>Specify your rent payment method</p>
-                }
-                
-                
+            {isNaN(end_balance) ?<p className="warning">Complete Rent Section</p> :
+                    <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p>}
+
+                                
             </div>
     </div>
 

@@ -20,20 +20,21 @@ const InputCard = (props) => {
 
             {props.inputType === "money" && 
                 <MoneyInput 
-                    id={props.id}/>}
+                    id={props.id}
+                    userValue={props.userValue}/>}
             
             {props.inputType === "length" && 
                 <NumberInput  
-                    id={props.id}/>}
+                    id={props.id}
+                    userValue={props.userValue}/>}
 
             {props.detail && 
                 <p className="detail">{props.detail}</p>}
 
-            {props.monthlyWeeklyDefault && 
+            {props.userMonthlyWeekly && 
                 <MonthlyWeekly 
                     id={props.id} 
-                    choiceId={props.choiceId} 
-                    default={props.monthlyWeeklyDefault}/>}
+                    userMonthlyWeekly={props.userMonthlyWeekly}/>}
 
         </Card>
     </div>

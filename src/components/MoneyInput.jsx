@@ -5,7 +5,7 @@ const MoneyInput = (props) => {
       
     const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState(props.userValue)
 
     function handleChange(event) {
         const newInputValue = event.target.value
