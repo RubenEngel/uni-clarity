@@ -73,26 +73,29 @@ const ExpenseInput = (props) => {
 
                 
     {/*------------------------------------- Name Input ------------------------------ */}
-                <Row className="create-expense-row">
-                    <p className="input-description col-6">Name:</p>
+                <Row className="create-expense-row input-group input-box mb-3">
+                    <p className="input-description col-6 expense-name">Name:</p>
                     <input
                     ref={inputRef}
                     type="text"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                     onKeyUp={handleKey}
-                    className="form-control col-6"/>
+                    className="form-control col-5"/>
                 </Row>
 
     {/*------------------------------------- Cost Input ------------------------------ */}
-                <Row className="create-expense-row">
-                    <p className="input-description col-6">Cost:</p>
+                <Row className="create-expense-row input-group input-box mb-3 form">
+                    <p className="input-description expense-cost col-5">Cost:</p>
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">£</span>
+                    </div>
                     <input
                     type="number"
                     value={cost}
                     onChange={(event) => setCost(event.target.value)}
                     onKeyUp={handleKey}
-                    className="form-control col-6"/>
+                    className="form-control col-7"/>
                 </Row>
 
     {/*------------------------------------- Monthly Weekly Toggle ------------------------------ */}

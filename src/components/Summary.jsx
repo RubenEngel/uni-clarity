@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import { Card, Row, Alert } from "react-bootstrap"
+import { Card, Row } from "react-bootstrap"
 import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
 
@@ -18,7 +18,7 @@ const Summary = (props) => {
                 <div>
                     <Row className="summary-heading">
                             <h3 style={{margin: '5px 0'}}><i className={props.icon}></i>{props.title}: </h3>
-                            { isNaN(props.total) ? <p className="warning">Complete Section</p> :
+                            { isNaN(props.total) ? <p className="warning"> Complete Section</p> :
                             (view === "1" ? 
                             <p className="summary-money"><span className="pound">£</span>{Math.round(props.total)}</p> :
                             <p className="summary-money"><span className="pound">£</span>{(Math.round(props.total / props.total_weeks()))}</p>)
@@ -55,7 +55,7 @@ const Summary = (props) => {
                 <SummarySection title="Expenses" icon="fas fa-receipt icon" total={props.total_expenses} total_weeks={props.total_weeks}/>
                     
                 <Row>
-                    <h3 style={{margin: '5px 0'}}>Weekly Dispoable: </h3><p className="summary-money"><span className="pound">£</span>{props.disposable_cash}</p>
+                    <h3 style={{margin: '5px 0'}}>Weekly Cash to Splash: </h3><p className="summary-money"><span className="pound">£</span>{props.disposable_cash}</p>
                     <br/>
                     <h3 style={{marginBottom: '10px'}}>End Balance: </h3> 
                     {isNaN(props.end_balance) ? <p className="warning">Complete Rent Section</p>:

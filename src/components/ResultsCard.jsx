@@ -7,8 +7,13 @@ const ResultsCard = (props) => {
     return (
       <Card bg="secondary" text="white" className="results-card">
           <Card.Body>
-              <DisposableCash id="disposable_cash"/>
-              <EndBalance id="end_balance"/>
+
+              <DisposableCash 
+              id="disposable_cash"/>
+
+              <EndBalance 
+              id="end_balance"/>
+
           </Card.Body>
       </Card>
     )

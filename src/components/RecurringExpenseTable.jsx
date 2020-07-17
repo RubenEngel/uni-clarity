@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react"
-import {Card, Table, ToggleButton, ToggleButtonGroup} from "react-bootstrap"
+import {Card, Table, Row, ToggleButton, ToggleButtonGroup} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 
 
@@ -7,6 +7,9 @@ const RecurringExpenseTable = (props) => {
 
 
     const {recurringExpenseArray, deleteRecurringExpense} = useContext(SubmitContext)
+
+    const weekly_total = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
+    const monthly_total = weekly_total*4.345
 
     const Expense = (props) => {
 
@@ -24,7 +27,7 @@ const RecurringExpenseTable = (props) => {
     
 
     // Monthly/weekly view of table
-    const [view, setView] = useState("1")
+    const [view, setView] = useState("monthly")
 
 
     return (
@@ -40,7 +43,7 @@ const RecurringExpenseTable = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {view === "1" ? 
+                        {view === "monthly" ? 
                             recurringExpenseArray.map((expense) => (
                                 <Expense
                                 key={expense.key}
@@ -62,10 +65,13 @@ const RecurringExpenseTable = (props) => {
                     </tbody>
                 </Table>
                 <Card.Footer className="expense-card-footer">
-                        <ToggleButtonGroup type="radio" name="recurring_expenses_view" defaultValue={1}>
-                            <ToggleButton variant="light" value={1} onChange={(e) => setView(e.target.value)}>Monthly</ToggleButton>
-                            <ToggleButton variant="light" value={2} onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
+                    <Row>
+                    <h3 className="col-md-6 col-lg-6 expense-table-total">Total: <span className="pound">£</span><span className="money">{view === "monthly" ? monthly_total.toFixed(2) :  weekly_total.toFixed(2)}</span></h3>
+                        <ToggleButtonGroup className="col-md-6 col-lg-6" type="radio" name="recurring_expenses_view" defaultValue="monthly">
+                            <ToggleButton variant="light" value={"monthly"} onChange={(e) => setView(e.target.value)}>Monthly</ToggleButton>
+                            <ToggleButton variant="light" value={"weekly"} onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
                         </ToggleButtonGroup>
+                    </Row>
                 </Card.Footer>
             </Card>
                         

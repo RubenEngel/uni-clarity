@@ -5,7 +5,7 @@ const MoneyInput = (props) => {
       
     const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
-    const [inputValue, setInputValue] = useState(props.userValue)
+    const [inputValue, setInputValue] = useState("")
 
     function handleChange(event) {
         const newInputValue = event.target.value
@@ -16,7 +16,8 @@ const MoneyInput = (props) => {
 
     useEffect(() => {
         updateEndBalance()
-    })
+        setInputValue(props.userValue)
+    }, [updateEndBalance, props.userValue])
 
 
         return (

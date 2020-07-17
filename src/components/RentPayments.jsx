@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {ToggleButtonGroup, Card, Row, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -10,31 +10,24 @@ const RentPayments = (props) => {
     
     const {updateEndBalance, submitValue, inputObject} = useContext(SubmitContext)
 
-    useEffect(() => {
-        updateEndBalance()
-    })
-
-
 
     // -------------------------------------------- Method switch
     
-    // const [rentMethod, setRentMethod] = useState(props.initialMethod)
+    const [rentMethod, setRentMethod] = useState()
 
-    function handleMonthlyRent(event) {
-        submitValue(event)
-        // setRentMethod("monthly")
-    }
+    function handleChange(event) {
+        const newValue = event.target.value;
 
-    function handleTermlyRent(event) {
         submitValue(event)
-        // setRentMethod("termly")
+        setRentMethod(newValue)
     }
 
 
     // ----------------------------------Update balance on re-render
     useEffect(() => {
         updateEndBalance()
-    })
+        setRentMethod(props.userMethod)
+    }, [updateEndBalance, props.userMethod])
 
 
     //---------------------------Main render
@@ -44,14 +37,14 @@ const RentPayments = (props) => {
              <InputName  
                 name="How often do you send rent payments?"
                 />
-            <ToggleButtonGroup className="rent-payments" type="radio" name="rent_payment_period" defaultValue={props.rentMethod}>
-                <ToggleButton variant="light" value="monthly" onChange={handleMonthlyRent}>Every Month</ToggleButton>
-                <ToggleButton variant="light" value="termly" onChange={handleTermlyRent}>Every Term/Quarter</ToggleButton>
+            <ToggleButtonGroup className="rent-payments" type="radio" name="rent_payment_period" value={rentMethod}>
+                <ToggleButton variant="light" value="monthly" onChange={handleChange}>Every Month</ToggleButton>
+                <ToggleButton variant="light" value="termly" onChange={handleChange}>Every Term/Quarter</ToggleButton>
             </ToggleButtonGroup>
             
                 
-                {props.rentMethod && (
-                    props.rentMethod === "monthly" ? 
+                {rentMethod && (
+                    rentMethod === "monthly" ? 
                     /* Monthly Render */
                     <Card.Body>
                         <div className="form-group row">

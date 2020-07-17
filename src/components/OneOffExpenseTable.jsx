@@ -7,6 +7,8 @@ const OneOffExpenseTable = (props) => {
 
     const {oneOffExpenseArray, deleteOneOffExpense} = useContext(SubmitContext)
 
+    const total = oneOffExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
+
     const Expense = (props) => {
 
         function capitalizeFirstLetter(string) {
@@ -44,9 +46,9 @@ const OneOffExpenseTable = (props) => {
                                 />))}
                     </tbody>
                 </Table>
-                {/* <Card.Footer>
-
-                </Card.Footer> */}
+                <Card.Footer className="expense-card-footer">
+                    <h3 className="col-md-6 col-lg-6 expense-table-total">Total: <span className="pound">£</span><span className="money">{total.toFixed(2)}</span></h3>
+                </Card.Footer>
             </Card>
         </div>
 

@@ -6,7 +6,7 @@ import SubmitContext from "../context/submit-context"
         const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
-            const [startDate, setStartDate] = useState(props.startDate)
+            const [startDate, setStartDate] = useState("")
 
             function handleStartChange(event) {
                 const newStartDate = event.target.value
@@ -17,7 +17,7 @@ import SubmitContext from "../context/submit-context"
 
     
     // ------------------------------------------- End date state
-            const [endDate, setEndDate] = useState(props.endDate)
+            const [endDate, setEndDate] = useState("")
 
             function handleEndChange(event) {
                 const newEndDate = event.target.value
@@ -27,9 +27,11 @@ import SubmitContext from "../context/submit-context"
             }
         
     //------------------------------------- Update end balance on date update
-            useEffect(() => {
+             useEffect( () =>  {
                 updateEndBalance()
-            })
+                setStartDate(props.startDate)
+                setEndDate(props.endDate)
+            }, [updateEndBalance, props.startDate, props.endDate])
             
 
 
