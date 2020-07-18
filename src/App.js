@@ -74,9 +74,7 @@ const App = () => {
         //Food
         food_cost: "",
         start_balance: "0",
-        disposable_cash: "0",
-        //Save
-        last_saved: null
+        disposable_cash: "0"
     })
 
     const [inputObject, setInputObject] = useState(defaultInputObject);
@@ -138,8 +136,6 @@ const App = () => {
     const [showBills, setShowBills] = useState(true)
 
 //------------------------------------------------------- Results Calculations 
-
-     
 
         const total_weeks = () => {
             const d1 = new Date(inputObject.start_date)
@@ -244,23 +240,22 @@ const App = () => {
     const db = firebase.firestore();
     // const docRef = db.collection("users").doc(userAccount.uid)
 
-    const [saveStatus, setSaveStatus] = useState(null)
+    const [saveStatus, setSaveStatus] = useState()
+    const [lastSaved, setLastSaved] = useState()
 
     function Save (userID) {
 
+
         db.collection("users").doc(userID).set({
-            inputObject,
+            inputObject, 
+            last_saved: today.toString(),
             recurringExpenseArray,
             oneOffExpenseArray
         })
         .then(function() {
+            setLastSaved(today.toString()) 
             setSaveStatus(`Save Succesful on ${today}`);
-            setInputObject(  
-                ({
-                    ...inputObject,
-                    last_saved: today.toString()
-                })
-            )})
+            })
         .catch(function(error) {
             console.error("Error adding document: ", error);
         });
@@ -274,6 +269,7 @@ const App = () => {
                 setInputObject(doc.data().inputObject)
                 setRecurringExpenseArray(doc.data().recurringExpenseArray)
                 setOneOffExpenseArray(doc.data().oneOffExpenseArray)
+                setLastSaved(doc.data().last_saved)
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -333,6 +329,7 @@ const App = () => {
                 
                 {/* -------------------------------------Account Section -------------------------------------*/}
 
+
                 <section id="account-section">
 
                         <SectionHeading name="Account" icon="fas fa-user icon"/>
@@ -341,7 +338,7 @@ const App = () => {
                             <div>
                                 <h3>You are signed in as {userAccount.displayName}</h3>
                                 <img className="profile-picture" src={userAccount.photoURL} alt="profile_picture"></img>
-                                {inputObject.last_saved ? <p className="save-status">Data was last saved on {inputObject.last_saved}</p> : 
+                                {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
                                 <p className="save-status">You are yet to save any data</p>}
                                 <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
                             </div>
@@ -354,6 +351,13 @@ const App = () => {
                             }
                                 
                         </Card>
+                        <Alert className="card alert" variant="warning">
+                            <p>
+                            <strong>Mobile Users: </strong> 
+                            For best performance and to enable login with Facebook and Google, open the web app in a dedicated browser rather than an in-app browser.
+                            </p>
+                        </Alert>
+
 
                 </section>
                

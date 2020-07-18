@@ -164,7 +164,11 @@ h3 {
 
 .home-bottom {
     position: fixed;
-    bottom: 2%;
+    bottom: 15%;
+}
+
+.home-start {
+    font-size: 2.5rem;
 }
 
 
@@ -528,6 +532,3 @@ td {
     margin:10px;
 }
 
-.home-start {
-    font-size: 2.5rem;
-}
