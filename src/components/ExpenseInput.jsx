@@ -60,9 +60,6 @@ const ExpenseInput = (props) => {
 
     const [inputRef, setInputFocus] = useFocus()
 
-
-
-
         return (
             <div className="row">
             <Card body>
@@ -93,6 +90,7 @@ const ExpenseInput = (props) => {
                     <input
                     type="number"
                     value={cost}
+                    min="0"
                     onChange={(event) => setCost(event.target.value)}
                     onKeyUp={handleKey}
                     className="form-control col-7"/>

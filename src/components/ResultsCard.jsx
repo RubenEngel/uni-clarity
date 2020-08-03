@@ -9,10 +9,12 @@ const ResultsCard = (props) => {
           <Card.Body>
 
               <DisposableCash 
-              id="disposable_cash"/>
+              id="disposable_cash"
+              userValue={props.userValue}/>
 
               <EndBalance 
-              id="end_balance"/>
+              id="end_balance"
+              userValue={props.userValue}/>
 
           </Card.Body>
       </Card>

@@ -194,7 +194,7 @@ h3 {
 /* Contents in NavBar */
 .nav-heading {
     font-family: 'Amatic SC', sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 .nav-dropdown {
@@ -233,38 +233,11 @@ section:before {
     font-size: 1.3rem;
 }
 
-.log-in-prompt {
-    margin-top: 5%;
+
+.walkthtough-dropdown {
+    margin-bottom:20px;
 }
 
-.log-in-button {
-    color: goldenrod;
-    font-weight: bold;
-}
-
-    .log-in-button:hover {
-        color: #008ae6;
-    }
-
-.continue-icon{
-    bottom: 10px;
-    font-size: 5rem;
-}
-
-.profile-picture{
-    width:50px;
-    margin: 10px auto;
-    display: block;
-    border-radius: 50%;
-}
-
-.sign-out{
-    margin:10px 0;
-}
-
-.firebaseui-title, .firebaseui-subtitle {
-    font-size: 2.5rem;
-}
 
 /* ---------------------------- Inputs --------------------------- */
 /* card*/
@@ -363,6 +336,74 @@ section:before {
     font-family: "Architects Daughter", cursive;
     margin-bottom: 20px;
   }
+
+/* --------------------------- Account --------------------------- */
+
+.log-in-prompt {
+    margin-top: 5%;
+}
+
+.log-in-button {
+    color: goldenrod;
+    font-weight: bold;
+}
+
+    .log-in-button:hover {
+        color: #008ae6;
+    }
+
+.continue-icon{
+    bottom: 10px;
+    font-size: 5rem;
+}
+
+.profile-picture{
+    width:50px;
+    margin: 10px auto;
+    display: block;
+    border-radius: 50%;
+}
+
+.sign-out{
+    margin:10px 0;
+}
+
+.firebaseui-title, .firebaseui-subtitle {
+    font-size: 2.5rem;
+}
+
+/* --------------------------- Income --------------------------- */
+
+.add-income-button {
+    margin-top:10px;
+    /* font-weight: bold; */
+    color: #9e9e9e;
+    /* font-family: 'Amatic SC', sans-serif;
+    font-size: 1.5rem;
+    line-height: 2rem; */
+}
+
+.add-income .btn {
+    font-size: 1.4rem;
+    line-height: rem;
+    margin: 0;
+    /* font-weight: bold; */
+    color: #9e9e9e;
+    font-family: 'Amatic SC', sans-serif;
+}
+
+.create-income-row {
+    max-width:300px;
+    margin: 0 auto;
+}
+
+.income-value {
+    font-family: 'Roboto', sans-serif;
+    color: #9e9e9e;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-right: 10px;
+}
 
 /*------------------------------------Rent---------------------*/
 

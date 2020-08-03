@@ -20,7 +20,7 @@ const MonthlyWeekly = (props) => {
 
         return (
             <div>
-            <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'} defaultValue={props.userMonthlyWeekly}>
+            <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'} value={props.userMonthlyWeekly}>
                 <ToggleButton variant="light" value="monthly" onChange={handleChange}>Monthly</ToggleButton>
                 <ToggleButton variant="light" value="weekly" onChange={handleChange}>Weekly</ToggleButton>
             </ToggleButtonGroup>

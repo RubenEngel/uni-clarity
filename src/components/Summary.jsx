@@ -50,7 +50,7 @@ const Summary = (props) => {
 
                 <SummarySection title="Rent&Bills" icon="fas fa-home icon" total={props.total_rent_bills} total_weeks={props.total_weeks}/>
 
-                <SummarySection title="Food" icon="fas fa-shopping-cart icon" total={props.total_food} total_weeks={props.total_weeks}/>
+                <SummarySection title="Food" icon="fas fa-shopping-cart icon" total={props.total_groceries} total_weeks={props.total_weeks}/>
 
                 <SummarySection title="Expenses" icon="fas fa-receipt icon" total={props.total_expenses} total_weeks={props.total_weeks}/>
                     

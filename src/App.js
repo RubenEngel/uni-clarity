@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import { v4 as uuidv4 } from 'uuid';
 
-import {Card, Alert, Button} from "react-bootstrap"
-
+import {Card, Alert, Button, Row, Nav} from "react-bootstrap"
 
 //Components
 import NavBar from "./components/NavBar.jsx"
@@ -21,8 +20,10 @@ import RentPayments from "./components/RentPayments"
 import InputName from './components/InputName';
 import EndBalance from "./components/EndBalance"
 import DisposableCash from "./components/DisposableCash"
+import Help from "./components/Help"
 //Delete intro and results card
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import AdditionalIncome from './components/AdditionalIncome'
 
 import * as firebase from 'firebase'
 // import * as firebaseui from 'firebaseui'
@@ -71,8 +72,8 @@ const App = () => {
         bills_included: "no",
         bills_cost: "",         
         bills_cost_MonthlyWeekly: "monthly",
-        //Food
-        food_cost: "",
+        //Groceries
+        groceries_cost: "",
         start_balance: "0",
         disposable_cash: "0"
     })
@@ -85,6 +86,30 @@ const App = () => {
             setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )
             }
    
+// ------------------------------------------------ Additional Income
+
+    const [incomeArray, setIncomeArray] = useState([])
+
+    function submitIncomeSource(name, value, period) {
+        setIncomeArray((prevObject) => ([
+                ...prevObject,
+                    {
+                    "key": uuidv4(),
+                    "name": name,
+                    "value": value,
+                    "period": period
+                    }
+            ])
+        )
+    }
+
+    function deleteIncomeSource(id) {
+        setIncomeArray( prevArray => {
+            return prevArray.filter( expense => {
+                return expense.key !== id
+            })
+        })
+        }
 
 //-------------------------------------------------- Recurring Expenses
 
@@ -154,7 +179,19 @@ const App = () => {
         }
 
         // Income Calcs
-        const total_income = (+inputObject.maintenance_loan) + (+inputObject.additional_income)
+        const additional_income_array = incomeArray.map(
+            function (element) {
+                if (element.period === "yearly") {
+                    return +element.value
+                } else if (element.period === "monthly") {
+                    return +element.value * total_weeks()/4.35;
+                } else if (element.period === "weekly") {
+                    return +element.value * total_weeks();
+                }
+            } 
+        )
+        const additional_income_total = additional_income_array.reduce((sum, currentValue) => sum + +currentValue, 0)
+        const total_income = (+inputObject.maintenance_loan) + (+additional_income_total)
         // Rent Calcs
         const rent_weeks = inputObject.rent_payment_period &&
                             (inputObject.rent_payment_period === "monthly" ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
@@ -165,9 +202,9 @@ const App = () => {
                         :   0
         const total_bills = (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost)) * total_weeks()
         const total_rent_bills = Math.round(total_rent + total_bills)
-        // Food Calcs
-        const weekly_food = (+inputObject.food_cost) 
-        const total_food = weekly_food * total_weeks()
+        // Groceries Calcs
+        const weekly_groceries = (+inputObject.groceries_cost) 
+        const total_groceries = weekly_groceries * total_weeks()
         // Expense Calcs
         const weekly_recurring_expenses = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_recurring_expenses = weekly_recurring_expenses*total_weeks()
@@ -176,7 +213,7 @@ const App = () => {
         // Results Calcs
         const disposable_cash = +inputObject.disposable_cash
         const start_balance = +inputObject.start_balance
-        const end_balance = Math.round(total_income + start_balance - total_rent - total_bills - total_food - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
+        const end_balance = Math.round(total_income + start_balance - total_rent - total_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
        
 // ---------------------------------------------- End Balance
 
@@ -231,6 +268,7 @@ const App = () => {
               function signOut() {
                 firebase.auth().signOut();
                 setInputObject(defaultInputObject)
+                setIncomeArray([])
                 setRecurringExpenseArray([])
                 setOneOffExpenseArray([])
               }
@@ -244,13 +282,12 @@ const App = () => {
     const [lastSaved, setLastSaved] = useState()
 
     function Save (userID) {
-
-
         db.collection("users").doc(userID).set({
             inputObject, 
-            last_saved: today.toString(),
+            incomeArray,
             recurringExpenseArray,
-            oneOffExpenseArray
+            oneOffExpenseArray,
+            last_saved: today.toString()
         })
         .then(function() {
             setLastSaved(today.toString()) 
@@ -267,6 +304,7 @@ const App = () => {
             if (doc.exists) {
                 // console.log("Document data:", doc.data());
                 setInputObject(doc.data().inputObject)
+                setIncomeArray(doc.data().incomeArray)
                 setRecurringExpenseArray(doc.data().recurringExpenseArray)
                 setOneOffExpenseArray(doc.data().oneOffExpenseArray)
                 setLastSaved(doc.data().last_saved)
@@ -293,10 +331,13 @@ const App = () => {
             deleteRecurringExpense, 
             submitOneOffExpense, 
             deleteOneOffExpense,
+            submitIncomeSource,
+            deleteIncomeSource,
             setShowBills,
             setShowRent,
             inputObject,
             end_balance,
+            incomeArray,
             oneOffExpenseArray,
             recurringExpenseArray
         }}
@@ -313,7 +354,7 @@ const App = () => {
                     total_weeks={total_weeks} 
                     total_income={total_income}
                     total_rent_bills={total_rent_bills}
-                    total_food={total_food} 
+                    total_groceries={total_groceries} 
                     total_expenses = {total_expenses}
                     disposable_cash={disposable_cash}
                     end_balance={end_balance}
@@ -327,17 +368,42 @@ const App = () => {
                 <NavBar 
                 /> 
                 
+                {/* Intro */}
+                <section id="walkthtough-section">
+                    <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
+                    <p className="introduction-text">Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
+                </section>
+                {/* ------------------------------------ Guide Section ------------------------------------ */}
+                <section id="guide-section">
+
+                <div className="container-fluid">
+                            <Help/>
+                    </div>
+
+                </section>
+
+
                 {/* -------------------------------------Account Section -------------------------------------*/}
 
 
                 <section id="account-section">
 
+                <div className="container-fluid">
+
                         <SectionHeading name="Account" icon="fas fa-user icon"/>
+
+                        <Alert className="card alert" variant="warning">
+                            <p>
+                            <strong>Mobile Users: </strong> 
+                            For best performance and to enable login with Facebook and Google, open the web app in a dedicated browser rather than an in-app browser.
+                            </p>
+                        </Alert>
+
                         <Card>
                             {signedIn ? 
                             <div>
                                 <h3>You are signed in as {userAccount.displayName}</h3>
-                                <img className="profile-picture" src={userAccount.photoURL} alt="profile_picture"></img>
+                                {userAccount.photoURL && <img className="profile-picture" src={userAccount.photoURL} alt="profile_picture"/>}
                                 {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
                                 <p className="save-status">You are yet to save any data</p>}
                                 <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
@@ -351,13 +417,8 @@ const App = () => {
                             }
                                 
                         </Card>
-                        <Alert className="card alert" variant="warning">
-                            <p>
-                            <strong>Mobile Users: </strong> 
-                            For best performance and to enable login with Facebook and Google, open the web app in a dedicated browser rather than an in-app browser.
-                            </p>
-                        </Alert>
-
+                  
+                </div>
 
                 </section>
                
@@ -413,20 +474,13 @@ const App = () => {
                         <InputCard
                             name="Maintenance Loan"
                             inputType="money"
-                            detail="Per Academic Year"
+                            detail="Left to Receive"
                             id="maintenance_loan"
                             userValue={inputObject.maintenance_loan}
                             /> 
                             
-                        {/* Additional Income*/}
-                        <InputCard
-                            name="Additonal Income"
-                            example="e.g Bursary, Part-Time Job"
-                            inputType="money"
-                            detail="Per Academic Year"
-                            id="additional_income"
-                            userValue={inputObject.additional_income}
-                            /> 
+
+                        <AdditionalIncome/>
                             
 
                     </div>
@@ -476,7 +530,7 @@ const App = () => {
                             <InputCard
                                 name="Average Household Bills (per student)"
                                 example="i.e Energy, Water and Broadband"
-                                average="(usually ~£50 per month)"
+                                average="(Average ~£50 per month)"
                                 inputType="money"
                                 userMonthlyWeekly={inputObject.bills_cost_MonthlyWeekly}
                                 id="bills_cost"
@@ -486,32 +540,27 @@ const App = () => {
                             </div>
                             )}
 
-                    
-                        {/* <Card>
-                        <h3><i className="fas fa-home icon"></i>Section Summary:</h3> 
-                        <p className="summary-money"><span className="pound">£</span>{total_rent_bills}</p>
-                        </Card> */}
 
                     </div>
 
 
                 </section>
 
-                {/* -----------------------------------------Food Section ------------------------------------------*/}
-                <section id="food-section">
+                {/* -----------------------------------------Groceries Section ------------------------------------------*/}
+                <section id="groceries-section">
 
                     <div className="container-fluid">
 
-                        <SectionHeading name="Food" icon="fas fa-shopping-cart icon"/> 
+                        <SectionHeading name="Groceries" icon="fas fa-shopping-cart icon"/> 
                         
-                        {/* Food Cost */}
+                        {/* Groceries Cost */}
                         <InputCard
-                            name="How much do you typically spend on food in a week?"
+                            name="How much do you typically spend on groceries in a week?"
                             inputType="money"
-                            id="food_cost"
-                            average="(usually ~£40 per week)"
+                            id="groceries_cost"
+                            average="(Average ~£30 per week)"
                             detail="Per Week"
-                            userValue={inputObject.food_cost}
+                            userValue={inputObject.groceries_cost}
                             />
 
                     </div>
@@ -580,7 +629,6 @@ const App = () => {
                             </Card.Body>
                         </Card>
 
-                        {/* <ResultsCard endBalance={ endBalance }/> */}
                         {
                         signedIn ? 
                         <div>

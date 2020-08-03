@@ -15,6 +15,8 @@ const NavBar = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="ml-auto">
+                    <Nav.Link className="nav-heading" href="#guide-section">Guide</Nav.Link>
+                    <Nav.Link className="nav-heading" href="#account-section">Account</Nav.Link>
                      <Nav.Link className="nav-heading" href="#date-section">Dates</Nav.Link>
                      <Nav.Link className="nav-heading" href="#income-section">Income</Nav.Link>
                      <Nav.Link className="nav-heading" href="#rent-section">Rent</Nav.Link>
