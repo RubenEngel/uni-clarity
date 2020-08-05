@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react"
-import {Row, Card, Dropdown, DropdownButton} from "react-bootstrap"
+import {Row, Dropdown, DropdownButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import SectionHeading from "./SectionHeading"
 
@@ -10,7 +10,7 @@ const Help = () => {
 
     // -------------------------------------------- Method switch
 
-    const [nav,setNav] = useState()
+    const [nav,setNav] = useState("overview")
 
     function handleChange(event) {
         const newValue = event.target.value;
@@ -20,13 +20,14 @@ const Help = () => {
     }
 
     return (
-        <div>
-            
+        <div className="container-fluid help">
+            <div className="help-heading">
+                <SectionHeading name="Help" icon="fas fa-question-circle icon"/>
+            </div>
+
             <Row>
-            <Card>
-                <Card.Header><SectionHeading name="Guide" icon="fas fa-question-circle icon"/></Card.Header>
-                <Card.Body>
-                <DropdownButton value={nav} variant="outline-primary" className="walkthtough-dropdown rent-payments" title={nav ? nav : "Sections"}>
+                <DropdownButton value={nav} variant="outline-primary" className="help-dropdown rent-payments" title={nav}>
+                    <Dropdown.Item as="button" value="overview" onClick={handleChange}>Overview</Dropdown.Item>
                     <Dropdown.Item as="button" value="account" onClick={handleChange}>Account</Dropdown.Item>
                     <Dropdown.Item as="button" value="dates" onClick={handleChange}>Dates</Dropdown.Item>
                     <Dropdown.Item as="button" value="income" onClick={handleChange}>Income</Dropdown.Item>
@@ -35,35 +36,39 @@ const Help = () => {
                     <Dropdown.Item as="button" value="expenses" onClick={handleChange}>Expenses</Dropdown.Item>
                     <Dropdown.Item as="button" value="results" onClick={handleChange}>Results</Dropdown.Item>
                 </DropdownButton>
+            </Row>
 
+            <Row>
+                <div className="help-body">
+                {nav === "overview" &&
+                    <div>
+                        <p>The purpose of this app is to find you a weekly budget to spend on non-essentials - that will result in an end bank balance you are happy with. This is called your 'Weekly Cash to Splash'. This may be used for such things as a night out or a new item of clothing.</p>
+                    </div>
+                }
                 {nav === "account" &&
                     <div>
-                        {/* <h2>Account</h2> */}
                         <p>Login if you wish to unlock the save feature or load previously saved data.</p>
                     </div>
                 }
                 {nav === "dates" &&
                     <div>
-                        {/* <h2>Dates</h2> */}
                         <p>Specify the date range that your budgeting will last - this will be used for calculations.</p>
                     </div>
                 }
                 {nav === "income" &&
                     <div>
-                        {/* <h2>Income</h2> */}
                         <p>Specify any income you are expecting to receive within your specified date range.</p>
                     </div>
                 }
                   {nav === "rent" &&
                     <div>
-                        {/* <h2>Rent & Bills</h2> */}
-                        <p>Specify rent costs to you as an individual, then select how often you pay your rent.</p>
+                    
+                        <p>Specify rent costs to you as an individual, then select your rent payment method. If applicable also include any household bills costs such as water, gas, electric and broadband. If this amount changes throughout the year, use an upper estimate of the average value.</p>
                     </div>
                 }
                   {nav === "groceries" &&
                     <div>
-                        {/* <h2>Groceries</h2> */}
-                        <p>Specify the amount you usually spend (upper estimate) on your household essentials such as food or toiletries</p>
+                        <p>Specify the amount you usually spend per week (upper estimate) on your household essentials such as food and toiletries.</p>
                     </div>
                 }
                   {nav === "expenses" &&
@@ -82,11 +87,8 @@ const Help = () => {
                         <p>What your bank balance will be at the end of your specified date range.</p>
                     </div>
                 }
-                </Card.Body>
-               
-
-            </Card>
-        </Row>
+                </div>
+            </Row>
         </div>
         
     )

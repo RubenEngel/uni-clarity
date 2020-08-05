@@ -42,21 +42,21 @@ const DisposableCash = (props) => {
             <input name={props.id} type="range" className="custom-range" min="0" max="100" value={disposableCash} onChange={handleChange} id="disposable-cash-slider"/>
             
             <ToggleButtonGroup name="input_choice" value={input}>
-              <ToggleButton variant="outline-light" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
-              <ToggleButton variant="outline-light" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
+              <ToggleButton variant="secondary" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
+              <ToggleButton variant="secondary" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
             </ToggleButtonGroup>
           </div>
           }
 
           {(input === "custom") &&
-          <div className="form-group input-box">
+          <div className="form-group input-box custom-input">
           <MoneyInput 
             id={props.id}
             userValue={props.userValue}/>
 
             <ToggleButtonGroup name="input_choice" value={input}>
-              <ToggleButton variant="outline-light" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
-              <ToggleButton variant="outline-light" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
+              <ToggleButton variant="secondary" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
+              <ToggleButton variant="secondary" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
             </ToggleButtonGroup>
           </div>}
 

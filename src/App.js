@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import { v4 as uuidv4 } from 'uuid';
 
-import {Card, Alert, Button, Row, Nav} from "react-bootstrap"
+import {Card, Alert, Button} from "react-bootstrap"
 
 //Components
 import NavBar from "./components/NavBar.jsx"
@@ -181,7 +181,7 @@ const App = () => {
         // Income Calcs
         const additional_income_array = incomeArray.map(
             function (element) {
-                if (element.period === "yearly") {
+                if (element.period === "total") {
                     return +element.value
                 } else if (element.period === "monthly") {
                     return +element.value * total_weeks()/4.35;
@@ -222,7 +222,21 @@ const App = () => {
         function updateEndBalance() {
             setEndBalance(end_balance)
         }
+
+ // Formated end date
+
+ function formatDate(date) {
+    const dt = new Date(date)
+    const day = dt.getDate()
+    const month = dt.getMonth() + 1
+    const year = dt.getFullYear()
+    return (
+        `${day}/${month}/${year}`
+    )
+ }
  
+
+
 //---------------------------------------------------------------- Fire Base
 
 
@@ -251,9 +265,12 @@ const App = () => {
               //Signed-in status state
               const [signedIn, setSignedIn] = useState(false)
 
+              const authChange = (user) => firebase.auth().onAuthStateChanged(user)
+
             //   whenever app refreshes handle state of user signed in
               useEffect(() => (
-                firebase.auth().onAuthStateChanged( user =>
+ 
+                authChange( user =>
                     {
                         setSignedIn(!!user);
                         if (user) {
@@ -262,6 +279,7 @@ const App = () => {
                     }
                   )
               ),[signedIn]) 
+
 
               const userAccount = firebase.auth().currentUser
 
@@ -317,6 +335,14 @@ const App = () => {
         });
        
         };
+// ----------------------------------------------------- Show Help
+
+const [showHelp, setShowHelp] = useState(false)
+
+// ----------------------------------------------------- Show Summary
+
+const [showSummary, setShowSummary] = useState(false)
+
 
 
 // ----------------------------------------------------- Start of Rendered App
@@ -335,6 +361,7 @@ const App = () => {
             deleteIncomeSource,
             setShowBills,
             setShowRent,
+            setShowSummary,
             inputObject,
             end_balance,
             incomeArray,
@@ -347,9 +374,16 @@ const App = () => {
 
         <div className="row">
 
+                {/* Help and summary indicators */}
+                    <div>
+                        <p className="intro-help">Help</p>
+                        <p className="intro-summary">Summary</p>
+                    </div>
 
             {/* -------------------------------------Summary Div ----------------------------*/}
-            <div className="summary col-md-4 col-lg-3">
+            <div 
+            style={showSummary ? {"display": "block"} : null} 
+            className="summary col-md-4 col-sm-12">
                 <Summary 
                     total_weeks={total_weeks} 
                     total_income={total_income}
@@ -364,23 +398,42 @@ const App = () => {
             {/*--------------------------------------- Main Div------------------------------*/}
             <div className="main col-md-8">
 
+
+                {/* Show Summary Button */}
+                <button onClick={() => setShowSummary(!showSummary)} className="show-summary">
+                    {showSummary === false ? <i className="far fa-chart-bar icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
+                </button>
+
+                {/* Show Summary Button */}
+                <button onClick={() => setShowHelp(!showHelp)} className="show-help">
+                    {showHelp === false ? <i className="fas fa-question-circle icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
+                </button>
+
                 {/* --------------------------------------------NavBar --------------------------------------------*/}
                 <NavBar 
                 /> 
                 
-                {/* Intro */}
-                <section id="walkthtough-section">
-                    <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
-                    <p className="introduction-text">Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
-                </section>
-                {/* ------------------------------------ Guide Section ------------------------------------ */}
-                <section id="guide-section">
+                {/* ------------------------------------- Intro --------------------------------------*/}
+                {/* <section id="intro-section"> */}
 
-                <div className="container-fluid">
-                            <Help/>
+                    <div className="intro">
+                        <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
+                        <p className="introduction-text">Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
                     </div>
 
-                </section>
+                    <div className="continue">
+                        <a href="#account-section">
+                            {/* <h3>Start</h3> */}
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                    </div>
+                    
+
+                {/* </section> */}
+                {/* ------------------------------------ Help Section ------------------------------------ */}
+                
+                
+                {showHelp ? <Help/> : null}
 
 
                 {/* -------------------------------------Account Section -------------------------------------*/}
@@ -392,25 +445,18 @@ const App = () => {
 
                         <SectionHeading name="Account" icon="fas fa-user icon"/>
 
-                        <Alert className="card alert" variant="warning">
-                            <p>
-                            <strong>Mobile Users: </strong> 
-                            For best performance and to enable login with Facebook and Google, open the web app in a dedicated browser rather than an in-app browser.
-                            </p>
-                        </Alert>
 
                         <Card>
                             {signedIn ? 
                             <div>
                                 <h3>You are signed in as {userAccount.displayName}</h3>
-                                {userAccount.photoURL && <img className="profile-picture" src={userAccount.photoURL} alt="profile_picture"/>}
                                 {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
                                 <p className="save-status">You are yet to save any data</p>}
                                 <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
                             </div>
                             : 
-                            <div>
-                                <p className="input-description">If you wish to unlock the 'save' feature at the bottom of the page, please sign in.</p>
+                            <div className="firebase-auth">
+                                <p className="input-description">To enable the 'save' feature or load previous data, please sign in.</p>
                                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
                             </div>
                             
@@ -640,25 +686,28 @@ const App = () => {
                         </div>
                         }
                         
-
+                        {end_balance ?
                         <Alert className="card alert" variant="primary">
+                            <h2>Now what?</h2>
                             <p>
-                                It's recommended to create a weekly automatic payment to a seperate card for your disposable cash budget.
+                                {`Assuming you start budgeting on ${formatDate(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${disposable_cash}, you should have a bank balance of £${end_balance} on ${formatDate(inputObject.end_date)}.`}
                             </p>
-                        </Alert>
+                            <p>
+                                The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for your non-essentials budget. A good day for your standing order is a Monday.
+                            </p>
+                        </Alert> : null}
 
                     </div>
                 </section>
 
-                
+                <div className="footer">
+                    <p>Copyright © {today.getFullYear()} Ruben Engel</p>
+                </div>
 
             </div>
             
             </div>      
 
-            <div className="footer">
-                <p>Copyright © {today.getFullYear()} Ruben Engel</p>
-            </div>
 
         </div>
         </SubmitContext.Provider>

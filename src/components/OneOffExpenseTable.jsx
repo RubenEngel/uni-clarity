@@ -19,7 +19,7 @@ const OneOffExpenseTable = (props) => {
         <tr>
             <td>{capitalizeFirstLetter(props.expenseName)}</td>
             <td>£ {props.expenseCost}</td>
-            <td><i className="fas fa-times delete-icon" id={props.id} onClick={() => deleteOneOffExpense(props.id)}></i></td>
+            <td><button><i className="fas fa-times delete-icon" id={props.id} onClick={() => deleteOneOffExpense(props.id)}></i></button></td>
         </tr>)
     }
 

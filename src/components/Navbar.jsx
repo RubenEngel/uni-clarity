@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../graduation-hat.png';
-import {Navbar, Nav, NavDropdown} from "react-bootstrap"
+import {Navbar, Nav} from "react-bootstrap"
 
 const NavBar = () => {
 
@@ -15,12 +15,12 @@ const NavBar = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="ml-auto">
-                    <Nav.Link className="nav-heading" href="#guide-section">Guide</Nav.Link>
+                    {/* <Nav.Link className="nav-heading" href="#help-section">Help</Nav.Link> */}
                     <Nav.Link className="nav-heading" href="#account-section">Account</Nav.Link>
                      <Nav.Link className="nav-heading" href="#date-section">Dates</Nav.Link>
                      <Nav.Link className="nav-heading" href="#income-section">Income</Nav.Link>
                      <Nav.Link className="nav-heading" href="#rent-section">Rent</Nav.Link>
-                     <Nav.Link className="nav-heading" href="#food-section">Food</Nav.Link>
+                     <Nav.Link className="nav-heading" href="#groceries-section">Groceries</Nav.Link>
                      <Nav.Link className="nav-heading" href="#expenses-section">Expenses</Nav.Link>
                      <Nav.Link className="nav-heading" href="#results-section">Results</Nav.Link>
                 </Nav>

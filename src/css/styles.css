@@ -7,15 +7,64 @@ body {
     padding-bottom: 5%;
 }
 
-/* html {
+.footer {
+    margin: 100px 0 -50px 0;
+}
+
+html {
     scroll-behavior: smooth;
-  } */
+  }
 
 /* ------------------------------Summary----------------------------------- */
 .summary{
     position: fixed;
     right: 0;
-    top: 12vh;
+    height: 100vh;
+    background-color: #343A40;
+    overflow-y: scroll;
+    z-index: 2;
+}
+
+/* Hide summary div on mobile device */
+@media only screen and (max-width: 767px) {
+    .summary{
+        display: none;
+    }
+}
+
+.show-summary {
+    position: fixed;
+    font-size: 3rem !important;
+    top: 100px;
+    right: 0;
+    z-index: 3;
+}
+
+.show-summary i{
+    transition: all .2s ease-in-out;
+}
+
+.show-summary i:hover {
+    color: goldenrod;
+    transform: scale(1.2);
+}
+
+/* Hide Show Summary button on desktop/tablet */
+@media only screen and (min-width: 767px) {
+    .show-summary{
+        display: none;
+    }
+}
+
+.summary-header {
+    position: relative;
+    top: 80px;
+}
+
+.summary-body{
+    position: relative;
+    top: 80px;
+    margin-bottom: 40px;
 }
 
 .summary .row{
@@ -24,11 +73,12 @@ body {
 }
 
 .summary h3{
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     margin: 0;
-    text-align: left;
+    /* text-align: left; */
     display: inline-block;
 }
+
 
 .summary .icon{
     font-size: 1.1rem;
@@ -51,6 +101,14 @@ body {
 .summary .icon {
     position: relative;
     bottom: 4px;
+}
+
+.summary a{
+    color: #9e9e9e;
+}
+
+.summary a:hover{
+    color: #008ae6;
 }
 
 .pound {
@@ -86,13 +144,51 @@ body {
     margin: 25px 0;
 }
 
-/*------------------- Hide summary div on mobile device ---------------------*/
-@media only screen and (max-width: 767px) {
-    .summary{
-        display: none;
-    }
+/* -----------------------------Help */
+
+.show-help{
+    position: fixed;
+    font-size: 3rem !important;
+    top: 100px;
+    left: 0;
+    z-index: 4;
+    border: none;
 }
 
+.show-help i {
+   transition: all .2s ease-in-out;
+}
+
+.show-help i:hover {
+    color: goldenrod;
+    transform: scale(1.1);
+}
+
+
+.help {
+    position: fixed;
+    z-index: 3;
+    height: 100vh;
+    top: 70px;
+    left: 0;
+    background-color: #343A40;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+
+.help-heading {
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+.help-dropdown {
+    margin: 10px auto;
+}
+
+.help-body {
+    margin: auto;
+}
 
 /* HEADINGS */
 
@@ -125,6 +221,10 @@ h3 {
     bottom: 5px;
 }
 
+a {
+    text-decoration: none;
+}
+
 
 /* Section Containers */
 .container-fluid {
@@ -138,41 +238,8 @@ h3 {
     font-size: 0.9rem;
 }
 
-/* --------------------------- Home Logo ---------------------------*/
-
-.home-logo{
-    width: 5rem;
-}
-
-.home-title {
-    font-size: 5rem;
-}
-
-.home-whole {
-    /* height: 100vh; */
-}
-
-.home-middle {
-    position: fixed;
-    top: 40vh;
-}
-
-.home-top {
-    position: fixed;
-    top: 5%;
-}
-
-.home-bottom {
-    position: fixed;
-    bottom: 15%;
-}
-
-.home-start {
-    font-size: 2.5rem;
-}
-
-
 /* ---------------------------- NavBar ---------------------------- */
+
 /* UniClarity Title */
 .navbar-title {
     line-height: 2.5rem;
@@ -216,12 +283,68 @@ section:before {
 
 /* ---------------------------- Introduction Section ---------------------------- */
 
-#introduction-section .container-fluid {
-    padding: 1% 2%;
+.intro {
+    margin-top: 35vh;
+    height: 55vh;
 }
 
-.landing-title {
-    font-size: 7rem;
+.intro-help{
+    font-family: 'Amatic SC', sans-serif;
+    font-size:2rem;
+    font-weight: bold;
+    position: absolute;
+    top: 120px;
+    left: 10px;
+    
+}
+
+.intro-summary {
+    font-family: 'Amatic SC', sans-serif;
+    font-size:2rem;
+    font-weight: bold;
+    position: absolute;
+    top: 120px;
+    right: 10px;
+}
+
+@media only screen and (min-width: 767px) {
+    .intro-summary {
+        display: none;
+}}
+
+.continue {
+    font-size: 3rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 80vh;
+    margin: 0 auto;
+    transition: all .2s ease-in-out;
+}
+
+.continue:hover {
+    transform: scale(1.5);
+}
+
+.continue a {
+    color: #9e9e9e;
+    text-decoration: none;
+    
+}
+
+.continue a:hover {
+    color: goldenrod;
+    text-decoration: none;
+    
+}
+
+.continue h3{
+    font-size: 2.5rem;
+}
+
+.continue i{
+    font-size: 2rem;
+    margin: 0;
 }
 
 /* Dent in tag line colour */
@@ -229,14 +352,8 @@ section:before {
     color: goldenrod;
 }
 
-.introduction-text {
-    font-size: 1.3rem;
-}
 
 
-.walkthtough-dropdown {
-    margin-bottom:20px;
-}
 
 
 /* ---------------------------- Inputs --------------------------- */
@@ -262,7 +379,6 @@ section:before {
 }
 
 .input-box {
-    /* padding: 0 30px; */
     max-width: 175px;
     margin: 0 auto;
 }
@@ -278,7 +394,9 @@ section:before {
     font-size: 1.5rem;
     text-align: center;
     margin-right: 20px;
+    background-color:transparent;
   }
+
 
   .number-input {
       margin-left: 20px;
@@ -292,6 +410,14 @@ section:before {
     font-weight: bold;
 }
 
+.custom-input input {
+    color: white;
+    border-bottom: dashed 3px white;
+}
+
+.custom-input .input-group-text {
+    color: white;
+}
 
 /* Button Sizing */
 .toggle-switch {
@@ -305,7 +431,7 @@ section:before {
     line-height: 1rem;
 }
 
-/* Input Row Sizinng */
+/* Input Row Sizing */
 .row {
     padding: 2%;
     margin: 10px 0;
@@ -352,10 +478,10 @@ section:before {
         color: #008ae6;
     }
 
-.continue-icon{
+/* .continue-icon{
     bottom: 10px;
     font-size: 5rem;
-}
+} */
 
 .profile-picture{
     width:50px;
@@ -372,22 +498,22 @@ section:before {
     font-size: 2.5rem;
 }
 
+.firebase-auth {
+    margin-bottom: 30px;
+}
+
 /* --------------------------- Income --------------------------- */
 
 .add-income-button {
     margin-top:10px;
-    /* font-weight: bold; */
     color: #9e9e9e;
-    /* font-family: 'Amatic SC', sans-serif;
-    font-size: 1.5rem;
-    line-height: 2rem; */
+
 }
 
 .add-income .btn {
     font-size: 1.4rem;
     line-height: rem;
     margin: 0;
-    /* font-weight: bold; */
     color: #9e9e9e;
     font-family: 'Amatic SC', sans-serif;
 }
@@ -411,7 +537,6 @@ section:before {
     font-size: 1.7rem;
     line-height: 2rem;
     margin: 0;
-    /* font-weight: bold; */
     color: #9e9e9e;
     font-family: 'Amatic SC', sans-serif;
 }
@@ -514,9 +639,14 @@ td {
     color: red;
 }
 
-/* .expense-view-toggle{
-    
-} */
+button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    line-height: 11px;
+    color: #9e9e9e;
+}
+
 
 .expense-total{
     font-size: 1.5rem;
@@ -545,15 +675,52 @@ td {
 
 .warning {
     color: #008ae6;
-    position: relative;
-    bottom:0.2rem;
+    
 }
 
 #results-section .warning {
     color: white;
+    position: relative;
+    top: 15px;
+}
+
+/* Range slider thumb customisation */
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background: #008ae6;
+  cursor: pointer;
+  margin-top: -8px;
+}
+
+input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background: #008ae6;
+    cursor: pointer;
+    margin-top: -8px;
 }
 
 
+input[type=range]::-ms-thumb {
+    -webkit-appearance: none;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background: #008ae6;
+    cursor: pointer;
+    margin-top: -8px;
+}
+
+
+.custom-range{
+    margin-bottom: 20px;
+}
 
 .save {
     text-align: center;

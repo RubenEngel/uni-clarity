@@ -5,7 +5,7 @@ import DisposableCash from "./DisposableCash"
 
 const ResultsCard = (props) => {
     return (
-      <Card bg="secondary" text="white" className="results-card">
+      <Card bg="dark" text="white">
           <Card.Body>
 
               <DisposableCash 
