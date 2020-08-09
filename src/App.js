@@ -199,10 +199,10 @@ const App = () => {
                         :    weeks(inputObject.contract_start, inputObject.contract_end));
         const weekly_rent = inputObject.rent_cost_MonthlyWeekly === "monthly" ? (+inputObject.rent_cost / 4.345) : (+inputObject.rent_cost)
         const total_rent = inputObject.include_rent === "yes" ? 
-                            (inputObject.rent_payment_period === "monthly" ? weekly_rent * rent_weeks : ((weekly_rent * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
+                            (inputObject.rent_payment_period === "monthly" ? weekly_rent * 4.345 * Math.round(1 + (rent_weeks/4.345)) : ((weekly_rent * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
                         :   0
         const total_bills = inputObject.bills_included === "no" ?
-                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost)) * total_weeks()
+                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost) : (+inputObject.bills_cost * 4.345)) * Math.round(1 + (rent_weeks/4.345))
                             : 0
         const total_rent_bills = Math.round(total_rent + total_bills)
         // Groceries Calcs
@@ -465,6 +465,13 @@ const [showSummary, setShowSummary] = useState(false)
                                 <h3>You are signed in as {userAccount.displayName}</h3>
                                 {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
                                 <p className="save-status">You are yet to save any data</p>}
+                                { (signedIn && lastSaved)  ?
+                                    <Alert className="card alert" variant="primary">
+                                        <h3>Welcome Back {userAccount.displayName}</h3>
+                                        <p>
+                                            If applicable, simply update the starting budget date and your current balance to get a updated picture of your finances.
+                                        </p>
+                                    </Alert> : null}
                                 <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
                             </div>
                             : 
@@ -473,9 +480,10 @@ const [showSummary, setShowSummary] = useState(false)
                                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
                             </div>
                             
-                            }
-                                
+                            }       
                         </Card>
+
+                        
                   
                 </div>
 

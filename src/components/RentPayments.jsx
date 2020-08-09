@@ -48,10 +48,12 @@ const RentPayments = (props) => {
                     /* Monthly Render */
                     <Card.Body>
                         <div className="form-group row">
-                            <p>Specific dates are not crucial here (if they aren't known). 
+                            <p>If specific dates are not known, feel free to use the 30th of each month.
+                            <br/>Remember that rent is usually paid a month in advance.
                             <br/><strong>Example: </strong>
-                            If your next payment is in October and your last is in May, you can use the 30th of each month below.
+                            If your the last month of tenancy is June and your next payment is in October, use 30th October and the 30th May.
                             </p>
+                            
                         </div>
                     <DateRangeInput 
                         date1_name="Next Payment"
