@@ -26,7 +26,7 @@ const Help = () => {
             </div>
 
             <Row>
-                <DropdownButton value={nav} variant="outline-primary" className="help-dropdown rent-payments" title={nav}>
+                <DropdownButton value={nav} variant="outline-primary" className="help-dropdown" title={nav}>
                     <Dropdown.Item as="button" value="overview" onClick={handleChange}>Overview</Dropdown.Item>
                     <Dropdown.Item as="button" value="account" onClick={handleChange}>Account</Dropdown.Item>
                     <Dropdown.Item as="button" value="dates" onClick={handleChange}>Dates</Dropdown.Item>
@@ -39,7 +39,7 @@ const Help = () => {
             </Row>
 
             <Row>
-                <div className="help-body">
+                <div className="container-fluid help-body">
                 {nav === "overview" &&
                     <div>
                         <p>The purpose of this app is to find you a weekly budget to spend on non-essentials - that will result in an end bank balance you are happy with. This is called your 'Weekly Cash to Splash'. This may be used for such things as a night out or a new item of clothing.</p>

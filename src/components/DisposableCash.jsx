@@ -7,25 +7,27 @@ import MoneyInput from "./MoneyInput"
 
 const DisposableCash = (props) => {
 
-  const {submitValue, updateEndBalance} = useContext(SubmitContext)
+  const {inputObject, submitValue, updateEndBalance} = useContext(SubmitContext)
 
-  const [disposableCash, setDisposableCash] = useState(props.userValue)
+  const [disposableCash, setDisposableCash] = useState("")
 
-    const handleChange = (event) => {
-    const newInputValue = event.target.value
-
-    setDisposableCash(newInputValue)
+    function handleChange(event) {
+    setDisposableCash(event.target.value)
     submitValue(event)
-}
+    }
 
-  const [input, setInput] = useState("range")
+  const [input, setInput] = useState(inputObject.input_choice)
 
-
+    function inputChange(event) {
+      setInput(event.target.value)
+      submitValue(event)
+    }
 
     useEffect(() => {
       updateEndBalance()
-      setDisposableCash(props.userValue)
-    }, [updateEndBalance, props.userValue])
+      setInput(inputObject.input_choice)
+      setDisposableCash(inputObject.disposable_cash)
+    }, [updateEndBalance, inputObject.input_choice, inputObject.disposable_cash])
 
     return (
         <div className="row">
@@ -42,8 +44,8 @@ const DisposableCash = (props) => {
             <input name={props.id} type="range" className="custom-range" min="0" max="100" value={disposableCash} onChange={handleChange} id="disposable-cash-slider"/>
             
             <ToggleButtonGroup name="input_choice" value={input}>
-              <ToggleButton variant="secondary" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
-              <ToggleButton variant="secondary" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
+              <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range</ToggleButton>
+              <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom</ToggleButton>
             </ToggleButtonGroup>
           </div>
           }
@@ -52,11 +54,11 @@ const DisposableCash = (props) => {
           <div className="form-group input-box custom-input">
           <MoneyInput 
             id={props.id}
-            userValue={props.userValue}/>
+            userValue={disposableCash}/>
 
             <ToggleButtonGroup name="input_choice" value={input}>
-              <ToggleButton variant="secondary" value="range" onChange={(event) => setInput(event.target.value)}>Range</ToggleButton>
-              <ToggleButton variant="secondary" value="custom" onChange={(event) => setInput(event.target.value)}>Custom</ToggleButton>
+              <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range</ToggleButton>
+              <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom</ToggleButton>
             </ToggleButtonGroup>
           </div>}
 

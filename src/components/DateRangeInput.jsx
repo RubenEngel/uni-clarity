@@ -9,9 +9,7 @@ import SubmitContext from "../context/submit-context"
             const [startDate, setStartDate] = useState("")
 
             function handleStartChange(event) {
-                const newStartDate = event.target.value
-
-                setStartDate(newStartDate)
+                setStartDate(event.target.value)
                 submitValue(event)
             }
 
@@ -20,9 +18,7 @@ import SubmitContext from "../context/submit-context"
             const [endDate, setEndDate] = useState("")
 
             function handleEndChange(event) {
-                const newEndDate = event.target.value
-
-                setEndDate(newEndDate)
+                setEndDate(event.target.value)
                 submitValue(event)
             }
         

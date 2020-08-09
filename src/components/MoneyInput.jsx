@@ -8,9 +8,7 @@ const MoneyInput = (props) => {
     const [inputValue, setInputValue] = useState("")
 
     function handleChange(event) {
-        const newInputValue = event.target.value
-
-        setInputValue(newInputValue)
+        setInputValue(event.target.value)
         submitValue(event)
     }
 

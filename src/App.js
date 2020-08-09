@@ -75,20 +75,21 @@ const App = () => {
         //Groceries
         groceries_cost: "",
         start_balance: "0",
+        input_choice: "range",
         disposable_cash: "0"
     })
 
-    const [inputObject, setInputObject] = useState(defaultInputObject);
+    const [inputObject, setInputObject] = useState(JSON.parse(localStorage.getItem('inputObject')) || defaultInputObject);
     
         function submitValue(event) {
             const inputName = event.target.name
             const value = event.target.value
-            setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )
-            }
+            setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )  
+        }
    
 // ------------------------------------------------ Additional Income
 
-    const [incomeArray, setIncomeArray] = useState([])
+    const [incomeArray, setIncomeArray] = useState(JSON.parse(localStorage.getItem('incomeArray')) || [])
 
     function submitIncomeSource(name, value, period) {
         setIncomeArray((prevObject) => ([
@@ -113,7 +114,7 @@ const App = () => {
 
 //-------------------------------------------------- Recurring Expenses
 
-    const [recurringExpenseArray, setRecurringExpenseArray] = useState([])
+    const [recurringExpenseArray, setRecurringExpenseArray] = useState(JSON.parse(localStorage.getItem('recurringExpenseArray')) || [])
 
     function submitRecurringExpense(expenseName, weeklyCost) {
         setRecurringExpenseArray( (prevObject) => ([...prevObject, 
@@ -134,7 +135,7 @@ const App = () => {
 
 //--------------------------------------------------One-Off Expenses
 
-    const [oneOffExpenseArray, setOneOffExpenseArray] = useState([])
+    const [oneOffExpenseArray, setOneOffExpenseArray] = useState(JSON.parse(localStorage.getItem('oneOffExpenseArray')) || [])
 
     function submitOneOffExpense(expenseName, weeklyCost) {
         setOneOffExpenseArray( (prevObject) => ([...prevObject, 
@@ -179,7 +180,7 @@ const App = () => {
         }
 
         // Income Calcs
-        const additional_income_array = incomeArray.map(
+            const additional_income_array = incomeArray.map(
             function (element) {
                 if (element.period === "total") {
                     return +element.value
@@ -197,10 +198,12 @@ const App = () => {
                             (inputObject.rent_payment_period === "monthly" ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
                         :    weeks(inputObject.contract_start, inputObject.contract_end));
         const weekly_rent = inputObject.rent_cost_MonthlyWeekly === "monthly" ? (+inputObject.rent_cost / 4.345) : (+inputObject.rent_cost)
-        const total_rent = showRent === true ? 
+        const total_rent = inputObject.include_rent === "yes" ? 
                             (inputObject.rent_payment_period === "monthly" ? weekly_rent * rent_weeks : ((weekly_rent * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
                         :   0
-        const total_bills = (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost)) * total_weeks()
+        const total_bills = inputObject.bills_included === "no" ?
+                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost)) * total_weeks()
+                            : 0
         const total_rent_bills = Math.round(total_rent + total_bills)
         // Groceries Calcs
         const weekly_groceries = (+inputObject.groceries_cost) 
@@ -223,19 +226,18 @@ const App = () => {
             setEndBalance(end_balance)
         }
 
- // Formated end date
+        // ---------------- Formated end date *Now What?*
 
- function formatDate(date) {
-    const dt = new Date(date)
-    const day = dt.getDate()
-    const month = dt.getMonth() + 1
-    const year = dt.getFullYear()
-    return (
-        `${day}/${month}/${year}`
-    )
- }
+        function formatDate(date) {
+            const dt = new Date(date)
+            const day = dt.getDate()
+            const month = dt.getMonth() + 1
+            const year = dt.getFullYear()
+            return (
+                `${day}/${month}/${year}`
+            )
+        }
  
-
 
 //---------------------------------------------------------------- Fire Base
 
@@ -247,7 +249,7 @@ const App = () => {
                   signInSuccessWithAuthResult: () => false
                 },
                 // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-                signInFlow: 'popup',
+                signInFlow: 'redirect',
                 // signInSuccessUrl: ,
                 signInOptions: [
                   firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -268,18 +270,6 @@ const App = () => {
               const authChange = (user) => firebase.auth().onAuthStateChanged(user)
 
             //   whenever app refreshes handle state of user signed in
-              useEffect(() => (
- 
-                authChange( user =>
-                    {
-                        setSignedIn(!!user);
-                        if (user) {
-                            Load(user.uid)
-                        } 
-                    }
-                  )
-              ),[signedIn]) 
-
 
               const userAccount = firebase.auth().currentUser
 
@@ -317,24 +307,49 @@ const App = () => {
     }
 
 
-    function Load (userID) {
-        db.collection("users").doc(userID).get().then(function(doc) {
-            if (doc.exists) {
-                // console.log("Document data:", doc.data());
-                setInputObject(doc.data().inputObject)
-                setIncomeArray(doc.data().incomeArray)
-                setRecurringExpenseArray(doc.data().recurringExpenseArray)
-                setOneOffExpenseArray(doc.data().oneOffExpenseArray)
-                setLastSaved(doc.data().last_saved)
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
+    useEffect(() => {
+        function Load (userID) {
+            db.collection("users").doc(userID).get().then(function(doc) {
+                if (doc.exists) {
+                    // console.log("Document data:", doc.data());
+                    setInputObject(doc.data().inputObject)
+                    setIncomeArray(doc.data().incomeArray)
+                    setRecurringExpenseArray(doc.data().recurringExpenseArray)
+                    setOneOffExpenseArray(doc.data().oneOffExpenseArray)
+                    setLastSaved(doc.data().last_saved)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+           
+            };
+
+        authChange( user =>
+            {
+                setSignedIn(!!user);
+                if (user) {
+                    Load(user.uid)
+                } 
             }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-       
-        };
+          )
+
+    }, [signedIn, db]) 
+
+    
+
+// ----------------------------------------------------- Local Storage
+
+useEffect(() => {
+    localStorage.setItem('inputObject', JSON.stringify(inputObject))
+    localStorage.setItem('incomeArray', JSON.stringify(incomeArray))
+    localStorage.setItem('recurringExpenseArray', JSON.stringify(recurringExpenseArray))
+    localStorage.setItem('oneOffExpenseArray', JSON.stringify(oneOffExpenseArray))
+}, [inputObject, recurringExpenseArray, oneOffExpenseArray, incomeArray])
+
+
 // ----------------------------------------------------- Show Help
 
 const [showHelp, setShowHelp] = useState(false)
@@ -342,8 +357,6 @@ const [showHelp, setShowHelp] = useState(false)
 // ----------------------------------------------------- Show Summary
 
 const [showSummary, setShowSummary] = useState(false)
-
-
 
 // ----------------------------------------------------- Start of Rendered App
     return (
@@ -380,8 +393,13 @@ const [showSummary, setShowSummary] = useState(false)
                         <p className="intro-summary">Summary</p>
                     </div>
 
+            {/* ------------------------------------ Help Section ------------------------------------ */}
+                
+                {showHelp ? <Help/> : null}
+
             {/* -------------------------------------Summary Div ----------------------------*/}
             <div 
+            // Shows summary on mobile by, display: none -> block. No conditional render due to always needing to be visible on larger devices
             style={showSummary ? {"display": "block"} : null} 
             className="summary col-md-4 col-sm-12">
                 <Summary 
@@ -396,7 +414,7 @@ const [showSummary, setShowSummary] = useState(false)
             </div>
 
             {/*--------------------------------------- Main Div------------------------------*/}
-            <div className="main col-md-8">
+            <div data-spy="scroll" data-target="#navbar" data-offset="0" className="main col-md-8">
 
 
                 {/* Show Summary Button */}
@@ -414,7 +432,7 @@ const [showSummary, setShowSummary] = useState(false)
                 /> 
                 
                 {/* ------------------------------------- Intro --------------------------------------*/}
-                {/* <section id="intro-section"> */}
+                <section id="intro-section">
 
                     <div className="intro">
                         <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
@@ -423,17 +441,12 @@ const [showSummary, setShowSummary] = useState(false)
 
                     <div className="continue">
                         <a href="#account-section">
-                            {/* <h3>Start</h3> */}
-                            <i class="fas fa-chevron-down"></i>
+                            <i className="fas fa-chevron-down"></i>
                         </a>
                     </div>
                     
 
-                {/* </section> */}
-                {/* ------------------------------------ Help Section ------------------------------------ */}
-                
-                
-                {showHelp ? <Help/> : null}
+                </section>
 
 
                 {/* -------------------------------------Account Section -------------------------------------*/}
@@ -482,7 +495,7 @@ const [showSummary, setShowSummary] = useState(false)
                     <div className="row">
                             <Card>
                                 <InputName 
-                                name="Select how long you want your budgeting to last"
+                                name="Select budgeting period"
                                 />
                                 <DateRangeInput 
                                 date1_name="Start Date"
@@ -665,8 +678,7 @@ const [showSummary, setShowSummary] = useState(false)
                             <Card.Body>
 
                                 <DisposableCash 
-                                id="disposable_cash"
-                                userValue={inputObject.disposable_cash}/>
+                                id="disposable_cash"/>
 
                                 <EndBalance 
                                 id="end_balance"

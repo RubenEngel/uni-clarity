@@ -5,8 +5,8 @@ import {Navbar, Nav} from "react-bootstrap"
 const NavBar = () => {
 
     return (
-        <Navbar collapseOnSelect expand="md" variant="dark" bg="dark" fixed="top">
-            <Navbar.Brand href="#account-section">
+            <Navbar id="navbar" collapseOnSelect expand="md" variant="dark" bg="dark" fixed="top">
+            <Navbar.Brand href="#intro-section">
                 <h1 className="navbar-title">
                     Uni<span className="clarity">Clarity</span>
                     <img className="title-icon" src={Logo} alt="logo"></img>
@@ -15,7 +15,6 @@ const NavBar = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="ml-auto">
-                    {/* <Nav.Link className="nav-heading" href="#help-section">Help</Nav.Link> */}
                     <Nav.Link className="nav-heading" href="#account-section">Account</Nav.Link>
                      <Nav.Link className="nav-heading" href="#date-section">Dates</Nav.Link>
                      <Nav.Link className="nav-heading" href="#income-section">Income</Nav.Link>
@@ -25,7 +24,7 @@ const NavBar = () => {
                      <Nav.Link className="nav-heading" href="#results-section">Results</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
-        </Navbar>
+        </Navbar>   
     )
 }
 

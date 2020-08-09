@@ -77,7 +77,7 @@ const Summary = (props) => {
 
 
                     <SummarySection
-                        title="Rent&Bills"
+                        title="Rent & Bills"
                         icon="fas fa-home icon"
                         total={props.total_rent_bills}
                         total_weeks={props.total_weeks}
@@ -116,7 +116,7 @@ const Summary = (props) => {
                             <a href="#results-section"
                               onClick={() => setShowSummary(false)}>
                             <h3 style={{ marginBottom: '10px'}}>
-                                <i class="fas fa-piggy-bank icon"></i>
+                                <i className="fas fa-piggy-bank icon"></i>
                                 End Balance:
                             </h3>
                             </a>
