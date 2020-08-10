@@ -5,7 +5,7 @@ import {Navbar, Nav} from "react-bootstrap"
 const NavBar = () => {
 
     return (
-            <Navbar id="navbar" collapseOnSelect expand="md" variant="dark" bg="dark" fixed="top">
+        <Navbar id="navbar" collapseOnSelect expand="md" variant="dark" bg="dark" fixed="top">
             <Navbar.Brand href="#intro-section">
                 <h1 className="navbar-title">
                     Uni<span className="clarity">Clarity</span>

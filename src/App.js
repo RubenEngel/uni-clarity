@@ -275,10 +275,10 @@ const App = () => {
 
               function signOut() {
                 firebase.auth().signOut();
-                setInputObject(defaultInputObject)
-                setIncomeArray([])
-                setRecurringExpenseArray([])
-                setOneOffExpenseArray([])
+                // setInputObject(defaultInputObject)
+                // setIncomeArray([])
+                // setRecurringExpenseArray([])
+                // setOneOffExpenseArray([])
               }
 
 //------------------------------ Firestore setup
@@ -358,7 +358,20 @@ const [showHelp, setShowHelp] = useState(false)
 
 const [showSummary, setShowSummary] = useState(false)
 
-// ----------------------------------------------------- Start of Rendered App
+// ----------------------------------------------------- Viewport State
+
+const [width, setWidth] = useState(window.innerWidth)
+
+const tabletBreakpoint = 767
+
+    useEffect(() => {
+        const handleWindowResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleWindowResize);
+        // Return a function from the effect that removes the event listener
+        return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+// --------------------------------------------------------------------------------------------------Start of Rendered App
     return (
     
         <SubmitContext.Provider 
@@ -383,14 +396,14 @@ const [showSummary, setShowSummary] = useState(false)
         }}
         >
 
-        <div>
+        <body data-spy="scroll" data-target="#navbar" data-offset="200">
 
         <div className="row">
 
                 {/* Help and summary indicators */}
                     <div>
                         <p className="intro-help">Help</p>
-                        <p className="intro-summary">Summary</p>
+                        {(width < tabletBreakpoint) ? <p className="intro-summary">Summary</p> : null}
                     </div>
 
             {/* ------------------------------------ Help Section ------------------------------------ */}
@@ -398,31 +411,38 @@ const [showSummary, setShowSummary] = useState(false)
                 {showHelp ? <Help/> : null}
 
             {/* -------------------------------------Summary Div ----------------------------*/}
-            <div 
-            // Shows summary on mobile by, display: none -> block. No conditional render due to always needing to be visible on larger devices
-            style={showSummary ? {"display": "block"} : null} 
-            className="summary col-md-4 col-sm-12">
-                <Summary 
-                    total_weeks={total_weeks} 
-                    total_income={total_income}
-                    total_rent_bills={total_rent_bills}
-                    total_groceries={total_groceries} 
-                    total_expenses = {total_expenses}
-                    disposable_cash={disposable_cash}
-                    end_balance={end_balance}
-                />
-            </div>
+            
+            {(width > tabletBreakpoint || showSummary ? 
+                <div
+                className="summary col-md-4 col-sm-12">
+                    <Summary 
+                        total_weeks={total_weeks} 
+                        total_income={total_income}
+                        total_rent_bills={total_rent_bills}
+                        total_groceries={total_groceries} 
+                        total_expenses = {total_expenses}
+                        disposable_cash={disposable_cash}
+                        end_balance={end_balance}
+                    />
+                </div>
+                :
+                null
+            )}
+            
 
             {/*--------------------------------------- Main Div------------------------------*/}
-            <div data-spy="scroll" data-target="#navbar" data-offset="0" className="main col-md-8">
+            <div className="main col-md-8">
 
 
                 {/* Show Summary Button */}
-                <button onClick={() => setShowSummary(!showSummary)} className="show-summary">
+                {(width < tabletBreakpoint) ? 
+                    <button onClick={() => setShowSummary(!showSummary)} className="show-summary">
                     {showSummary === false ? <i className="far fa-chart-bar icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
-                </button>
+                    </button>
+                : null}
+                
 
-                {/* Show Summary Button */}
+                {/* Show Help Button */}
                 <button onClick={() => setShowHelp(!showHelp)} className="show-help">
                     {showHelp === false ? <i className="fas fa-question-circle icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
                 </button>
@@ -469,7 +489,7 @@ const [showSummary, setShowSummary] = useState(false)
                                     <Alert className="card alert" variant="primary">
                                         <h3>Welcome Back {userAccount.displayName}</h3>
                                         <p>
-                                            If applicable, simply update the starting budget date and your current balance to get a updated picture of your finances.
+                                            If necessary, simply update the starting budget date and your current balance to get an updated picture of your finances.
                                         </p>
                                     </Alert> : null}
                                 <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
@@ -713,7 +733,7 @@ const [showSummary, setShowSummary] = useState(false)
                                 {`Assuming you start budgeting on ${formatDate(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${disposable_cash}, you should have a bank balance of £${end_balance} on ${formatDate(inputObject.end_date)}.`}
                             </p>
                             <p>
-                                The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for your non-essentials budget. A good day for your standing order is a Monday.
+                                The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for your non-essentials. A good day for your standing order is a Monday.
                             </p>
                         </Alert> : null}
 
@@ -729,7 +749,7 @@ const [showSummary, setShowSummary] = useState(false)
             </div>      
 
 
-        </div>
+        </body>
         </SubmitContext.Provider>
 
     )
