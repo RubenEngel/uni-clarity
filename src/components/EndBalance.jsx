@@ -1,5 +1,6 @@
 import React, {useContext} from "react"
 import SubmitContext from "../context/submit-context"
+import {Row, Col} from "react-bootstrap"
 
 const EndBalance = () => {
 
@@ -7,16 +8,16 @@ const EndBalance = () => {
 
     return (
     
-    <div className="row">
-            <p className="input-description col-lg-6">End Balance</p>
-
-            <div className="col-lg-6">
-            {isNaN(end_balance) ? <p className="warning">Complete Rent Section</p> :
-                    <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p>}
-
-                                
-            </div>
-    </div>
+    <Row>
+        <Col lg={6}>
+                <p className="input-description">End Balance</p>
+        </Col>
+        
+        <Col lg={6}>
+                {isNaN(end_balance) ? <p className="warning">Complete Rent Section</p> :
+                <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p>}
+        </Col>
+    </Row>
 
     )
 }

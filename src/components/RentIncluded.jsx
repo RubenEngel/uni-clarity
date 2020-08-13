@@ -34,18 +34,17 @@ const RentIncluded = () => {
 
 
     return (
-        <Row>
-        <Card>
-             <InputName  
-                name="Paying your own rent?"
-                />
-            <ToggleButtonGroup type="radio" name="include_rent" defaultValue="yes" >
-                <ToggleButton variant="light" value="yes" onChange={handleShowRent}>Yes</ToggleButton>
-                <ToggleButton variant="light" value="no" onChange={handleHideRent}>No</ToggleButton>
-            </ToggleButtonGroup>
-        </Card>
-        </Row>
-       
+        <div className="input-section">
+            <Card>
+                <InputName  
+                    name="Paying your own rent?"
+                    />
+                <ToggleButtonGroup type="radio" name="include_rent" defaultValue="yes" >
+                    <ToggleButton variant="light" value="yes" onChange={handleShowRent}>Yes</ToggleButton>
+                    <ToggleButton variant="light" value="no" onChange={handleHideRent}>No</ToggleButton>
+                </ToggleButtonGroup>
+            </Card>
+        </div>
     )
 }
 // value={showRent} 

@@ -1,5 +1,4 @@
 import React, {useState, useContext} from "react"
-import {Row} from "react-bootstrap"
 import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
@@ -8,7 +7,7 @@ import SubmitContext from "../context/submit-context"
 const Summary = (props) => {
 
     //--------Set view of summary state
-    const [view, setView] = useState("1")
+    const [view, setView] = useState("total")
 
     const {setShowSummary} = useContext(SubmitContext)
 
@@ -16,26 +15,25 @@ const Summary = (props) => {
     const SummarySection = (props) => {
 
         return (
-            <div>
-                <Row className="summary-heading">
+            <div className="summary-section">
+                <div>
                     <a href={props.href}
                     onClick={() => setShowSummary(false)}>
-                        <h3 style={{
-                            margin: '5px 0'
-                        }}>
-                            <i className={props.icon}></i>{props.title}:
+                        <h3>
+                            <i className={props.icon}></i>{props.title}
                         </h3>
                     </a>
+                </div>
+                <div>
                     {isNaN(props.total)
                         ? <p className="warning">
                                 Complete Section</p>
-                        : (view === "1"
+                        : (view === "total"
                             ? <p className="summary-money">
                                     <span className="pound">£</span>{Math.round(props.total)}</p>
                             : <p className="summary-money">
                                 <span className="pound">£</span>{(Math.round(props.total / props.total_weeks()))}</p>)}
-
-                </Row>
+                </div>
             </div>
         )
     }
@@ -43,8 +41,7 @@ const Summary = (props) => {
     return (
             <div>
                     <div className="summary-header">
-                        <h2>Summary<i className="far fa-chart-bar icon"></i>
-                        </h2>
+                        <h2>Summary<i className="far fa-chart-bar icon"></i></h2>
 
                         <a href="#date-section"
                         onClick={() => setShowSummary(false)}>
@@ -52,16 +49,15 @@ const Summary = (props) => {
                             Date Range: {props.total_weeks()} Weeks</h3>
                         </a>
                         
-
                         <div className="view-button">
-                            <ToggleButtonGroup type="radio" name="summary_view" defaultValue={1}>
+                            <ToggleButtonGroup type="radio" name="summary_view" value={view}>
                                 <ToggleButton
                                     variant="secondary"
-                                    value={1}
+                                    value={"total"}
                                     onChange={(e) => setView(e.target.value)}>Total</ToggleButton>
                                 <ToggleButton
                                     variant="secondary"
-                                    value={2}
+                                    value={"weekly"}
                                     onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
                             </ToggleButtonGroup>
                         </div>
@@ -101,31 +97,39 @@ const Summary = (props) => {
                         href="#expenses-section"/>
 
 
-                        <Row>
-                              <a href="#results-section"
-                              onClick={() => setShowSummary(false)}>
-                                    <h3 style={{margin: '5px 0'}}>
-                                    <i className="fas fa-wallet icon"></i>Weekly Cash to Splash:
-                                </h3>
-                               </a>
+                        <div className="summary-section">
+                            <div>
+                                <a href="#results-section"
+                                onClick={() => setShowSummary(false)}>
+                                        <h3>
+                                        <i className="fas fa-wallet icon"></i>Weekly Cash to Splash
+                                    </h3>
+                                </a>
+                            </div>
+                            <div>
                               <p className="summary-money">
                               <span className="pound">£</span>{Math.round(props.disposable_cash)}</p>
-                        </Row>
+                            </div>
+                             
+                        </div>
 
-                        <Row>
-                            <a href="#results-section"
-                              onClick={() => setShowSummary(false)}>
-                            <h3 style={{ marginBottom: '10px'}}>
-                                <i className="fas fa-piggy-bank icon"></i>
-                                End Balance:
-                            </h3>
-                            </a>
-
-                            {isNaN(props.end_balance)
-                                ? <p className="warning">Complete Rent Section</p>
-                                : <p className="summary-money">
-                                    <span className="pound">£</span>{props.end_balance}</p>}
-                        </Row>
+                        <div className="summary-section">
+                            <div>
+                                <a href="#results-section"
+                                onClick={() => setShowSummary(false)}>
+                                <h3>
+                                    <i className="fas fa-piggy-bank icon"></i>
+                                    End Balance
+                                </h3>
+                                </a>
+                            </div>
+                            <div>
+                                {isNaN(props.end_balance)
+                                    ? <p className="warning">Complete Rent Section</p>
+                                    : <p className="summary-money">
+                                        <span className="pound">£</span>{props.end_balance}</p>}
+                            </div>
+                        </div>
                         
                      
             </div>

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from "react"
 import SubmitContext from "../context/submit-context"
+import { Form, Row, Col } from "react-bootstrap"
 
     const DateRangeInput = (props) => {
 
@@ -32,10 +33,11 @@ import SubmitContext from "../context/submit-context"
 
 
         return (
-            <div className="form-group row">
-                <div className="col-md-6">
-                    <label htmlFor="start-date-input" className="col-form-label input-description">{props.date1_name}</label>
-                        <input
+                <Form.Group>
+                    <Row>
+                        <Col md={6}>
+                            <label htmlFor="start-date-input" className="col-form-label input-description">{props.date1_name}</label>
+                            <input
                             name={props.date1_id}
                             className="form-control"
                             type="date"
@@ -43,20 +45,20 @@ import SubmitContext from "../context/submit-context"
                             onChange={handleStartChange}
                             id={props.date1_id}
                             />
-                </div>
-
-                <div className="col-md-6">
-                    <label htmlFor="end-date-input" className="col-form-label input-description">{props.date2_name}</label>
-                        <input
-                            name={props.date2_id}
-                            className="form-control"
-                            type="date"
-                            value={endDate}
-                            onChange={handleEndChange}
-                            id={props.date2_id}
-                            />
-                </div>
-            </div>
+                        </Col>
+                        <Col md={6}>
+                            <label htmlFor="end-date-input" className="col-form-label input-description">{props.date2_name}</label>
+                            <input
+                                name={props.date2_id}
+                                className="form-control"
+                                type="date"
+                                value={endDate}
+                                onChange={handleEndChange}
+                                id={props.date2_id}
+                                />
+                        </Col>
+                    </Row>
+                </Form.Group>   
         )
 }
 

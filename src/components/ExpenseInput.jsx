@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, useRef} from "react"
 import InputName from './InputName'
-import {Card, Button, ToggleButton, ToggleButtonGroup, Row} from "react-bootstrap"
+import {Card, Button, ToggleButton, ToggleButtonGroup, Row, Col, InputGroup} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 
 const ExpenseInput = (props) => {
@@ -61,62 +61,68 @@ const ExpenseInput = (props) => {
     const [inputRef, setInputFocus] = useFocus()
 
         return (
-            <div className="row">
-            <Card body>
-                <InputName  
-                name="Create an Expense"/>
+            <div className="input-section">
+                <Card body>
+                    <InputName  
+                    name="Create an Expense"/>
 
-                <form>
+        {/*------------------------------------- Name Input ------------------------------ */}
+                    <Row className="create-expense-row input-group input-box mb-3">
+                        <Col className="expense-name" xs={5}>
+                            <p className="input-description">Name:</p>
+                        </Col>
+                        <Col xs={7}>
+                            <input
+                            ref={inputRef}
+                            type="text"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                            onKeyUp={handleKey}
+                            className="form-control"/>
+                        </Col>
+                        
+                    </Row>
 
-                
-    {/*------------------------------------- Name Input ------------------------------ */}
-                <Row className="create-expense-row input-group input-box mb-3">
-                    <p className="input-description col-6 expense-name">Name:</p>
-                    <input
-                    ref={inputRef}
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    onKeyUp={handleKey}
-                    className="form-control col-5"/>
-                </Row>
+        {/*------------------------------------- Cost Input ------------------------------ */}
+                    <Row>
+                        <InputGroup className="create-expense-row input-box">
+                            <Col xs={5} className="expense-cost">
+                                <p className="input-description">Cost:</p>
+                            </Col>
+                            <Col className="input-group input-box mb-3 form" xs={7}>
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text className="input-group-text">£</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <input
+                                type="number"
+                                value={cost}
+                                min="0"
+                                onChange={(event) => setCost(event.target.value)}
+                                onKeyUp={handleKey}
+                                className="form-control"/>
+                            </Col>
+                        </InputGroup>
+                    </Row>
 
-    {/*------------------------------------- Cost Input ------------------------------ */}
-                <Row className="create-expense-row input-group input-box mb-3 form">
-                    <p className="input-description expense-cost col-5">Cost:</p>
-                    <div className="input-group-prepend">
-                        <span className="input-group-text">£</span>
-                    </div>
-                    <input
-                    type="number"
-                    value={cost}
-                    min="0"
-                    onChange={(event) => setCost(event.target.value)}
-                    onKeyUp={handleKey}
-                    className="form-control col-7"/>
-                </Row>
-
-    {/*------------------------------------- Monthly Weekly Toggle ------------------------------ */}
-                
-                {props.id === "recurring_expense" &&
-                <div>
-                <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'}  defaultValue={1}>
-                    <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={1}>Monthly</ToggleButton>
-                    <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={2}>Weekly</ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-                }
-
-
-    {/*------------------------------------------- Add Button ------------------------------------*/}
-
-                <div>
-                    <Button variant="outline-primary" onClick={handleAdd} className="add-expense-button">Add Expense</Button>
+        {/*------------------------------------- Monthly Weekly Toggle ------------------------------ */}
+                    
+                    {props.id === "recurring_expense" &&
+                    <div>
+                    <ToggleButtonGroup type="radio" name={props.id + '_MonthlyWeekly'}  defaultValue={1}>
+                        <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={1}>Monthly</ToggleButton>
+                        <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={2}>Weekly</ToggleButton>
+                    </ToggleButtonGroup>
                 </div>
-                
-                </form>
+                    }
 
-            </Card>
+
+        {/*------------------------------------------- Add Button ------------------------------------*/}
+
+                    <div>
+                        <Button variant="outline-primary" onClick={handleAdd} className="add-expense-button">Add Expense</Button>
+                    </div>
+
+                </Card>
         </div>
         )
     }

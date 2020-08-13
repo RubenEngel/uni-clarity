@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import { v4 as uuidv4 } from 'uuid';
 
-import {Card, Alert, Button} from "react-bootstrap"
+import {Card, Alert, Button, Row, Col, Container} from "react-bootstrap"
 
 //Components
 import NavBar from "./components/NavBar.jsx"
@@ -198,13 +198,12 @@ const App = () => {
                             (inputObject.rent_payment_period === "monthly" ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
                         :    weeks(inputObject.contract_start, inputObject.contract_end));
         const weekly_rent = inputObject.rent_cost_MonthlyWeekly === "monthly" ? (+inputObject.rent_cost / 4.345) : (+inputObject.rent_cost)
-        const total_rent = inputObject.include_rent === "yes" ? 
-                            (inputObject.rent_payment_period === "monthly" ? weekly_rent * 4.345 * Math.round(1 + (rent_weeks/4.345)) : ((weekly_rent * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
-                        :   0
-        const total_bills = inputObject.bills_included === "no" ?
-                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost) : (+inputObject.bills_cost * 4.345)) * Math.round(1 + (rent_weeks/4.345))
+        const weekly_bills = inputObject.bills_included === "no" ?
+                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost))
                             : 0
-        const total_rent_bills = Math.round(total_rent + total_bills)
+        const total_rent_bills = inputObject.include_rent === "yes" ? 
+                            (inputObject.rent_payment_period === "monthly" ? (weekly_rent + weekly_bills) * 4.345 * Math.round(1 + (rent_weeks/4.345)) : (((weekly_rent + weekly_bills) * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
+                        :   0
         // Groceries Calcs
         const weekly_groceries = (+inputObject.groceries_cost) 
         const total_groceries = weekly_groceries * total_weeks()
@@ -216,7 +215,7 @@ const App = () => {
         // Results Calcs
         const disposable_cash = +inputObject.disposable_cash
         const start_balance = +inputObject.start_balance
-        const end_balance = Math.round(total_income + start_balance - total_rent - total_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
+        const end_balance = Math.round(total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
        
 // ---------------------------------------------- End Balance
 
@@ -273,18 +272,23 @@ const App = () => {
 
               const userAccount = firebase.auth().currentUser
 
-              function signOut() {
-                firebase.auth().signOut();
-                // setInputObject(defaultInputObject)
-                // setIncomeArray([])
-                // setRecurringExpenseArray([])
-                // setOneOffExpenseArray([])
+
+              function clearData() {
+                setInputObject(defaultInputObject)
+                setIncomeArray([])
+                setRecurringExpenseArray([])
+                setOneOffExpenseArray([])
               }
+
+              function signOut() {
+                firebase.auth().signOut()
+              }
+
+              
 
 //------------------------------ Firestore setup
 
     const db = firebase.firestore();
-    // const docRef = db.collection("users").doc(userAccount.uid)
 
     const [saveStatus, setSaveStatus] = useState()
     const [lastSaved, setLastSaved] = useState()
@@ -306,7 +310,27 @@ const App = () => {
         });
     }
 
+    function Load (userID) {
+        db.collection("users").doc(userID).get().then(function(doc) {
+            if (doc.exists) {
+                // console.log("Document data:", doc.data());
+                setInputObject(doc.data().inputObject)
+                setIncomeArray(doc.data().incomeArray)
+                setRecurringExpenseArray(doc.data().recurringExpenseArray)
+                setOneOffExpenseArray(doc.data().oneOffExpenseArray)
+                setLastSaved(doc.data().last_saved)
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+       
+        };
 
+
+    // ---------------------What to do when user signs in
     useEffect(() => {
         function Load (userID) {
             db.collection("users").doc(userID).get().then(function(doc) {
@@ -373,7 +397,7 @@ const tabletBreakpoint = 767
 
 // --------------------------------------------------------------------------------------------------Start of Rendered App
     return (
-    
+
         <SubmitContext.Provider 
         value={{
             setInputObject,
@@ -397,13 +421,12 @@ const tabletBreakpoint = 767
         >
 
         <body data-spy="scroll" data-target="#navbar" data-offset="200">
-
-        <div className="row">
+        <Row>
 
                 {/* Help and summary indicators */}
                     <div>
-                        <p className="intro-help">Help</p>
-                        {(width < tabletBreakpoint) ? <p className="intro-summary">Summary</p> : null}
+                        <p className="button-description-help">Help</p>
+                        {(width < tabletBreakpoint) ? <p className="button-description-summary">Summary</p> : null}
                     </div>
 
             {/* ------------------------------------ Help Section ------------------------------------ */}
@@ -412,9 +435,8 @@ const tabletBreakpoint = 767
 
             {/* -------------------------------------Summary Div ----------------------------*/}
             
-            {(width > tabletBreakpoint || showSummary ? 
-                <div
-                className="summary col-md-4 col-sm-12">
+            {(width > tabletBreakpoint || showSummary ?
+                <Col className="summary" sm={12} md={4}>
                     <Summary 
                         total_weeks={total_weeks} 
                         total_income={total_income}
@@ -424,27 +446,29 @@ const tabletBreakpoint = 767
                         disposable_cash={disposable_cash}
                         end_balance={end_balance}
                     />
-                </div>
+                </Col>
                 :
                 null
             )}
             
 
             {/*--------------------------------------- Main Div------------------------------*/}
-            <div className="main col-md-8">
-
-
-                {/* Show Summary Button */}
-                {(width < tabletBreakpoint) ? 
+            <Col className="main" md={8}>
+            {/* Show Summary Button */}
+            {(width < tabletBreakpoint) ? 
                     <button onClick={() => setShowSummary(!showSummary)} className="show-summary">
-                    {showSummary === false ? <i className="far fa-chart-bar icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
+                    {showSummary === false ? 
+                    <i className="far fa-chart-bar icon"></i> 
+                    : <i className="fas fa-times icon close-summary"></i>}
                     </button>
                 : null}
                 
 
                 {/* Show Help Button */}
                 <button onClick={() => setShowHelp(!showHelp)} className="show-help">
-                    {showHelp === false ? <i className="fas fa-question-circle icon"></i> : <i style={{"color": "red"}} className="fas fa-times icon"></i>}
+                    {showHelp === false ? 
+                    <i className="fas fa-question-circle icon"></i> 
+                    : <i className="fas fa-times icon close-help"></i>}
                 </button>
 
                 {/* --------------------------------------------NavBar --------------------------------------------*/}
@@ -456,7 +480,7 @@ const tabletBreakpoint = 767
 
                     <div className="intro">
                         <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
-                        <p className="introduction-text">Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
+                        <p>Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
                     </div>
 
                     <div className="continue">
@@ -474,86 +498,73 @@ const tabletBreakpoint = 767
 
                 <section id="account-section">
 
-                <div className="container-fluid">
-
-                        <SectionHeading name="Account" icon="fas fa-user icon"/>
-
-
-                        <Card>
-                            {signedIn ? 
-                            <div>
-                                <h3>You are signed in as {userAccount.displayName}</h3>
-                                {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
-                                <p className="save-status">You are yet to save any data</p>}
-                                { (signedIn && lastSaved)  ?
-                                    <Alert className="card alert" variant="primary">
-                                        <h3>Welcome Back {userAccount.displayName}</h3>
-                                        <p>
-                                            If necessary, simply update the starting budget date and your current balance to get an updated picture of your finances.
-                                        </p>
-                                    </Alert> : null}
-                                <Button variant="light" className="sign-out" onClick={signOut}>Sign Out</Button>
-                            </div>
-                            : 
-                            <div className="firebase-auth">
-                                <p className="input-description">To enable the 'save' feature or load previous data, please sign in.</p>
-                                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-                            </div>
-                            
-                            }       
-                        </Card>
-
-                        
-                  
-                </div>
+                <Container fluid>
+                    <SectionHeading name="Account" icon="fas fa-user icon"/>
+                    <Card>
+                        {signedIn ? 
+                        <div>
+                            <h3>You are signed in as {userAccount.displayName}</h3>
+                            {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
+                            <p className="save-status">You are yet to save any data</p>}
+                            <Button variant="secondary" className="sign-out" onClick={signOut}>Sign Out</Button>
+                        </div>
+                        : 
+                        <div className="firebase-auth">
+                            <p className="input-description">Sign in to unlock the 'save' feature or load previous data.</p>
+                            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+                        </div>
+                        }
+                            <Row>
+                                <Col><Button disabled={!signedIn} variant="secondary" onClick={() => Save(firebase.auth().currentUser.uid)}>Save</Button></Col>
+                                <Col><Button disabled={!signedIn} variant="secondary" onClick={() => Load(firebase.auth().currentUser.uid)}>Load</Button></Col>
+                                <Col><Button variant="secondary" onClick={() => clearData()}>Reset</Button></Col>
+                            </Row>
+                    </Card>
+                </Container>
 
                 </section>
                
                
-                
-
                 {/* ------------------------------------------Date input ------------------------------------------*/}
                    
                 <section id="date-section">
 
-                <div className="container-fluid"> 
-
+                <Container fluid>
                     <SectionHeading name="Dates" icon="fas fa-clock icon"/>
-                     
-                    <div className="row">
-                            <Card>
-                                <InputName 
-                                name="Select budgeting period"
-                                />
-                                <DateRangeInput 
-                                date1_name="Start Date"
-                                date2_name="End Date"
-                                date1_id="start_date"
-                                date2_id="end_date"
-                                startDate={inputObject.start_date} 
-                                endDate={inputObject.end_date}
-                                />
-                                <p className="date-range"> Date Range: {total_weeks()} Weeks</p>
-                            </Card>
+                    <div className="input-section">
+                        <Card>
+                            <InputName 
+                            name="Select budgeting period"
+                            />
+                            <DateRangeInput 
+                            date1_name="Start Date"
+                            date2_name="End Date"
+                            date1_id="start_date"
+                            date2_id="end_date"
+                            startDate={inputObject.start_date} 
+                            endDate={inputObject.end_date}
+                            />
+                            <p className="date-range"> Date Range: {total_weeks()} Weeks</p>
+                        </Card>
                     </div>
-
-                </div>
-
+                </Container>
 
                 </section>  
                     
                 {/* ----------------------------------------Income Section ----------------------------------------*/}
                 <section id="income-section">
 
-                    <div className="container-fluid">
+                    <Container fluid>
 
                         <SectionHeading name="Income" icon="fas fa-money-check icon"/>
 
                         <Alert className="card alert" variant="warning">
                             <p>
-                                If the academic year is underway, do
-                                <strong> NOT </strong>
-                                include any income that has already been paid to you.
+                                <strong>ONLY </strong>
+                                include income that you will receive within your specified date period. 
+                                <br/>
+                                <strong>DO NOT </strong>
+                                include any income that you have already received.
                             </p>
                         </Alert>
 
@@ -566,17 +577,15 @@ const tabletBreakpoint = 767
                             userValue={inputObject.maintenance_loan}
                             /> 
                             
-
                         <AdditionalIncome/>
                             
-
-                    </div>
+                    </Container>
 
                 </section>
                 {/* -----------------------------------------Rent Section ------------------------------------------*/}
                 <section id="rent-section">
 
-                    <div className="container-fluid">
+                    <Container fluid>
 
                         <SectionHeading name="Rent & Bills" icon="fas fa-home icon"/> 
                         
@@ -628,15 +637,14 @@ const tabletBreakpoint = 767
                             )}
 
 
-                    </div>
-
+                    </Container>
 
                 </section>
 
                 {/* -----------------------------------------Groceries Section ------------------------------------------*/}
                 <section id="groceries-section">
 
-                    <div className="container-fluid">
+                    <Container fluid>
 
                         <SectionHeading name="Groceries" icon="fas fa-shopping-cart icon"/> 
                         
@@ -650,12 +658,13 @@ const tabletBreakpoint = 767
                             userValue={inputObject.groceries_cost}
                             />
 
-                    </div>
+                    </Container>
+
                 </section>
                 {/* -------------------------------------------Expenses Section----------------------------------------- */}
                 <section id="expenses-section">
 
-                    <div className="container-fluid">
+                    <Container fluid>
 
                         <SectionHeading name="Expenses" icon="fas fa-receipt icon"/> 
 
@@ -682,13 +691,14 @@ const tabletBreakpoint = 767
 
                         <OneOffExpenseTable />
 
-                    </div>
+                    </Container>
+
                 </section>
 
                 {/* -------------------------------------------Results Section------------------------------------------- */}
                 <section id="results-section">
 
-                    <div className="container-fluid">
+                    <Container fluid>
 
                         <SectionHeading 
                             name="Results" 
@@ -737,21 +747,19 @@ const tabletBreakpoint = 767
                             </p>
                         </Alert> : null}
 
-                    </div>
+                    </Container>
                 </section>
 
                 <div className="footer">
                     <p>Copyright © {today.getFullYear()} Ruben Engel</p>
                 </div>
+            </Col>
+                        
+           </Row>
 
-            </div>
-            
-            </div>      
-
-
-        </body>
-        </SubmitContext.Provider>
-
+          </body>
+          </SubmitContext.Provider>
+        
     )
 
 }

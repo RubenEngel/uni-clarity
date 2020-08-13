@@ -31,8 +31,7 @@ const RecurringExpenseTable = (props) => {
 
 
     return (
-
-        <div>
+        <div className="input-section">
             <Card className="recurring-expense-card">
                 <Table >
                     <thead>
@@ -43,25 +42,14 @@ const RecurringExpenseTable = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {view === "monthly" ? 
-                            recurringExpenseArray.map((expense) => (
-                                <Expense
-                                key={expense.key}
-                                id={expense.key}
-                                expenseName={expense.name}
-                                expenseCost={(+expense.cost*4.345).toFixed(2)}
-                                />
-                                )) :
-                            recurringExpenseArray.map((expense) => (
-                                <Expense
-                                key={expense.key}
-                                id={expense.key}
-                                expenseName={expense.name}
-                                expenseCost={(+expense.cost).toFixed(2)}
-                                />
-                                ))  
-                        }
-
+                        {recurringExpenseArray.map((expense) => (
+                            <Expense
+                            key={expense.key}
+                            id={expense.key}
+                            expenseName={expense.name}
+                            expenseCost={(+expense.cost * ( (view === "monthly") ? 4.345 : 1 )).toFixed(2)}
+                            />
+                            )) }
                     </tbody>
                 </Table>
                 <Card.Footer className="expense-card-footer">
@@ -74,9 +62,8 @@ const RecurringExpenseTable = (props) => {
                     </Row>
                 </Card.Footer>
             </Card>
-                        
         </div>
-
+        
     )
 }
 

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react"
-import {Row, Dropdown, DropdownButton} from "react-bootstrap"
+import {Row, Dropdown, DropdownButton, Container} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import SectionHeading from "./SectionHeading"
 
@@ -20,7 +20,7 @@ const Help = () => {
     }
 
     return (
-        <div className="container-fluid help">
+        <Container fluid className="help">
             <div className="help-heading">
                 <SectionHeading name="Help" icon="fas fa-question-circle icon"/>
             </div>
@@ -39,7 +39,7 @@ const Help = () => {
             </Row>
 
             <Row>
-                <div className="container-fluid help-body">
+                <Container fluid className="help-body">
                 {nav === "overview" &&
                     <div>
                         <p>The purpose of this app is to find you a weekly budget to spend on non-essentials - that will result in an end bank balance you are happy with. This is called your 'Weekly Cash to Splash'. This may be used for such things as a night out or a new item of clothing.
@@ -104,9 +104,9 @@ const Help = () => {
                         <p>The best estimate of what your bank balance will be at the end of your specified date range based on all of the information you have given.</p>
                     </div>
                 }
-                </div>
+                </Container>
             </Row>
-        </div>
+        </Container>
         
     )
 }

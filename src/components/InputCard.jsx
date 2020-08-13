@@ -2,7 +2,7 @@ import React from "react"
 import InputName from './InputName'
 import MoneyInput from './MoneyInput'
 import MonthlyWeekly from './MonthlyWeekly'
-import {Card} from "react-bootstrap"
+import {Card, Row} from "react-bootstrap"
 import NumberInput from "./NumberInput"
 
 
@@ -10,7 +10,7 @@ const InputCard = (props) => {
 
 
     return (
-        <div className="row">
+        <div className="input-section">
         <Card body>
 
             <InputName  

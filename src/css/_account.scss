@@ -1,0 +1,32 @@
+#account-section{
+    .col{
+        padding: 0;
+        margin-bottom: 15px;;
+    }
+} 
+
+.log-in-prompt {
+    margin-top: 5%;
+}
+
+.log-in-button {
+    color: goldenrod;
+    font-weight: bold;
+
+    &:hover{
+        color: #008ae6;
+    } 
+
+}
+
+.sign-out{
+    margin:10px 0;
+}
+
+.firebaseui-title, .firebaseui-subtitle {
+    font-size: 2.5rem;
+}
+
+.firebase-auth {
+    margin-bottom: 15px;
+}

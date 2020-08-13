@@ -41,7 +41,7 @@ const AdditionalIncome = () => {
           }
 
         return(
-                <Row>
+            <div className="input-section">
                     <Card> 
                     <InputName 
                     name={capitalizeFirstLetter(props.name)} />
@@ -55,8 +55,7 @@ const AdditionalIncome = () => {
                     </p>
                     <Button variant="outline-danger" onClick={() => deleteIncomeSource(props.id)}>Remove</Button>
                     </Card>  
-                </Row>
-                    
+            </div>      
         )
     }
 
@@ -75,7 +74,7 @@ const AdditionalIncome = () => {
              ))}
 
             {/* --------------------------------------------Add Income */}
-            <div className="row">
+            <div className="input-section">
             <Card>
 
                 <InputName 

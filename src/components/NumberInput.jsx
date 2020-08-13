@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from "react"
 import SubmitContext from "../context/submit-context"
+import { InputGroup } from "react-bootstrap"
 
 const NumberInput = (props) => {
     
@@ -17,8 +18,8 @@ const NumberInput = (props) => {
     })
     
     return (
-        <div className="input-group mb-3 input-box">
-        <input
+        <InputGroup className="input-box">
+            <input
             name={props.id}
             type="number"
             min="0"
@@ -26,7 +27,7 @@ const NumberInput = (props) => {
             aria-label="Remaining rent payments"
             value={inputValue}
             onChange={handleChange}/>
-        </div>
+        </InputGroup>
     )
 }
 

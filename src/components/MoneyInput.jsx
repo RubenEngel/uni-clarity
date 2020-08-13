@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from "react"
 import SubmitContext from "../context/submit-context"
+import {InputGroup} from "react-bootstrap"
 
 const MoneyInput = (props) => {
       
@@ -19,10 +20,10 @@ const MoneyInput = (props) => {
 
 
         return (
-            <div className="input-group mb-3 input-box form">
-                <div className="input-group-prepend">
-                    <span className="input-group-text">£</span>
-                </div>
+            <InputGroup className="input-box form">
+                <InputGroup.Prepend>
+                    <InputGroup.Text>£</InputGroup.Text>
+                </InputGroup.Prepend>
                 <input
                     name={props.id}
                     type="number"
@@ -31,7 +32,7 @@ const MoneyInput = (props) => {
                     onChange={handleChange}
                     className="form-control"
                     aria-label="Amount (to the nearest pound)"/>
-            </div>
+            </InputGroup>
         )
     }
 

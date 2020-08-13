@@ -7,11 +7,8 @@ const MonthlyWeekly = (props) => {
 
     const {submitValue, updateEndBalance} = useContext(SubmitContext)
 
-    // const [period, setPeriod] = useState(props.userMonthlyWeekly)
-
     function handleChange(event) {
         submitValue(event)
-        // setPeriod(event.target.value)
     }
 
     useEffect(() => {

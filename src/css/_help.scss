@@ -1,0 +1,51 @@
+.show-help{
+    position: fixed;
+    font-size: 3rem !important;
+    top: 100px;
+    left: -5px;
+    z-index: 5;
+    border: none;
+}
+
+.close-help {
+    color: red;
+    position: relative;
+    left: 5px;
+}
+
+.help {
+    position: fixed;
+    z-index: 4;
+    height: 100vh;
+    top: 0  ;
+    left: 0;
+    background-color: #343A40;
+    text-align: center;
+    overflow-y: scroll;
+    margin-bottom: 100px; 
+}
+
+
+.help-heading {
+    margin-top: 150px;
+    margin-left: 25px;
+}
+
+.help-dropdown {
+    margin: 10px auto;
+}
+
+.help-dropdown .btn {
+    font-size: 2.5rem;
+    line-height: 2rem;
+    color: #9e9e9e;
+    font-family: 'Amatic SC', sans-serif;
+}
+
+.help-body {
+    margin: auto;
+}
+
+.help p{
+    font-size: 1.2rem;
+}
