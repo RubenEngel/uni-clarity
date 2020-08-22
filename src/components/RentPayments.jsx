@@ -8,7 +8,7 @@ import DateRangeInput from "./DateRangeInput"
 
 const RentPayments = (props) => {
     
-    const {updateEndBalance, submitValue, inputObject} = useContext(SubmitContext)
+    const { submitValue, inputObject} = useContext(SubmitContext)
 
 
     // -------------------------------------------- Method switch
@@ -25,9 +25,8 @@ const RentPayments = (props) => {
 
     // ----------------------------------Update balance on re-render
     useEffect(() => {
-        updateEndBalance()
         setRentMethod(props.userMethod)
-    }, [updateEndBalance, props.userMethod])
+    }, [props.userMethod])
 
 
     //---------------------------Main render

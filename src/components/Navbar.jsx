@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Logo from '../graduation-hat.png';
 import {Navbar, Nav} from "react-bootstrap"
 
-const NavBar = (props) => {
+const NavBar = () => {
 
     const [expanded, setExpanded] = useState(false)
 

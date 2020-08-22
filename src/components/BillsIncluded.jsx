@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext} from "react"
 import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -6,7 +6,7 @@ import InputName from "./InputName"
 
 const BillsIncluded = () => {
     
-    const {updateEndBalance, setShowBills, setInputObject} = useContext(SubmitContext)
+    const {setShowBills, setInputObject} = useContext(SubmitContext)
 
 
     function handleShowBills() {
@@ -29,9 +29,6 @@ const BillsIncluded = () => {
         )
     }
 
-    useEffect(() => {
-        updateEndBalance()
-    })
 
     return (
         <div className="input-section">

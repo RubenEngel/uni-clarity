@@ -7,7 +7,7 @@ import MoneyInput from "./MoneyInput"
 
 const DisposableCash = (props) => {
 
-  const {inputObject, submitValue, updateEndBalance} = useContext(SubmitContext)
+  const {inputObject, submitValue} = useContext(SubmitContext)
 
   const [disposableCash, setDisposableCash] = useState("")
 
@@ -24,10 +24,9 @@ const DisposableCash = (props) => {
     }
 
     useEffect(() => {
-      updateEndBalance()
       setInput(inputObject.input_choice)
       setDisposableCash(inputObject.disposable_cash)
-    }, [updateEndBalance, inputObject.input_choice, inputObject.disposable_cash, setDisposableCash])
+    }, [inputObject.input_choice, inputObject.disposable_cash])
 
     return (
         <Row>

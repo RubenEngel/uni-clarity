@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useContext, useRef} from "react"
+import React, {useState, useContext, useRef} from "react"
 import InputName from './InputName'
 import {Card, Button, ToggleButton, ToggleButtonGroup, Row, Col, InputGroup} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 
 const ExpenseInput = (props) => {
 
-    const {submitOneOffExpense, submitRecurringExpense, updateEndBalance} = useContext(SubmitContext)
+    const {submitOneOffExpense, submitRecurringExpense} = useContext(SubmitContext)
 
     const [name, setName] = useState("")
     const [cost, setCost] = useState("")
@@ -44,12 +44,6 @@ const ExpenseInput = (props) => {
         }
     }
 
-    // ------------------------Update end balance on changes
-    useEffect(() => {
-        updateEndBalance()
-    })
-
-  
     //------------------------- Hook for focuses back on name input after submit
     const useFocus = () => {
         const htmlElRef = useRef(null)

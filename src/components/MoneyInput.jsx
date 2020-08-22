@@ -4,7 +4,7 @@ import {InputGroup} from "react-bootstrap"
 
 const MoneyInput = (props) => {
       
-    const {submitValue, updateEndBalance} = useContext(SubmitContext)
+    const {submitValue} = useContext(SubmitContext)
 
     const [inputValue, setInputValue] = useState("")
 
@@ -14,9 +14,8 @@ const MoneyInput = (props) => {
     }
 
     useEffect(() => {
-        updateEndBalance()
         setInputValue(props.userValue)
-    }, [updateEndBalance, props.userValue])
+    }, [props.userValue])
 
 
         return (

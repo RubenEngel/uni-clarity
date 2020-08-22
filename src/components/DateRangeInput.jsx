@@ -4,7 +4,8 @@ import { Form, Row, Col } from "react-bootstrap"
 
     const DateRangeInput = (props) => {
 
-        const {submitValue, updateEndBalance} = useContext(SubmitContext)
+        const {submitValue, 
+        } = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
             const [startDate, setStartDate] = useState("")
@@ -25,10 +26,9 @@ import { Form, Row, Col } from "react-bootstrap"
         
     //------------------------------------- Update end balance on date update
              useEffect( () =>  {
-                updateEndBalance()
                 setStartDate(props.startDate)
                 setEndDate(props.endDate)
-            }, [updateEndBalance, props.startDate, props.endDate])
+            }, [props.startDate, props.endDate])
             
 
 

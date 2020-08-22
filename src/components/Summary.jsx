@@ -42,7 +42,7 @@ const Summary = (props) => {
                             ? <p className="summary-money">
                                     <span className="pound">£</span>{Math.round(props.total)}</p>
                             : <p className="summary-money">
-                                <span className="pound">£</span>{(Math.round(props.total / props.total_weeks()))}</p>)}
+                                <span className="pound">£</span>{(Math.round(props.total / props.total_weeks))}</p>)}
                 </div>
             </div>
         )
@@ -58,7 +58,7 @@ const Summary = (props) => {
                             <button
                             onClick={(e) => handleClick(e, "date-section")}>
                                 <h3 className="date-range">
-                                Date Range: {props.total_weeks()} Weeks</h3>
+                                Date Range: {props.total_weeks} Weeks</h3>
                             </button>
                             
                             <div className="view-button">

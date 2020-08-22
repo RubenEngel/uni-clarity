@@ -31,8 +31,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import firebase from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/firestore';
-import 'firebase/analytics'
-
+// import 'firebase/analytics'
 // require("firebase/firestore");
 
 // Initialize Cloud Firestore through Firebase
@@ -47,7 +46,7 @@ firebase.initializeApp({
     measurementId: "G-8BTZEKCDVE"
 });
 
-firebase.analytics()
+// firebase.analytics()
 
 
 const App = () => {
@@ -95,7 +94,7 @@ const App = () => {
             setInputObject( (prevObject) => ({...prevObject, [inputName]: value }) )  
         }
    
-// ------------------------------------------------ Additional Income
+// ------------------------------------------------ Additional Income Array
 
     const [incomeArray, setIncomeArray] = useState(JSON.parse(localStorage.getItem('incomeArray')) || [])
 
@@ -120,7 +119,7 @@ const App = () => {
         })
         }
 
-//-------------------------------------------------- Recurring Expenses
+//-------------------------------------------------- Recurring Expenses Array
 
     const [recurringExpenseArray, setRecurringExpenseArray] = useState(JSON.parse(localStorage.getItem('recurringExpenseArray')) || [])
 
@@ -141,7 +140,7 @@ const App = () => {
         }
 
 
-//--------------------------------------------------One-Off Expenses
+//--------------------------------------------------One-Off Expenses Array
 
     const [oneOffExpenseArray, setOneOffExpenseArray] = useState(JSON.parse(localStorage.getItem('oneOffExpenseArray')) || [])
 
@@ -171,13 +170,7 @@ const App = () => {
 
 //------------------------------------------------------- Results Calculations 
 
-        const total_weeks = () => {
-            const d1 = new Date(inputObject.start_date)
-            const d2 = new Date(inputObject.end_date)
-            const diff = Math.abs(d2 - d1)
-            const weeks = diff/(1000*60*60*24*7)
-            return Math.round(weeks)
-        }
+        
 
         const weeks = (start, end) => {
                 const d1 = new Date(start)
@@ -187,15 +180,16 @@ const App = () => {
                 return Math.round(weeks)
         }
 
+        const total_weeks = weeks(inputObject.start_date, inputObject.end_date)
         // Income Calcs
             const additional_income_array = incomeArray.map(
             function (element) {
                 if (element.period === "total") {
                     return +element.value
                 } else if (element.period === "monthly") {
-                    return +element.value * total_weeks()/4.35;
+                    return +element.value * total_weeks/4.35;
                 } else if (element.period === "weekly") {
-                    return +element.value * total_weeks();
+                    return +element.value * total_weeks;
                 }
             } 
         )
@@ -211,19 +205,19 @@ const App = () => {
                             : 0
         const total_rent_bills = inputObject.include_rent === "yes" ? 
                             (inputObject.rent_payment_period === "monthly" ? (weekly_rent + weekly_bills) * 4.345 * Math.round(1 + (rent_weeks/4.345)) : (((weekly_rent + weekly_bills) * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
-                        :   (weekly_bills * total_weeks())
+                        :   (weekly_bills * total_weeks)
         // Groceries Calcs
         const weekly_groceries = (+inputObject.groceries_cost) 
-        const total_groceries = weekly_groceries * total_weeks()
+        const total_groceries = weekly_groceries * total_weeks
         // Expense Calcs
         const weekly_recurring_expenses = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
-        const total_recurring_expenses = weekly_recurring_expenses*total_weeks()
+        const total_recurring_expenses = weekly_recurring_expenses*total_weeks
         const total_one_off_expenses = oneOffExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
         const total_expenses = total_recurring_expenses + total_one_off_expenses
         // Results Calcs
         const disposable_cash = +inputObject.disposable_cash
         const start_balance = +inputObject.start_balance
-        const end_balance = Math.round(total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
+        const end_balance = Math.round(total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks)
        
         
 
@@ -231,14 +225,22 @@ const App = () => {
 
         const [endBalance, setEndBalance] = useState()
 
-        function updateEndBalance() {
-            setEndBalance(end_balance)
-        }
-
         function endEqualStartBalance() {
-            const default_disposable = (total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - start_balance)/total_weeks()
+            const default_disposable = (total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - start_balance)/total_weeks
             setInputObject( (prevObject) => ({...prevObject, "disposable_cash": +default_disposable }) )
         }
+
+        // ----------------------------------------------------- Local Storage/Set End Balance
+
+        useEffect(() => {
+            setEndBalance(end_balance)
+
+            localStorage.setItem('inputObject', JSON.stringify(inputObject))
+            localStorage.setItem('incomeArray', JSON.stringify(incomeArray))
+            localStorage.setItem('recurringExpenseArray', JSON.stringify(recurringExpenseArray))
+            localStorage.setItem('oneOffExpenseArray', JSON.stringify(oneOffExpenseArray))
+            
+        }, [inputObject, recurringExpenseArray, oneOffExpenseArray, incomeArray, end_balance])
 
         // ---------------- Formated end date *Now What?*
 
@@ -321,7 +323,7 @@ const App = () => {
             setSaveStatus(`Save Succesful on ${today}`);
             })
         .catch(function(error) {
-            console.error("Error adding document: ", error);
+            console.error("Error adding user data: ", error);
         });
     }
 
@@ -336,10 +338,10 @@ const App = () => {
                 setLastSaved(doc.data().last_saved)
             } else {
                 // doc.data() will be undefined in this case
-                console.log("No such document!");
+                console.log("No user data!");
             }
         }).catch(function(error) {
-            console.log("Error getting document:", error);
+            console.log("Error getting user data:", error);
         });
        
         };
@@ -358,17 +360,6 @@ const App = () => {
         }
 
         , [signedIn])
-
-    
-
-// ----------------------------------------------------- Local Storage
-
-useEffect(() => {
-    localStorage.setItem('inputObject', JSON.stringify(inputObject))
-    localStorage.setItem('incomeArray', JSON.stringify(incomeArray))
-    localStorage.setItem('recurringExpenseArray', JSON.stringify(recurringExpenseArray))
-    localStorage.setItem('oneOffExpenseArray', JSON.stringify(oneOffExpenseArray))
-}, [inputObject, recurringExpenseArray, oneOffExpenseArray, incomeArray])
 
 
 // ----------------------------------------------------- Show Help
@@ -407,7 +398,6 @@ const tabletBreakpoint = 767
         value={{
             setInputObject,
             submitValue, 
-            updateEndBalance,
             submitRecurringExpense, 
             deleteRecurringExpense, 
             submitOneOffExpense, 
@@ -484,7 +474,7 @@ const tabletBreakpoint = 767
 
                     <div className="intro">
                         {/* <h1>Don't stu<span className="dent">dent</span> the bank.</h1> */}
-                        <h1>
+                        <h1 onClick={(e) => navigate(e, "account-section")}>
                         Uni<span className="blue">Clarity</span>
                         <img className="title-icon" src={Logo} alt="logo"></img>
                         </h1>
@@ -493,11 +483,11 @@ const tabletBreakpoint = 767
                         <h3>How much <span className="gold">cash</span> do you want to <span className="blue">splash</span>?</h3>
                     </div>
 
-                    <div className="continue">
+                    {/* <div className="continue">
                         <button onClick={(e) => navigate(e, "account-section")}>
                             <i className="fas fa-chevron-down"></i>
                         </button>
-                    </div>
+                    </div> */}
                     
 
                 </section>
@@ -562,7 +552,7 @@ const tabletBreakpoint = 767
                             startDate={inputObject.start_date} 
                             endDate={inputObject.end_date}
                             />
-                            <p className="date-range"> Date Range: {total_weeks()} Weeks</p>
+                            <p className="date-range"> Date Range: {total_weeks} Weeks</p>
                         </Card>
                     </div>
                 </Container>
@@ -649,7 +639,6 @@ const tabletBreakpoint = 767
                                 userMonthlyWeekly={inputObject.bills_cost_MonthlyWeekly}
                                 id="bills_cost"
                                 submitValue={submitValue}
-                                updateEndBalance={updateEndBalance}
                                 userValue={inputObject.bills_cost}/> 
                             </div>
                             )}

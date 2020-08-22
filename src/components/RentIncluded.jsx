@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext} from "react"
 import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -6,11 +6,8 @@ import InputName from "./InputName"
 
 const RentIncluded = () => {
     
-    const {updateEndBalance, setShowRent, setInputObject} = useContext(SubmitContext)
+    const { setShowRent, setInputObject} = useContext(SubmitContext)
     
-    useEffect(() => {
-        updateEndBalance()
-    })
 
     function handleHideRent() {
         setShowRent(false)

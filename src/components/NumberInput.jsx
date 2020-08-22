@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useContext} from "react"
+import React, {useState, useContext} from "react"
 import SubmitContext from "../context/submit-context"
 import { InputGroup } from "react-bootstrap"
 
 const NumberInput = (props) => {
     
-    const { submitValue, updateEndBalance } = useContext(SubmitContext)
+    const { submitValue } = useContext(SubmitContext)
 
     const [inputValue, setInputValue] = useState(props.userValue)
 
@@ -13,9 +13,6 @@ const NumberInput = (props) => {
         submitValue(event)
     }
 
-    useEffect(() => {
-        updateEndBalance()
-    })
     
     return (
         <InputGroup className="input-box">

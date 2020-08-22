@@ -1,19 +1,15 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext} from "react"
 import {ToggleButtonGroup} from "react-bootstrap"
 import {ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 
 const MonthlyWeekly = (props) => {
 
-    const {submitValue, updateEndBalance} = useContext(SubmitContext)
+    const {submitValue} = useContext(SubmitContext)
 
     function handleChange(event) {
         submitValue(event)
     }
-
-    useEffect(() => {
-        updateEndBalance()
-    })
 
         return (
             <div>
