@@ -1,13 +1,17 @@
-#expenses-section .card-header {
+#expenses-section {
+  
+  .card-header {
     padding:0;
-}
+  }
 
-#expenses-section .row {
-  padding:0;
-}
+  .row {
+    padding:0;
+  }
 
-#expenses-section .input-box{
-  padding: 0;
+  .input-box{
+    padding: 0;
+  }
+
 }
 
 .expense-cost {
@@ -46,6 +50,15 @@
 margin: 0;
 padding: 0;
 display: inline-block;
+
+.pound {
+  font-family: 'Architects Daughter', cursive;
+  font-size: 1.2rem;
+  position: relative;
+  bottom: 3px;
+  margin-right: 2px;
+}
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -62,13 +75,6 @@ display: inline-block;
   bottom: 2px;
 }
 
-.expense-table-total .pound {
-  font-family: 'Architects Daughter', cursive;
-  font-size: 1.2rem;
-  position: relative;
-  bottom: 3px;
-  margin-right: 2px;
-}
 
 th {
   font-family: 'Amatic SC', sans-serif;

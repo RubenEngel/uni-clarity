@@ -11,18 +11,28 @@ const Summary = (props) => {
 
     const {setShowSummary} = useContext(SubmitContext)
 
+    function handleClick(e, section) {
+        function navigate(e, section) {
+            e && e.preventDefault(); // to avoid the link from redirecting
+            document.getElementById(section).scrollIntoView();
+        }
+        navigate(e, section)
+        setShowSummary(false)
+    }
+
+
     //Component of each section
     const SummarySection = (props) => {
 
         return (
             <div className="summary-section">
                 <div>
-                    <a href={props.href}
-                    onClick={() => setShowSummary(false)}>
+                    <button
+                    onClick={(e) => handleClick(e, props.href)}>
                         <h3>
                             <i className={props.icon}></i>{props.title}
                         </h3>
-                    </a>
+                    </button>
                 </div>
                 <div>
                     {isNaN(props.total)
@@ -40,36 +50,38 @@ const Summary = (props) => {
 
     return (
             <div>
-                    <div className="summary-header">
-                        <h2>Summary<i className="far fa-chart-bar icon"></i></h2>
+                <div className="navbar-placeholder"/>
+                <div className="summary-content">
+                        <div>
+                            <h2>Summary<i className="far fa-chart-bar icon"></i></h2>
 
-                        <a href="#date-section"
-                        onClick={() => setShowSummary(false)}>
-                            <h3 className="date-range">
-                            Date Range: {props.total_weeks()} Weeks</h3>
-                        </a>
-                        
-                        <div className="view-button">
-                            <ToggleButtonGroup type="radio" name="summary_view" value={view}>
-                                <ToggleButton
-                                    variant="secondary"
-                                    value={"total"}
-                                    onChange={(e) => setView(e.target.value)}>Total</ToggleButton>
-                                <ToggleButton
-                                    variant="secondary"
-                                    value={"weekly"}
-                                    onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
-                            </ToggleButtonGroup>
+                            <button
+                            onClick={(e) => handleClick(e, "date-section")}>
+                                <h3 className="date-range">
+                                Date Range: {props.total_weeks()} Weeks</h3>
+                            </button>
+                            
+                            <div className="view-button">
+                                <ToggleButtonGroup  type="radio" name="summary_view" value={view}>
+                                    <ToggleButton
+                                        variant="secondary"
+                                        value={"total"}
+                                        onChange={(e) => setView(e.target.value)}>Total</ToggleButton>
+                                    <ToggleButton
+                                        variant="secondary"
+                                        value={"weekly"}
+                                        onChange={(e) => setView(e.target.value)}>Weekly</ToggleButton>
+                                </ToggleButtonGroup>
+                            </div>
                         </div>
-                    </div>
                     
-                <div className="summary-body">
+
                     <SummarySection
                         title="Income"
                         icon="fas fa-money-check icon"
                         total={props.total_income}
                         total_weeks={props.total_weeks}
-                        href="#income-section"/>
+                        href="income-section"/>
 
 
                     <SummarySection
@@ -77,7 +89,7 @@ const Summary = (props) => {
                         icon="fas fa-home icon"
                         total={props.total_rent_bills}
                         total_weeks={props.total_weeks}
-                        href="#rent-section"/>
+                        href="rent-section"/>
 
 
                     <SummarySection
@@ -85,7 +97,7 @@ const Summary = (props) => {
                         icon="fas fa-shopping-cart icon"
                         total={props.total_groceries}
                         total_weeks={props.total_weeks}
-                        href="#groceries-section"/>
+                        href="groceries-section"/>
 
 
 
@@ -94,20 +106,21 @@ const Summary = (props) => {
                         icon="fas fa-receipt icon"
                         total={props.total_expenses}
                         total_weeks={props.total_weeks}
-                        href="#expenses-section"/>
+                        href="expenses-section"/>
 
 
                         <div className="summary-section">
-                            <div>
-                                <a href="#results-section"
-                                onClick={() => setShowSummary(false)}>
+                            <div className="summary-title">
+                                <button 
+                                href=""
+                                onClick={(e) => handleClick(e, "results-section")}>
                                         <h3>
                                         <i className="fas fa-wallet icon"></i>Weekly Cash to Splash
                                     </h3>
-                                </a>
+                                </button>
                             </div>
-                            <div>
-                              <p className="summary-money">
+                            <div className="summary-money">
+                              <p >
                               <span className="pound">£</span>{Math.round(props.disposable_cash)}</p>
                             </div>
                              
@@ -115,13 +128,13 @@ const Summary = (props) => {
 
                         <div className="summary-section">
                             <div>
-                                <a href="#results-section"
-                                onClick={() => setShowSummary(false)}>
+                                <button
+                                onClick={(e) => handleClick(e, "results-section")}>
                                 <h3>
                                     <i className="fas fa-piggy-bank icon"></i>
                                     End Balance
                                 </h3>
-                                </a>
+                                </button>
                             </div>
                             <div>
                                 {isNaN(props.end_balance)
@@ -130,10 +143,8 @@ const Summary = (props) => {
                                         <span className="pound">£</span>{props.end_balance}</p>}
                             </div>
                         </div>
-                        
-                     
-            </div>
 
+                </div>
             </div>
     )
 }

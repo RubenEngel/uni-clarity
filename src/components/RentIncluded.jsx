@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react"
-import {ToggleButtonGroup, Card, Row, ToggleButton} from "react-bootstrap"
+import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
 

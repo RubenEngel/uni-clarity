@@ -5,6 +5,7 @@
     left: -5px;
     z-index: 5;
     border: none;
+    outline: none !important;
 }
 
 .close-help {
@@ -17,18 +18,17 @@
     position: fixed;
     z-index: 4;
     height: 100vh;
-    top: 0  ;
+    top: 0;
     left: 0;
     background-color: #343A40;
     text-align: center;
     overflow-y: scroll;
-    margin-bottom: 100px; 
+    padding: 100px 0 50px;
 }
 
 
 .help-heading {
-    margin-top: 150px;
-    margin-left: 25px;
+    margin-left: 30px;
 }
 
 .help-dropdown {
@@ -36,16 +36,23 @@
 }
 
 .help-dropdown .btn {
-    font-size: 2.5rem;
+    font-size: 2rem;
     line-height: 2rem;
     color: #9e9e9e;
     font-family: 'Amatic SC', sans-serif;
 }
 
 .help-body {
-    margin: auto;
+    margin: 30px auto;
+    padding: 0 10%;
 }
 
 .help p{
     font-size: 1.2rem;
+}
+
+.dropdown-item{
+    font-family: 'Amatic SC', sans-serif;
+    font-size: 2.1rem;
+    line-height: 2.5rem;
 }

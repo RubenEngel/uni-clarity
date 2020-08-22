@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react"
-import {ToggleButtonGroup, Card, Row, ToggleButton} from "react-bootstrap"
+import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
 import NumberInput from "./NumberInput"
@@ -38,8 +38,8 @@ const RentPayments = (props) => {
                     name="How often do you send rent payments?"
                     />
                 <ToggleButtonGroup className="rent-payments" type="radio" name="rent_payment_period" value={rentMethod}>
-                    <ToggleButton variant="light" value="monthly" onChange={handleChange}>Every Month</ToggleButton>
-                    <ToggleButton variant="light" value="termly" onChange={handleChange}>Every Term/Quarter</ToggleButton>
+                    <ToggleButton variant="light" value="monthly" onChange={handleChange}>Monthly</ToggleButton>
+                    <ToggleButton variant="light" value="termly" onChange={handleChange}>Installments</ToggleButton>
                 </ToggleButtonGroup>
                 
                     
@@ -48,10 +48,9 @@ const RentPayments = (props) => {
                         /* Monthly Render */
                         <Card.Body>
                             <div className="form-group row">
-                                <p>If specific dates are not known, feel free to use the 30th of each month.
-                                <br/>Remember that rent is usually paid a month in advance.
+                                <p>Remember that rent is usually paid a month in advance.
                                 <br/><strong>Example: </strong>
-                                If your the last month of tenancy is June and your next payment is in October, use 30th October and the 30th May.
+                                If your the last month of tenancy is June and your next payment is in October, you could use 30th October and the 30th May.
                                 </p>
                                 
                             </div>
@@ -93,9 +92,6 @@ const RentPayments = (props) => {
 
 
                         </Card.Body>
-
-
-    //  
 
                     )
                     }

@@ -6,22 +6,28 @@
     margin-top:-50px;
 
     h1{
-        font-size: 3.5rem;
+        font-size: 4rem;
     }
 
     p{
         font-size: 1.4rem;
     }
 
+    button{
+        outline: none;
+    }
+
+}
+
+.title{
+    font-size: 4rem;
 }
 
 .intro {
     margin-top: 20vh;
-}
 
-/* Dent in tag line colour */
-.dent {
-    color: goldenrod;
+    
+
 }
 
 /* Show help button description */

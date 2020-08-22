@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {Card, Alert, Button, Row, Col, Container} from "react-bootstrap"
 
+import Logo from './graduation-hat.png';
+
 //Components
 import NavBar from "./components/NavBar.jsx"
 import Summary from './components/Summary'
@@ -17,13 +19,14 @@ import SubmitContext from "./context/submit-context"
 import RentIncluded from "./components/RentIncluded"
 import BillsIncluded from "./components/BillsIncluded"
 import RentPayments from "./components/RentPayments"
+import AdditionalIncome from './components/AdditionalIncome'
 import InputName from './components/InputName';
 import EndBalance from "./components/EndBalance"
 import DisposableCash from "./components/DisposableCash"
 import Help from "./components/Help"
-//Delete intro and results card
+import Footer from "./components/Footer"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
-import AdditionalIncome from './components/AdditionalIncome'
+
 
 import * as firebase from 'firebase'
 // import * as firebaseui from 'firebaseui'
@@ -79,7 +82,8 @@ const App = () => {
         disposable_cash: "0"
     })
 
-    const [inputObject, setInputObject] = useState(JSON.parse(localStorage.getItem('inputObject')) || defaultInputObject);
+    const [inputObject, setInputObject] = useState(
+        JSON.parse(localStorage.getItem('inputObject')) || defaultInputObject );
     
         function submitValue(event) {
             const inputName = event.target.name
@@ -203,7 +207,7 @@ const App = () => {
                             : 0
         const total_rent_bills = inputObject.include_rent === "yes" ? 
                             (inputObject.rent_payment_period === "monthly" ? (weekly_rent + weekly_bills) * 4.345 * Math.round(1 + (rent_weeks/4.345)) : (((weekly_rent + weekly_bills) * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
-                        :   0
+                        :   (weekly_bills * total_weeks())
         // Groceries Calcs
         const weekly_groceries = (+inputObject.groceries_cost) 
         const total_groceries = weekly_groceries * total_weeks()
@@ -217,12 +221,19 @@ const App = () => {
         const start_balance = +inputObject.start_balance
         const end_balance = Math.round(total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks())
        
-// ---------------------------------------------- End Balance
+        
+
+// ---------------------------------------------- Results State
 
         const [endBalance, setEndBalance] = useState()
 
         function updateEndBalance() {
             setEndBalance(end_balance)
+        }
+
+        function endEqualStartBalance() {
+            const default_disposable = (total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - start_balance)/total_weeks()
+            setInputObject( (prevObject) => ({...prevObject, "disposable_cash": +default_disposable }) )
         }
 
         // ---------------- Formated end date *Now What?*
@@ -253,13 +264,13 @@ const App = () => {
                 signInOptions: [
                   firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-                  firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                  firebase.auth.EmailAuthProvider.PROVIDER_ID
                 ],
                 credentialHelper: 'none',
                 // Terms of service url.
-                tosUrl: '<your-tos-url>',
+                tosUrl: 'terms-of-service',
                 // Privacy policy url.
-                privacyPolicyUrl: '<your-privacy-policy-url>'
+                privacyPolicyUrl: 'privacy-policy'
               };
 
 
@@ -273,7 +284,7 @@ const App = () => {
               const userAccount = firebase.auth().currentUser
 
 
-              function clearData() {
+              function resetData() {
                 setInputObject(defaultInputObject)
                 setIncomeArray([])
                 setRecurringExpenseArray([])
@@ -330,37 +341,19 @@ const App = () => {
         };
 
 
-    // ---------------------What to do when user signs in
+    // --------------------- What to do when user signs in/out
     useEffect(() => {
-        function Load (userID) {
-            db.collection("users").doc(userID).get().then(function(doc) {
-                if (doc.exists) {
-                    // console.log("Document data:", doc.data());
-                    setInputObject(doc.data().inputObject)
-                    setIncomeArray(doc.data().incomeArray)
-                    setRecurringExpenseArray(doc.data().recurringExpenseArray)
-                    setOneOffExpenseArray(doc.data().oneOffExpenseArray)
-                    setLastSaved(doc.data().last_saved)
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
-           
-            };
 
         authChange( user =>
             {
                 setSignedIn(!!user);
                 if (user) {
                     Load(user.uid)
-                } 
-            }
-          )
+                }
+          })
+        }
 
-    }, [signedIn, db]) 
+        , [signedIn])
 
     
 
@@ -395,6 +388,14 @@ const tabletBreakpoint = 767
         return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+// ----------------------------------------------------- JavaScript Navigation
+
+    function navigate(e, section) {
+        e && e.preventDefault(); // to avoid the link from redirecting
+        document.getElementById(section).scrollIntoView();
+    }
+
+
 // --------------------------------------------------------------------------------------------------Start of Rendered App
     return (
 
@@ -420,7 +421,6 @@ const tabletBreakpoint = 767
         }}
         >
 
-        <body data-spy="scroll" data-target="#navbar" data-offset="200">
         <Row>
 
                 {/* Help and summary indicators */}
@@ -456,7 +456,7 @@ const tabletBreakpoint = 767
             <Col className="main" md={8}>
             {/* Show Summary Button */}
             {(width < tabletBreakpoint) ? 
-                    <button onClick={() => setShowSummary(!showSummary)} className="show-summary">
+                    <button onClick={() => setShowSummary(!showSummary)} className="show-summary overlay-button">
                     {showSummary === false ? 
                     <i className="far fa-chart-bar icon"></i> 
                     : <i className="fas fa-times icon close-summary"></i>}
@@ -465,28 +465,34 @@ const tabletBreakpoint = 767
                 
 
                 {/* Show Help Button */}
-                <button onClick={() => setShowHelp(!showHelp)} className="show-help">
+                <button onClick={() => setShowHelp(!showHelp)} className="show-help overlay-button">
                     {showHelp === false ? 
                     <i className="fas fa-question-circle icon"></i> 
                     : <i className="fas fa-times icon close-help"></i>}
                 </button>
 
                 {/* --------------------------------------------NavBar --------------------------------------------*/}
-                <NavBar 
+                <NavBar
                 /> 
                 
                 {/* ------------------------------------- Intro --------------------------------------*/}
                 <section id="intro-section">
 
                     <div className="intro">
-                        <h1>Don't stu<span className="dent">dent</span> the bank.</h1>
-                        <p>Get a 'Weekly Cash to Splash' budget linked to your end bank balance.</p>
+                        {/* <h1>Don't stu<span className="dent">dent</span> the bank.</h1> */}
+                        <h1>
+                        Uni<span className="blue">Clarity</span>
+                        <img className="title-icon" src={Logo} alt="logo"></img>
+                        </h1>
+                        <h3>The fast, flexible and personalised student budgeting web app.</h3>
+
+                        <h3>How much <span className="gold">cash</span> do you want to <span className="blue">splash</span>?</h3>
                     </div>
 
                     <div className="continue">
-                        <a href="#account-section">
+                        <button onClick={(e) => navigate(e, "account-section")}>
                             <i className="fas fa-chevron-down"></i>
-                        </a>
+                        </button>
                     </div>
                     
 
@@ -498,27 +504,35 @@ const tabletBreakpoint = 767
 
                 <section id="account-section">
 
+
                 <Container fluid>
                     <SectionHeading name="Account" icon="fas fa-user icon"/>
                     <Card>
                         {signedIn ? 
-                        <div>
+                        <Card.Body>
                             <h3>You are signed in as {userAccount.displayName}</h3>
                             {lastSaved ? <p className="save-status">Data was last saved on {lastSaved}</p> : 
                             <p className="save-status">You are yet to save any data</p>}
                             <Button variant="secondary" className="sign-out" onClick={signOut}>Sign Out</Button>
-                        </div>
+                        </Card.Body>
                         : 
                         <div className="firebase-auth">
                             <p className="input-description">Sign in to unlock the 'save' feature or load previous data.</p>
+                            <Alert className="card alert" variant="warning">
+                            <p>
+                                <strong>WARNING: </strong>
+                                Some in-app browsers such as Facebook Messenger's will not allow sign-in with Google or Facebook. <br/><strong>Open the web app in a dedicated browser such as Safari or Chrome.</strong>
+                            </p>
+                        </Alert>
                             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
                         </div>
                         }
                             <Row>
                                 <Col><Button disabled={!signedIn} variant="secondary" onClick={() => Save(firebase.auth().currentUser.uid)}>Save</Button></Col>
                                 <Col><Button disabled={!signedIn} variant="secondary" onClick={() => Load(firebase.auth().currentUser.uid)}>Load</Button></Col>
-                                <Col><Button variant="secondary" onClick={() => clearData()}>Reset</Button></Col>
+                                <Col><Button variant="secondary" onClick={() => resetData()}>Reset</Button></Col>
                             </Row>
+
                     </Card>
                 </Container>
 
@@ -714,16 +728,26 @@ const tabletBreakpoint = 767
 
                         <Card bg="secondary" text="white" className="results-card">
                             <Card.Body>
-
-                                <DisposableCash 
-                                id="disposable_cash"/>
-
-                                <EndBalance 
-                                id="end_balance"
-                                endBalance={endBalance} />
-
+                                <div className="results-section">
+                                    <DisposableCash 
+                                    id="disposable_cash"/>
+                                </div>
+                                
+                                <div className="results-section">
+                                    <EndBalance 
+                                    id="end_balance"
+                                    endBalance={endBalance} />
+                                </div>
                             </Card.Body>
+
+                            <Button disabled={isNaN(endBalance)} onClick={() => endEqualStartBalance()} className="setBalance" variant="primary">Set 'End Balance' equal to 'Start Balance'</Button>
+
                         </Card>
+
+                        {(disposable_cash < 0) &&
+                            <Alert className="card alert" variant="danger">
+                                {`It looks like your 'Weekly Cash to Splash' budget is negative. This means that unless you find another income source equivalent to at least £${Math.round(disposable_cash)*-1} per week, or cut expenditure, you will finish your budgeting period with less than you started with regardless.`} <p><strong>Update your 'Weekly Cash to Splash' budget with a positive number.</strong></p>
+                            </Alert>}
 
                         {
                         signedIn ? 
@@ -736,28 +760,27 @@ const tabletBreakpoint = 767
                         </div>
                         }
                         
-                        {end_balance ?
+                        {(!isNaN(end_balance) && disposable_cash >= 0) ?
                         <Alert className="card alert" variant="primary">
                             <h2>Now what?</h2>
                             <p>
-                                {`Assuming you start budgeting on ${formatDate(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${disposable_cash}, you should have a bank balance of £${end_balance} on ${formatDate(inputObject.end_date)}.`}
+                                {`Assuming you start budgeting on ${formatDate(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${Math.round(disposable_cash)}, you should have a bank balance of £${end_balance} on ${formatDate(inputObject.end_date)}.`}
                             </p>
                             <p>
-                                The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for your non-essentials. A good day for your standing order is a Monday.
+                                The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for non-essentials. A good day for your standing order is a Monday to avoid spending all of your weekly budget on the weekend!
                             </p>
                         </Alert> : null}
 
                     </Container>
                 </section>
 
-                <div className="footer">
-                    <p>Copyright © {today.getFullYear()} Ruben Engel</p>
-                </div>
+                <Footer/>
+                
             </Col>
                         
-           </Row>
 
-          </body>
+                        
+           </Row>
           </SubmitContext.Provider>
         
     )

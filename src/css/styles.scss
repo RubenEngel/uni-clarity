@@ -5,13 +5,12 @@ body {
     color: #9e9e9e;
 }
 
-.footer {
-    margin: 50px 0;
-}
-
 html {
-    scroll-behavior: smooth;
+    touch-action: manipulation;
   }
+
+@import './footer';
+
 
 /*  Scrolling Correction for Fixed NavBar */
 section:before {
@@ -131,10 +130,15 @@ a {
     input {
     color: white;
     border-bottom: dashed 3px white;
+    &:focus {
+        background-color: transparent;
+        color: white;
+      }
     }
     .input-group-text {
         color: white;
     }
+    
 } 
 
 
@@ -148,6 +152,10 @@ a {
     border-radius: 0.75rem;
     font-weight: lighter;
     line-height: 1rem;
+}
+
+.overlay-button{
+    outline: none;
 }
 
 .row {
@@ -184,6 +192,19 @@ a {
     margin-bottom: 20px;
   }
 
+.blue{
+    color:#008ae6;
+}
+
+.gold{
+    color: goldenrod;
+}
+
+.grey{
+    color: #9e9e9e;
+}
+
+
 // Dates
 
 #date-section .date-range {
@@ -218,3 +239,6 @@ a {
 
 //----------------Results
 @import "./results";
+
+//----------------Contact
+@import "./contact"
