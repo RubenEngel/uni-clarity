@@ -36,6 +36,9 @@ const InputCard = (props) => {
                     id={props.id} 
                     userMonthlyWeekly={props.userMonthlyWeekly}/>}
 
+            {props.average &&
+                <p className="example">{props.average}</p>}
+            
         </Card>
     </div>
     )

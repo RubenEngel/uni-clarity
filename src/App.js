@@ -28,10 +28,12 @@ import Footer from "./components/Footer"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
 
-import * as firebase from 'firebase'
-// import * as firebaseui from 'firebaseui'
-// Required for side-effects
-require("firebase/firestore");
+import firebase from 'firebase/app'
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/analytics'
+
+// require("firebase/firestore");
 
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
@@ -44,6 +46,8 @@ firebase.initializeApp({
     appId: "1:333121435549:web:7b03eb8018ede6fa212174",
     measurementId: "G-8BTZEKCDVE"
 });
+
+firebase.analytics()
 
 
 const App = () => {
