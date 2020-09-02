@@ -1,9 +1,9 @@
+
 .footer {
     min-height: 125px;
-    margin-left: -5%;
-    width: 110%;
     padding: 25px 0 10px;
     background-color: #343A40;
+    flex-shrink: 0;
     a{
         color: #9e9e9e;
         text-decoration: none;
@@ -15,6 +15,10 @@
 
 .copyright{
     margin-top: 10px;
+}
+
+.socials{
+    margin: 5px 0;
 }
 
 .socials-icon{

@@ -42,8 +42,8 @@ const DisposableCash = (props) => {
               <input name={props.id} type="range" className="custom-range" min="0" max="100" value={disposableCash} onChange={handleChange} id="disposable-cash-slider"/>
               
               <ToggleButtonGroup name="input_choice" value={input}>
-                <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range (<span className="range-pound">£</span>100)</ToggleButton>
-                <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom (Unlimited)</ToggleButton>
+                <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range (<span className="architects-daughter">£100</span>)</ToggleButton>
+                <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom (<span className="architects-daughter">Unlimited</span>)</ToggleButton>
               </ToggleButtonGroup>
             </div>
             }
@@ -54,8 +54,8 @@ const DisposableCash = (props) => {
               userValue={Math.round(disposableCash)}/>
 
               <ToggleButtonGroup name="input_choice" value={input}>
-                <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range (£100)</ToggleButton>
-                <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom (Unlimited)</ToggleButton>
+                <ToggleButton variant="secondary" value="range" onChange={(event) => inputChange(event)}>Range (<span className="architects-daughter">£100</span>)</ToggleButton>
+                <ToggleButton variant="secondary" value="custom" onChange={(event) => inputChange(event)}>Custom (<span className="architects-daughter">Unlimited</span>)</ToggleButton>
               </ToggleButtonGroup>
             </div>}
           </Col>

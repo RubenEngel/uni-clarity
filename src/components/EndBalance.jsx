@@ -4,7 +4,7 @@ import {Row, Col} from "react-bootstrap"
 
 const EndBalance = () => {
 
-    const { end_balance } = useContext(SubmitContext)
+    const { endBalance } = useContext(SubmitContext)
 
     return (
     
@@ -14,8 +14,8 @@ const EndBalance = () => {
         </Col>
         
         <Col lg={6}>
-                {isNaN(end_balance) ? <p className="warning">Complete Rent Section</p> :
-                <p className="end-value" ><span className="end-value-currency">£ </span>{end_balance}</p>}
+                {isNaN(endBalance) ? <p className="warning blue">Complete Rent Section</p> :
+                <p className="end-value" ><span className="end-value-currency">£ </span>{endBalance}</p>}
         </Col>
     </Row>
 

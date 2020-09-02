@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Logo from '../graduation-hat.png';
+import Logo from '../icon-512.png';
 import {Navbar, Nav} from "react-bootstrap"
 import {Link} from "react-router-dom"
 
@@ -36,10 +36,11 @@ const NavBarAlternate = () => {
             id="responsive-navbar-nav"
             >
                 <Nav className="ml-auto">
-                            <Link className="nav-alt nav-heading" to="/">Back to App</Link>
+                            <Link className="nav-alt nav-heading" to="/about">About</Link>
                             <Link className="nav-alt nav-heading" to="/contact">Contact</Link>
                             <Link className="nav-alt nav-heading" to="/privacy-policy">Privacy Policy</Link>
                             <Link className="nav-alt nav-heading" to="/terms-of-service">Terms of Service</Link>
+                            <Link className="nav-alt nav-heading" to="/">Back to App</Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>   

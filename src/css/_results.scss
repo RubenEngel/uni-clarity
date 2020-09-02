@@ -1,5 +1,23 @@
+#results-section{
 
-.results-section{
+    .warning {
+        // color: white;
+        position: relative;
+        top: 15px;
+    }
+
+    .input-description-div{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    button{
+        outline:none;
+    }
+} 
+
+.results-card-section{
     margin: 25px 0;
 }
 
@@ -15,25 +33,6 @@
     font-family: 'Architects Daughter', cursive;
     font-weight: bold;
 }
-
-
-
-#results-section{
-
-    .warning {
-        color: white;
-        position: relative;
-        top: 15px;
-    }
-
-    .input-description-div{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-    }
-} 
-
-
 
 /* Range slider thumb customisation */
 
@@ -68,10 +67,6 @@ input[type=range]::-ms-thumb {
     margin-top: -8px;
 }
 
-.range-pound{
-    font-family: 'Architects Daughter', cursive;
-}
-
 .custom-range{
     margin-bottom: 20px;
 }
@@ -99,7 +94,7 @@ input[type=range]::-ms-thumb {
 }
 
 .save-unlock {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 .save-status {

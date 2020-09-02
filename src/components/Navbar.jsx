@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import Logo from '../graduation-hat.png';
-import {Navbar, Nav} from "react-bootstrap"
+import Logo from '../icon-512.png';
+import {Navbar, Nav, NavDropdown} from "react-bootstrap"
+import {Link} from "react-router-dom"
 
 const NavBar = () => {
 
@@ -35,20 +36,24 @@ const NavBar = () => {
                     </h1>
                 </Navbar.Brand>
             </button>
-            
             <Navbar.Toggle onClick={() => setExpanded(!expanded)}  aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse 
-            onClick={() => setExpanded(false)}
+            <Navbar.Collapse
             id="responsive-navbar-nav"
             >
                 <Nav className="ml-auto">
-                    <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "account-section")}>Account</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "date-section")}>Dates</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "income-section")}>Income</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "rent-section")}>Rent</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "groceries-section")}>Groceries</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "expenses-section")}>Expenses</button>
-                     <button className="nav-heading nav-alt" onClick={(e) => handleClick(e, "results-section")}>Results</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "account-section")}>Account</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "date-section")}>Dates</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "income-section")}>Income</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "rent-section")}>Rent</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "groceries-section")}>Groceries</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "expenses-section")}>Expenses</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "results-section")}>Results</button>
+                    <NavDropdown bg="dark" className="nav-heading" title="Extras">
+                        <button className="nav-heading"><Link to="/about">About</Link></button>
+                        <button className="nav-heading"><Link to="/contact">Contact</Link></button>
+                        <button className="nav-heading"><Link to="/privacy-policy">Privacy</Link></button>
+                        <button className="nav-heading"><Link to="/terms-of-service">Terms</Link></button>
+                    </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>   

@@ -53,7 +53,7 @@ const Summary = (props) => {
                 <div className="navbar-placeholder"/>
                 <div className="summary-content">
                         <div>
-                            <h2>Summary<i className="far fa-chart-bar icon"></i></h2>
+                            <h2>Summary<i className="far fa-chart-bar summary-icon"></i></h2>
 
                             <button
                             onClick={(e) => handleClick(e, "date-section")}>

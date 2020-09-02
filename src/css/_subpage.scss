@@ -1,0 +1,26 @@
+
+.subpage-title {
+    text-align: center;
+    margin: 40px 0 20px;
+}
+
+.subpage-content {
+    padding: 0 10%;
+    min-height: calc(100vh - 220px);
+}
+
+#privacy-policy-section .subpage-content {
+    padding: 0;
+    text-align: left;
+}
+
+#terms-of-service-section .subpage-content {
+    padding: 0;
+    text-align: left;
+}
+
+.submit{
+    width: 60%;
+    max-width: 250px;
+    margin: 10px 0 20px;
+}
