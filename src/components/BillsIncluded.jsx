@@ -31,7 +31,7 @@ const BillsIncluded = () => {
 
 
     return (
-        <div className="input-section">
+        <div className="card-section">
                 <Card>
                     <InputName  
                         name="Bills included in rent?"

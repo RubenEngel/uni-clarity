@@ -5,22 +5,31 @@
 }
 
 .subpage-content {
-    padding: 0 10%;
+    padding: 0 10% 50px;
     min-height: calc(100vh - 220px);
 }
 
+#about-section p{
+    font-size: 1.2rem;
+}
+
+#contact-section .subpage-content {
+    padding: 0 20px 50px;
+    min-height: calc(100vh - 220px);
+}
+
+
 #privacy-policy-section .subpage-content {
-    padding: 0;
+    padding: 0 0 50px;
     text-align: left;
 }
 
 #terms-of-service-section .subpage-content {
-    padding: 0;
+    padding: 0 0 50px;
     text-align: left;
 }
 
 .submit{
-    width: 60%;
-    max-width: 250px;
+    width: 100%;
     margin: 10px 0 20px;
 }

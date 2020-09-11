@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/firestore';
 
+
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
     apiKey: "AIzaSyBybnFKJ8XidoCYIb1EPyUUi93evWSKo_g",
@@ -46,4 +47,4 @@ const authChange = (user) => firebase.auth().onAuthStateChanged(user)
 
 //------------------------------ Firestore setup
 
-export {authChange, signOut, db, uiConfig, firebase}
+export { authChange, signOut, db, uiConfig, firebase}

@@ -37,7 +37,7 @@ const Summary = (props) => {
                 <div>
                     {isNaN(props.total)
                         ? <p className="warning">
-                                Complete Section</p>
+                                ?</p>
                         : (view === "total"
                             ? <p className="summary-money">
                                     <span className="pound">£</span>{Math.round(props.total)}</p>
@@ -138,7 +138,7 @@ const Summary = (props) => {
                             </div>
                             <div>
                                 {isNaN(props.end_balance)
-                                    ? <p className="warning">Complete Rent Section</p>
+                                    ? <p className="warning">?</p>
                                     : <p className="summary-money">
                                         <span className="pound">£</span>{props.end_balance}</p>}
                             </div>

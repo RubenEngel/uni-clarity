@@ -8,9 +8,13 @@ import About from "./About"
 import TermsOfService from "./TermsOfService"
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter, Switch, Route} from "react-router-dom"
+import ScrollToTop from './components/ScrollToTop';
+
+
 
 ReactDOM.render(  
   <BrowserRouter>
+    <ScrollToTop/>
     <Switch>
       <Route exact path="/" component={App}/>
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />

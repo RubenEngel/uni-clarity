@@ -31,7 +31,7 @@ const RecurringExpenseTable = (props) => {
 
 
     return (
-        <div className="input-section">
+        <div className="card-section">
             <Card className="recurring-expense-card">
                 <Table >
                     <thead>

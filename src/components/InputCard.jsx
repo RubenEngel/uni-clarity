@@ -10,11 +10,12 @@ const InputCard = (props) => {
 
 
     return (
-        <div className="input-section">
+        <div className="card-section">
         <Card body>
 
             <InputName  
-                name={props.name} 
+                name={props.name}
+                perStudent={props.perStudent}
                 example={props.example}
                 average={props.average}/>
 

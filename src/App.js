@@ -4,6 +4,8 @@ import {Card, Alert, Button, Row, Col, Container} from "react-bootstrap"
 import Logo from './icon-512.png';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import {authChange, signOut, db, uiConfig, firebase} from "./firebaseConfig"
+import 'firebase/analytics'
+import CookieConsent from "react-cookie-consent";
 
 //Components
 import NavBar from "./components/NavBar.jsx"
@@ -27,16 +29,41 @@ import Footer from "./components/Footer"
 
 const App = () => {
 
+    firebase.analytics();
+
 //-------------------------------------------------- Object of User Inputs
 
-    const today = new Date();
+   const today = new Date();
+    const firstDayNextMonth = (new Date(today.getFullYear(), today.getMonth()+1, 1))
 
-    const lastDayMonth = (new Date(today.getFullYear(), today.getMonth()+1, 0)).toISOString().split('T')[0]
+    // Computer string formatted date
+    function formatDateComp(date) {
+        const dt = new Date(date)
+        let day = dt.getDate()
+        if (day < 10) day = '0' + day.toString()
+        let month = dt.getMonth() + 1
+        if (month < 10) month = '0' + month.toString()
+        const year = dt.getFullYear().toString()
+        return year + '-' + month + '-' + day  
+    }
+
+    // UK string formatted date
+    function formatDateUk(date) {
+        const dt = new Date(date)
+        const day = dt.getDate()
+        const month = dt.getMonth() + 1
+        const year = dt.getFullYear()
+        return (
+            `${day}/${month}/${year}`
+        )
+    }
+
+    
 
     const defaultInputObject = ({
         //Dates
-        start_date: "2020-10-01",
-        end_date: "2021-05-31",
+        start_date: "2020-09-28",
+        end_date: "2021-06-01",
         //Income
         maintenance_loan: "",
         additional_income: "",
@@ -45,8 +72,8 @@ const App = () => {
         rent_cost: "",
         rent_cost_MonthlyWeekly: "monthly",
         rent_payment_period: "",
-        next_rent_payment: lastDayMonth,
-        last_rent_payment: "2021-05-30",
+        next_rent_payment: formatDateComp(firstDayNextMonth),
+        last_rent_payment: "2021-06-01",
         contract_start: "2020-07-01",
         contract_end: "2021-06-30",
         total_payments: "",
@@ -137,7 +164,8 @@ const App = () => {
         }
 
 //------------------------------------------------------- Results Calculations 
-
+    
+    //Find weeks between two dates
     const weeks = (start, end) => {
             const d1 = new Date(start)
             const d2 = new Date(end)
@@ -145,10 +173,10 @@ const App = () => {
             const weeks = diff/(1000*60*60*24*7)
             return Math.round(weeks)
     }
-
+    // Total number of weeks user has selected
     const total_weeks = weeks(inputObject.start_date, inputObject.end_date)
 
-    // Additional Income Array Calculations
+    // Convert additonal income array into array of total income amounts
     const additional_income_array = incomeArray.map(
     function (element) {
         if (element.period === "total") {
@@ -160,65 +188,68 @@ const App = () => {
         }
     } 
     )
+    // Reduce total additonal income array to single value
     const additional_income_total = additional_income_array.reduce((sum, currentValue) => sum + +currentValue, 0)
+
     const total_income = (+inputObject.maintenance_loan) + (+additional_income_total)
-    // Rent Calcs
+    // ---------- Rent Calcs
+    // Total weeks rent is being paid
     const rent_weeks = inputObject.rent_payment_period &&
-                        (inputObject.rent_payment_period === "monthly" ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
-                    :    weeks(inputObject.contract_start, inputObject.contract_end));
+                        (inputObject.rent_payment_period === "monthly" ?
+                        weeks(inputObject.next_rent_payment, inputObject.last_rent_payment) 
+                    :   weeks(inputObject.contract_start, inputObject.contract_end));
+    // Weekly cost of rent 
     const weekly_rent = inputObject.rent_cost_MonthlyWeekly === "monthly" ? (+inputObject.rent_cost / 4.345) : (+inputObject.rent_cost)
-    const weekly_bills = inputObject.bills_included === "no" ?
-                        (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost))
+    // Weekly cost of bills
+    const weekly_bills = inputObject.bills_included === "no" ? 
+                            (inputObject.bills_cost_MonthlyWeekly === "monthly" ? (+inputObject.bills_cost / 4.345) : (+inputObject.bills_cost))
                         : 0
+    // Combine rent and bills multiplied by total weeks
     const total_rent_bills = inputObject.include_rent === "yes" ? 
                         (inputObject.rent_payment_period === "monthly" ? (weekly_rent + weekly_bills) * 4.345 * Math.round(1 + (rent_weeks/4.345)) : (((weekly_rent + weekly_bills) * rent_weeks) / +inputObject.total_payments) * +inputObject.payments_left)
                     :   (weekly_bills * total_weeks)
-    // Groceries Calcs
+
+    // ---------- Groceries Calcs
+    // Weekly groceries cost
     const weekly_groceries = (+inputObject.groceries_cost) 
+    // Total groceries cost usign weekly cost x total weeks
     const total_groceries = weekly_groceries * total_weeks
-    // Expense Calcs
+    // ---------- Expense Calcs
     const weekly_recurring_expenses = recurringExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
+
     const total_recurring_expenses = weekly_recurring_expenses*total_weeks
+
     const total_one_off_expenses = oneOffExpenseArray.reduce((sum, currentValue) => sum + +currentValue.cost, 0)
+
     const total_expenses = total_recurring_expenses + total_one_off_expenses
+
     // Results Calcs
     const disposable_cash = +inputObject.disposable_cash
+
     const start_balance = +inputObject.start_balance
+
     const end_balance = Math.round(total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - disposable_cash*total_weeks)
 
 // ----------------------------------------------------------- Results State
 
     const [endBalance, setEndBalance] = useState()
 
+    // Set start balance and end balance equal by changing weekly cash to splash to spend all income
     function endEqualStartBalance() {
         const default_disposable = (total_income + start_balance - total_rent_bills - total_groceries - total_recurring_expenses - total_one_off_expenses - start_balance)/total_weeks
         setInputObject( (prevObject) => ({...prevObject, "disposable_cash": +default_disposable }) )
     }
 
     // --------------------------------------------- On user input updates store in localStorage and update end balance
-
+    
     useEffect(() => {
         setEndBalance(end_balance)
-
         localStorage.setItem('inputObject', JSON.stringify(inputObject))
         localStorage.setItem('incomeArray', JSON.stringify(incomeArray))
         localStorage.setItem('recurringExpenseArray', JSON.stringify(recurringExpenseArray))
         localStorage.setItem('oneOffExpenseArray', JSON.stringify(oneOffExpenseArray))
-        
     }, [inputObject, recurringExpenseArray, oneOffExpenseArray, incomeArray, end_balance])
 
-    // ---------------- Formated end date *Now What?*
-
-    function formatDate(date) {
-        const dt = new Date(date)
-        const day = dt.getDate()
-        const month = dt.getMonth() + 1
-        const year = dt.getFullYear()
-        return (
-            `${day}/${month}/${year}`
-        )
-    }
- 
 //--------------------------------------- Fire Base Sign In/Out
 
     // Signed-in State
@@ -355,9 +386,9 @@ const App = () => {
         <Row>
 
                 {/* Help and summary indicators */}
-                    <div>
-                        <p className="button-description-help blue">Help</p>
-                        {(width < tabletBreakpoint) ? <p className="button-description-summary blue">Summary</p> : null}
+                <div>
+                        <p className="button-description-help fade-in">Help</p>
+                        {(width < tabletBreakpoint) ? <p className="button-description-summary fade-in">Summary</p> : null}
                     </div>
 
             {/* ------------------------------------ Help Section ------------------------------------ */}
@@ -387,7 +418,7 @@ const App = () => {
             <Col className="main" md={8}>
             {/* Show Summary Button */}
             {(width < tabletBreakpoint) ? 
-                    <button onClick={() => setShowSummary(!showSummary)} className="show-summary overlay-button">
+                    <button onClick={() => setShowSummary(!showSummary)} className="show-summary overlay-button fade-in">
                     {showSummary === false ? 
                     <i className="far fa-chart-bar icon"></i> 
                     : <i className="fas fa-times icon close-summary"></i>}
@@ -396,7 +427,7 @@ const App = () => {
                 
 
                 {/* Show Help Button */}
-                <button onClick={() => setShowHelp(!showHelp)} className="show-help overlay-button">
+                <button onClick={() => setShowHelp(!showHelp)} className="show-help overlay-button fade-in">
                     {showHelp === false ? 
                     <i className="fas fa-question-circle icon"></i> 
                     : <i className="fas fa-times icon close-help"></i>}
@@ -406,19 +437,72 @@ const App = () => {
                 <NavBar
                 /> 
                 
+                {/* Cookie Consent */}
+                <CookieConsent
+                acceptOnScroll={true}
+                buttonClasses="cookie-accept"
+                contentClasses="cookie-text"
+                >
+                    This website uses cookies to enhance the user experience.
+                </CookieConsent>
+
                 {/* ------------------------------------- Intro --------------------------------------*/}
                 <section id="intro-section">
 
-                    <div className="intro">
-                    <button><img className="logo" src={Logo} alt="logo" onClick={(e) => navigate(e, "account-section")}></img></button>
-                        <h3 >The fast, flexible and personalised student budgeting web app</h3>
-                        <h3 className="fade-in-3">How much <span className="gold">cash</span> do you want to <span className="blue">splash</span>?</h3>
+                    <div className="intro fade-in">
+                    <button><img className="logo grow" src={Logo} alt="logo" onClick={(e) => navigate(e, "get-started-section")}></img></button>
+                        <h3 >The Flexible Student Budget App</h3>
+                        <h3>How much <span className="gold">cash</span> do you want to <span className="blue">splash</span>?</h3>
                     </div>
                     
 
                 </section>
 
+                {/* ---------------------------------- Get Started ----------------------------------------- */}
 
+                <section id="get-started-section">
+
+                <SectionHeading
+                    name="Get Started"
+                    icon="fas fa-rocket icon"
+                />
+
+                <Container fluid>
+                    <div className="card-section">
+                        <Card>
+                            <Card.Body>
+                                    <p>
+                                        We'll help you find a 'Weekly Cash to Splash' allowance. An amount you can spend on whatever you want, every week. After filling in all of the sections, you'll settle on an amount when you are happy with your end bank balance.
+                                    </p>
+                                    <p>
+                                       With your 'Weekly Cash to Splash', just set up a weekly standing order to another account and you've got yourself a weekly pay day with guilt free spending.
+                                    </p>
+                                    <p>
+                                        Use <strong>Summary</strong> (top right button on mobile) for an overview of the amounts you have entered so far. 
+                                    </p>    
+                                    <p>
+                                        Use <strong>Help</strong> (top left button) for more details if you get stuck. 
+                                    </p>
+                                
+                            </Card.Body>
+                        </Card>
+                    </div>
+
+                    {(width < tabletBreakpoint) &&
+
+                    <div className="card-section">
+                    <Alert className="card alert" variant="primary" >
+                        <h3>Try saving this web app to your mobile's homescreen for quick access and a native (app store) app experience.</h3>
+                    </Alert>
+                    </div>}
+
+                </Container>
+
+                
+
+                </section>
+                    
+                        
                 {/* -------------------------------------Account Section -------------------------------------*/}
 
 
@@ -428,15 +512,22 @@ const App = () => {
                 <Container fluid>
                     <SectionHeading name="Account" icon="fas fa-user icon"/>
 
-                    <div className="input-section">
+                    <div className="card-section">
                         <Card>
                             {signedIn ? 
                             <div>
-                                <h3 className="blue">You are signed in as {firebase.auth().currentUser.displayName}</h3>
-                                <Button variant="secondary" className="sign-out" onClick={signOut}>Sign Out</Button>
+
                                 <Card.Body>
+                                <div className="account-details">
+                                    <h3 className="blue">Signed in as {firebase.auth().currentUser.displayName}</h3>
+                                    {firebase.auth().currentUser.photoURL && 
+                                        <img className="profile-picture" src={firebase.auth().currentUser.photoURL} alt=""/>}
+                                    <Button variant="secondary" onClick={signOut}>Sign Out</Button>  
+                                </div>
+                                
+                                
                                     <h3>Save Status</h3>
-                                    {lastSaved ? <p className="save-status blue">Data was last saved on {lastSaved}</p> : 
+                                    {lastSaved ? <p className="save-status blue">Last saved on {(new Date(lastSaved)).toLocaleString()}</p> : 
                                 <p className="save-status gold">You are yet to save any data</p>}
                                 <h3>Load Status</h3>
                                 {lastLoad ? <p className="green">{lastLoad}</p> : <p className="gold">Data not yet loaded</p>}
@@ -445,10 +536,15 @@ const App = () => {
                             </div>
                                 
                             : 
+                            
                             <div className="firebase-auth">
-                                <p className="input-description">Sign in to unlock the 'Save' and 'Load' features</p>
+                            <p className="input-description">Sign in to unlock the 'Save' and 'Load' features</p>  
+                            <Card.Body>      
+                                <p>Data saves in your local browser. To access from a different device/browser, create an account.</p>
                                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-                            </div>
+                            </Card.Body>
+                            </div>  
+
                             }
                                 <Row>
                                     <Col><Button disabled={!signedIn} variant="secondary" onClick={() => save(firebase.auth().currentUser.uid)}>Save</Button></Col>
@@ -470,7 +566,7 @@ const App = () => {
 
                 <Container fluid>
                     <SectionHeading name="Dates" icon="fas fa-clock icon"/>
-                    <div className="input-section">
+                    <div className="card-section">
                         <Card>
                             <InputName 
                             name="Select budgeting period"
@@ -497,7 +593,7 @@ const App = () => {
 
                         <SectionHeading name="Income" icon="fas fa-money-check icon"/>
 
-                        <div className="input-section">
+                        <div className="card-section">
                         <Alert className="card alert" variant="warning">
                             <p>
                                 <strong>ONLY </strong>
@@ -539,7 +635,8 @@ const App = () => {
 
                     {/* Rent Cost */}
                     <InputCard 
-                        name="Rent Cost (per student)"
+                        name="Rent Cost"
+                        perStudent={true}
                         inputType="money" 
                         userMonthlyWeekly={inputObject.rent_cost_MonthlyWeekly}
                         id="rent_cost"
@@ -566,9 +663,10 @@ const App = () => {
                         {(showBills && 
                             <div id="household-bills-div">
                             <InputCard
-                                name="Average Household Bills (per student)"
+                                name="Average Household Bills"
+                                perStudent={true}
                                 example="i.e Energy, Water and Broadband"
-                                average="(Average ~£50 per month)"
+                                average="(Usually ~£50 per month)"
                                 inputType="money"
                                 userMonthlyWeekly={inputObject.bills_cost_MonthlyWeekly}
                                 id="bills_cost"
@@ -594,10 +692,15 @@ const App = () => {
                             name="How much do you typically spend on groceries in a week?"
                             inputType="money"
                             id="groceries_cost"
-                            average="(Average ~£30 per week)"
+                            average="(Usually ~£30 per week)"
                             detail="Per Week"
                             userValue={inputObject.groceries_cost}
                             />
+
+                        <Alert className="card alert" variant="primary" >
+                            <h2>Tip!</h2>
+                            <p>Get a starter credit card and only use it for your weekly food shop to build your credit rating.</p>
+                        </Alert>
 
                     </Container>
 
@@ -653,7 +756,7 @@ const App = () => {
                             userValue={inputObject.start_balance}
                             />
 
-                        <div className="input-section">
+                        <div className="card-section">
                             <Card bg="dark" text="white" className="results-card">
                                 <Card.Body>
                                     <div className="results-card-section">
@@ -675,7 +778,7 @@ const App = () => {
                         
 
                         {(disposable_cash < 0) &&
-                            <div className="input-section">
+                            <div className="card-section">
                                 <Alert className="card alert" variant="danger">
                                     {`It looks like your 'Weekly Cash to Splash' budget is negative. This means that unless you find another income source equivalent to at least £${Math.round(disposable_cash)*-1} per week, or cut expenditure, you will finish your budgeting period with less than you started with regardless.`} <p><strong>Update your 'Weekly Cash to Splash' budget with a positive number.</strong></p>
                                 </Alert>
@@ -694,14 +797,14 @@ const App = () => {
                         }
                         
                         {(!isNaN(end_balance) && disposable_cash >= 0) ?
-                        <div className="input-section">
+                        <div className="card-section now-what">
                             <Alert className="card alert" variant="primary">
                                 <h2>Now what?</h2>
                                 <p>
-                                    {`Assuming you start budgeting on ${formatDate(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${Math.round(disposable_cash)}, you should have a bank balance of £${end_balance} on ${formatDate(inputObject.end_date)}.`}
+                                    {`Assuming you start budgeting on ${formatDateUk(inputObject.start_date)} with a starting bank balance of £${inputObject.start_balance}; If you stick to a weekly non-essentials budget of £${Math.round(disposable_cash)}, you should have a bank balance of £${end_balance} on ${formatDateUk(inputObject.end_date)}.`}
                                 </p>
                                 <p>
-                                    The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for non-essentials. A good day for your standing order is a Monday to avoid spending all of your weekly budget on the weekend!
+                                    The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for non-essentials. A good day for your standing order is a Monday, to avoid spending all of your weekly budget on the weekend!
                                 </p>
                             </Alert>
                         </div>
@@ -710,6 +813,52 @@ const App = () => {
                     </Container>
                 </section>
 
+                {/* ------------------------ Recommended deals section --------- */}
+                {/* <section id="recommended-section">
+                    <Container fluid>
+
+                        <SectionHeading 
+                            name="Recommended"
+                            icon="fas fa-graduation-cap icon" />
+
+                            <div className="card-section">
+                                <Card>
+                                    <h3>Make Easy Money with Risk Free Matched betting</h3>
+                                    <Card.Body>
+                                        <div className="profit-accum">
+                                        <img src="data:image/jpeg;base64,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" alt=""/>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        
+                            <div className="card-section">
+                                <Card>
+                                    <h3>6 Months Free Amazon Prime then half price</h3>
+                                    <Card.Body>
+                                        <div className="amazonAd">
+                                    <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=2&p=12&l=ur1&category=amazon_student&banner=1MPKS9R97RJNF16VHS02&f=ifr&linkID=c93d258e9d0733040135dc6a65625d48&t=uniclarity-21&tracking_id=uniclarity-21" width="300" height="250" scrolling="no" border="0" marginwidth="0" frameborder="0"></iframe>
+                                    </div>
+                                    </Card.Body>
+                                    
+                                </Card>
+                            </div>
+                                
+
+                            <div className="card-section">
+                                <Card>
+                                    <h3>Get a Free Book with an Audible Trial</h3>
+                                    <Card.Body>
+                                        <div className="audible-ad">
+                                            <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=2&p=12&l=ur1&category=audible&banner=1P1953W62EJ3357X7V82&f=ifr&linkID=e0652dda944f118a8d26f0ab3b8e095e&t=uniclarity-21&tracking_id=uniclarity-21" width="300" height="250" scrolling="no" border="0" marginwidth="0" style={{border:"none"}} frameborder="0"></iframe>
+                                        </div>
+                                    </Card.Body>        
+                                </Card>
+                            </div>
+
+                    </Container>
+                    </section> */}
+                
                     <Footer/>
                 
             </Col>

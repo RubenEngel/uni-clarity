@@ -55,7 +55,7 @@ const ExpenseInput = (props) => {
     const [inputRef, setInputFocus] = useFocus()
 
         return (
-            <div className="input-section">
+            <div className="card-section">
                 <Card body>
                     <InputName  
                     name="Create an Expense"/>
@@ -106,14 +106,14 @@ const ExpenseInput = (props) => {
                         <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={1}>Monthly</ToggleButton>
                         <ToggleButton variant="light" onChange={(event) => (setPeriod(event.target.value))} value={2}>Weekly</ToggleButton>
                     </ToggleButtonGroup>
-                </div>
+                    </div>
                     }
 
 
         {/*------------------------------------------- Add Button ------------------------------------*/}
 
                     <div>
-                        <Button variant="outline-primary" onClick={handleAdd} className="add-expense-button">Add Expense</Button>
+                        <Button variant="primary" onClick={handleAdd} className="add-expense-button">Add Expense</Button>
                     </div>
 
                 </Card>

@@ -31,7 +31,7 @@ const RentIncluded = () => {
 
 
     return (
-        <div className="input-section">
+        <div className="card-section">
             <Card>
                 <InputName  
                     name="Paying your own rent?"

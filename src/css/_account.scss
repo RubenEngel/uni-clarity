@@ -5,6 +5,10 @@
     }
 } 
 
+.account-details {
+    margin-bottom: 20px;
+}
+
 .log-in-prompt {
     margin-top: 5%;
 }
@@ -19,14 +23,17 @@
 
 }
 
-.sign-out{
-    margin:10px 0;
-}
-
 .firebaseui-title, .firebaseui-subtitle {
     font-size: 2.5rem;
 }
 
 .firebase-auth {
     margin-bottom: 15px;
+}
+
+.profile-picture {
+    display: block;
+    margin: 10px auto;
+    width: 50px;
+    border-radius: 50%;
 }

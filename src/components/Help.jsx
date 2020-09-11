@@ -39,8 +39,17 @@ const Help = () => {
                 <Container fluid className="help-body">
                 {nav === "Overview" &&
                     <div>
-                        <p>The purpose of this app is to find you a weekly budget to spend on non-essentials that will result in an end bank balance you are happy with. This is called your 'Weekly Cash to Splash'. This may be used for such things as a night out or a new item of clothing.
-                            <br/>Just tell the app your dates of interest, income, rent, known expenses, and starting bank balance. You can then play with your 'Weekly Cash to Splash' until you are happy with your end bank balance.
+                        <p>
+                            We'll help you find a 'Weekly Cash to Splash' allowance. An amount you can spend on whatever you want, every week. After filling in all of the sections, you'll settle on an amount when you are happy with your end bank balance.
+                        </p>
+                        <p>
+                           With your 'Weekly Cash to Splash', just set up a weekly standing order to another account and you've got yourself a weekly pay day with guilt free spending.
+                        </p>
+                        <p>
+                            Use <strong>Summary</strong> (top right button on mobile) for an overview of the amounts you have entered so far. 
+                        </p>    
+                        <p>
+                            Use <strong>Help</strong> (top left button) for more details if you get stuck. 
                         </p>
                     </div>
                 }

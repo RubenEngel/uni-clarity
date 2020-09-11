@@ -1,7 +1,8 @@
 #results-section{
 
     .warning {
-        // color: white;
+        font-family: "Architects Daughter", sans-serif;
+        font-weight: bold;
         position: relative;
         top: 15px;
     }
@@ -100,3 +101,9 @@ input[type=range]::-ms-thumb {
 .save-status {
     margin:10px;
 }
+
+// .now-what {
+//     p {
+//         font-size: 1.2rem;
+//     }
+// }

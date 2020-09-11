@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "uniclarity-880cf"
+    "default": "uniclarity-880cf",
+    "uniclarity": "uniclarity-880cf"
   }
 }

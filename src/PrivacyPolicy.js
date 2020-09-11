@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
             <section id="privacy-policy-section">
                 <div className="subpage-content">
                     <h1 className="subpage-title">Privacy Policy</h1>
-                    <h3>IMPORTANT: Any financial information entered for calculations will not be used for any other purpose. Any data you choose to save with an account is secured safely on encrypted servers and is only for your own use.</h3>
+                    <h3>MOST IMPORTANTLY: Any information entered for calculations will not be used for any other purpose. Any data you choose to save with an account is secured safely on encrypted servers and is strictly for your own use.</h3>
                     <br/>
                     <p>This privacy policy applies between you, the User of this Website
                         and&nbsp;Ruben Engel, the owner and provider of this Website.&nbsp;Ruben

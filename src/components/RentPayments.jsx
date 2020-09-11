@@ -31,7 +31,7 @@ const RentPayments = (props) => {
 
     //---------------------------Main render
     return (
-        <div className="input-section">
+        <div className="card-section">
             <Card>
                 <InputName  
                     name="How often do you send rent payments?"
@@ -46,12 +46,8 @@ const RentPayments = (props) => {
                         rentMethod === "monthly" ? 
                         /* Monthly Render */
                         <Card.Body>
-                            <div className="form-group row">
-                                <p>Remember that rent is usually paid a month in advance.
-                                <br/><strong>Example: </strong>
-                                If your the last month of tenancy is June and your next payment is in October, you could use 30th October and the 30th May.
-                                </p>
-                                
+                            <div>
+                                <p>Remember that rent is usually paid for the month in advance.</p>
                             </div>
                         <DateRangeInput 
                             date1_name="Next Payment"

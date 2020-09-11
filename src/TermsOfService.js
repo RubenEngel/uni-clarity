@@ -11,7 +11,7 @@ const TermsOfService = () => {
             <section id="terms-of-service-section">
                 <div className="subpage-content">
                     <h1 className="subpage-title">Terms of Service</h1>
-
+                
                     <p>
                         <strong>Introduction</strong>
                     </p>

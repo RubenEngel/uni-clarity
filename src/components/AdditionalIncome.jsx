@@ -18,7 +18,7 @@ const AdditionalIncome = () => {
     function handleAdd() {
         
         if (name === "" | value === "" | period === "" ) {
-            return alert("Enter a value for 'Name', 'Value' and 'Period'")
+            return alert("Enter a value for 'Name', 'Value' and select how often you are paid.")
         }
         
         submitIncomeSource(name, value, period)
@@ -41,7 +41,7 @@ const AdditionalIncome = () => {
           }
 
         return(
-            <div className="input-section">
+            <div className="card-section">
                     <Card> 
                     <InputName 
                     name={capitalizeFirstLetter(props.name)} />
@@ -74,7 +74,7 @@ const AdditionalIncome = () => {
              ))}
 
             {/* --------------------------------------------Add Income */}
-            <div className="input-section">
+            <div className="card-section">
             <Card>
 
                 <InputName 
@@ -109,7 +109,8 @@ const AdditionalIncome = () => {
                     <ToggleButton variant="light" value="weekly" onChange={(event) => setPeriod(event.target.value)}>Weekly</ToggleButton>
                 </ToggleButtonGroup>
                 
-                <Button variant="outline-primary" onClick={() => handleAdd()} className="add-income-button">Add Income</Button>
+                <div className="additionalIncome__add"><Button variant="primary" onClick={() => handleAdd()} className="add-income-button">Add Income</Button></div>
+                
 
                     
             </Card>
