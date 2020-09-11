@@ -2,7 +2,8 @@
 .summary{
     position: fixed;
     right: 0;
-    height: 100vh;
+    height: calc(100vh - 80px);
+    margin-top: 80px;
     background-color: #343A40;
     overflow-y: scroll;
     z-index: 2;
@@ -60,8 +61,8 @@
 }
 
 .summary-content{
-    height: 100vh;
-    padding: 100px 0 130px;
+    height: calc(100vh - 80px);
+    padding: 10px 0 100px;
     margin-bottom: auto;
     display: flex;
     flex-direction: column;

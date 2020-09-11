@@ -383,10 +383,13 @@ const App = () => {
         }}
         >
 
+            {/* --------------------------------------------NavBar --------------------------------------------*/}
+            <NavBar
+                /> 
+        
         <Row>
-
-                {/* Help and summary indicators */}
-                <div>
+                {/* Help and summary descriptions */}
+                    <div>
                         <p className="button-description-help fade-in">Help</p>
                         {(width < tabletBreakpoint) ? <p className="button-description-summary fade-in">Summary</p> : null}
                     </div>
@@ -398,7 +401,9 @@ const App = () => {
             {/* -------------------------------------Summary Div ----------------------------*/}
             
             {(width > tabletBreakpoint || showSummary ?
-                <Col className="summary" sm={12} md={4}>
+                <Col 
+                className="summary"
+                 sm={12} md={4}>
                     <Summary 
                         total_weeks={total_weeks} 
                         total_income={total_income}
@@ -433,9 +438,7 @@ const App = () => {
                     : <i className="fas fa-times icon close-help"></i>}
                 </button>
 
-                {/* --------------------------------------------NavBar --------------------------------------------*/}
-                <NavBar
-                /> 
+                
                 
                 {/* Cookie Consent */}
                 <CookieConsent

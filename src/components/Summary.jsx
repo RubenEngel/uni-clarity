@@ -1,6 +1,5 @@
 import React, {useState, useContext} from "react"
-import {ToggleButtonGroup} from "react-bootstrap"
-import {ToggleButton} from "react-bootstrap"
+import {ToggleButton, ToggleButtonGroup, Container} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 
 
@@ -25,7 +24,7 @@ const Summary = (props) => {
     const SummarySection = (props) => {
 
         return (
-            <div className="summary-section">
+            <Container fluid className="summary-section">
                 <div>
                     <button
                     onClick={(e) => handleClick(e, props.href)}>
@@ -44,14 +43,12 @@ const Summary = (props) => {
                             : <p className="summary-money">
                                 <span className="pound">£</span>{(Math.round(props.total / props.total_weeks))}</p>)}
                 </div>
-            </div>
+            </Container>
         )
     }
 
     return (
-            <div>
-                <div className="navbar-placeholder"/>
-                <div className="summary-content">
+                <Container fluid className="summary-content">
                         <div>
                             <h2>Summary<i className="far fa-chart-bar summary-icon"></i></h2>
 
@@ -144,8 +141,7 @@ const Summary = (props) => {
                             </div>
                         </div>
 
-                </div>
-            </div>
+                </Container>
     )
 }
 
