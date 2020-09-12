@@ -177,7 +177,7 @@ const App = () => {
     const total_weeks = weeks(inputObject.start_date, inputObject.end_date)
 
     // Convert additonal income array into array of total income amounts
-    const additional_income_array = incomeArray.map(
+    const additional_income_array = incomeArray?.map(
     function (element) {
         if (element.period === "total") {
             return +element.value
@@ -817,7 +817,7 @@ const App = () => {
                 </section>
 
                 {/* ------------------------ Recommended deals section --------- */}
-                {/* <section id="recommended-section">
+                <section id="recommended-section">
                     <Container fluid>
 
                         <SectionHeading 
@@ -826,41 +826,67 @@ const App = () => {
 
                             <div className="card-section">
                                 <Card>
-                                    <h3>Make Easy Money with Risk Free Matched betting</h3>
+                                    <h3 className='blue'>Make Extra Cash with Matched Betting</h3>
+                                    <div className="recommended-logo-container">
+                                        <a target="_blank" rel="noopener noreferrer" href="https://www.profitaccumulator.co.uk/idevaffiliate/idevaffiliate.php?id=9426">
+                                            <img className="profitaccum-logo" src="https://s3-eu-west-1.amazonaws.com/tpd/logos/58fc6fac0000ff0005a106d5/0x0.png" alt="profit_accumulator_logo"/>
+                                        </a>
+                                    </div>
+                                    
                                     <Card.Body>
-                                        <div className="profit-accum">
-                                        <img src="data:image/jpeg;base64,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" alt=""/>
-                                        </div>
+                                        <p className="recommended-text">
+                                        Some of the easiest money to be made at Uni, and we can vouch. 
+                                        Matched betting uses betting companies' sign-up offers to remove the risks of traditional betting. 
+                                        Try the free trial and see for yourself.
+                                        </p>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://www.profitaccumulator.co.uk/idevaffiliate/idevaffiliate.php?id=9426"><Button className="recommended-button">Make some Cash</Button></a>
                                     </Card.Body>
+
                                 </Card>
                             </div>
                         
                             <div className="card-section">
                                 <Card>
-                                    <h3>6 Months Free Amazon Prime then half price</h3>
-                                    <Card.Body>
-                                        <div className="amazonAd">
-                                    <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=2&p=12&l=ur1&category=amazon_student&banner=1MPKS9R97RJNF16VHS02&f=ifr&linkID=c93d258e9d0733040135dc6a65625d48&t=uniclarity-21&tracking_id=uniclarity-21" width="300" height="250" scrolling="no" border="0" marginwidth="0" frameborder="0"></iframe>
+                                    <h3 className='blue'>6 Months Free Amazon Prime then half price</h3>
+                                    <div className="recommended-logo-container">
+                                        <a target="_blank" rel="noopener noreferrer" href="http://www.amazon.co.uk/joinstudent?tag=uniclarity-21">
+                                            <img className="prime-logo" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Amazon_prime_student.png" alt=""/>
+                                        </a>
                                     </div>
+                                    <Card.Body>
+                                        <p className="recommended-text">
+                                        An essential subscription while you're at Uni, so why not get 6 months for free.
+                                        </p>
+                                        <a target="_blank" rel="noopener noreferrer" href="http://www.amazon.co.uk/joinstudent?tag=uniclarity-21"><Button className="recommended-button">Get Deal</Button></a>
                                     </Card.Body>
-                                    
                                 </Card>
                             </div>
                                 
 
                             <div className="card-section">
                                 <Card>
-                                    <h3>Get a Free Book with an Audible Trial</h3>
+                                    <h3 className='blue'>Get a Free Audio Book with an Audible Trial</h3>
+
+                                    <div className="recommended-logo-container">
+                                        <a target="_blank" rel="noopener noreferrer" href="https://www.amazon.co.uk/Audible-Membership/dp/B00OPA2XFG?actionCode=AMN30DFT1Bk06604291990WX&tag=uniclarity-21">
+                                        <img className="audible-logo" src="https://logos-download.com/wp-content/uploads/2016/09/Audible_logo_an_Amazon_company.png" alt=""/>
+                                        </a>
+                                    </div>
+                                    
+                                    
+
                                     <Card.Body>
-                                        <div className="audible-ad">
-                                            <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=2&p=12&l=ur1&category=audible&banner=1P1953W62EJ3357X7V82&f=ifr&linkID=e0652dda944f118a8d26f0ab3b8e095e&t=uniclarity-21&tracking_id=uniclarity-21" width="300" height="250" scrolling="no" border="0" marginwidth="0" style={{border:"none"}} frameborder="0"></iframe>
-                                        </div>
-                                    </Card.Body>        
+                                        <p className="recommended-text">
+                                        Being able to consume books while doing other tasks is invaluable as a time strapped student, and you can't say no to a free book.
+                                        </p>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://www.amazon.co.uk/Audible-Membership/dp/B00OPA2XFG?actionCode=AMN30DFT1Bk06604291990WX&tag=uniclarity-21"><Button className="recommended-button">Get Deal</Button></a>
+                                    </Card.Body>  
+                                          
                                 </Card>
                             </div>
 
                     </Container>
-                    </section> */}
+                    </section>
                 
                     <Footer/>
                 
