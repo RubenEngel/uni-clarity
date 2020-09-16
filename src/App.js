@@ -8,7 +8,7 @@ import 'firebase/analytics'
 import CookieConsent from "react-cookie-consent";
 
 //Components
-import NavBar from "./components/NavBar.jsx"
+import NavBar from "./components/Navbar"
 import Summary from './components/Summary'
 import SectionHeading from "./components/SectionHeading"
 import DateRangeInput from "./components/DateRangeInput"
@@ -317,24 +317,42 @@ const App = () => {
        
         };
 
-    // Reset Data
-    function resetData() {
-        setInputObject(defaultInputObject)
-        setIncomeArray([])
-        setRecurringExpenseArray([])
-        setOneOffExpenseArray([])
-        setLastLoad()
-      }
+        // Reset Data
+        function resetData() {
+            setInputObject(defaultInputObject)
+            setIncomeArray([])
+            setRecurringExpenseArray([])
+            setOneOffExpenseArray([])
+            setLastLoad()
+        }
 
-    // ----------------------------------------------------- Show/Hide States
+    // ----------------------------------------------------- Show/Hide Help/Summary
 
     const [showHelp, setShowHelp] = useState(false)
 
     const [showSummary, setShowSummary] = useState(false)
 
-    const [showRent, setShowRent] = useState(true)
+    // ----------------------------------------------------- Show/Hide Rent/Bills
 
-    const [showBills, setShowBills] = useState(true)
+    const [showRent, setShowRent] = useState()
+
+        useEffect(() => {
+            if (inputObject.include_rent === "yes") {
+                setShowRent(true)
+            } else if (inputObject.include_rent === "no") {
+                setShowRent(false)
+            }
+        }, [inputObject.include_rent])
+
+    const [showBills, setShowBills] = useState()
+
+        useEffect(() => {
+            if (inputObject.bills_included === "yes") {
+                setShowBills(false)
+            } else if (inputObject.bills_included === "no") {
+                setShowBills(true)
+            }
+        }, [inputObject.bills_included])
 
     // ----------------------------------------------------- Viewport State
     
@@ -359,6 +377,8 @@ const App = () => {
         document.getElementById(section).scrollIntoView();
     }
 
+
+
 // --------------------------------------------------------------------------------------------------Start of Rendered App
     return (
 
@@ -372,8 +392,6 @@ const App = () => {
             deleteOneOffExpense,
             submitIncomeSource,
             deleteIncomeSource,
-            setShowBills,
-            setShowRent,
             setShowSummary,
             inputObject,
             endBalance,
@@ -457,7 +475,7 @@ const App = () => {
                         <h3 >The Flexible Student Budget App</h3>
                         <h3>How much <span className="gold">cash</span> do you want to <span className="blue">splash</span>?</h3>
                     </div>
-                    
+                
 
                 </section>
 
@@ -495,7 +513,7 @@ const App = () => {
 
                     <div className="card-section">
                     <Alert className="card alert" variant="primary" >
-                        <h3>Try saving this web app to your mobile's homescreen for quick access and a native (app store) app experience.</h3>
+                        <h3>Try saving this web app to your mobile's homescreen to turn it into an app store app.</h3>
                     </Alert>
                     </div>}
 

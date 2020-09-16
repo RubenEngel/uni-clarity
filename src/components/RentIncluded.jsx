@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, {useContext, useState} from "react"
 import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -6,47 +6,36 @@ import InputName from "./InputName"
 
 const RentIncluded = () => {
     
-    const { setShowRent, setInputObject} = useContext(SubmitContext)
+    const {inputObject, setInputObject} = useContext(SubmitContext)
+
+    function handleChange(event) {
+        const newValue = event.target.value
+
+        setInputObject(
+            (prevObject) => ({
+                ...prevObject, 
+                include_rent: newValue
+            })
+            )
+        setIncludeRent(newValue)
+    }
+
+    const [includeRent, setIncludeRent] = useState(inputObject.include_rent)
+
     
-
-    function handleHideRent() {
-        setShowRent(false)
-        setInputObject(
-            (prevObject) => ({
-                ...prevObject, 
-                include_rent: "no"
-            })
-            )
-    }
-
-    function handleShowRent() {
-        setShowRent(true)
-        setInputObject(
-            (prevObject) => ({
-                ...prevObject, 
-                include_rent: "yes"
-            })
-            )
-    }
-
-
     return (
         <div className="card-section">
             <Card>
-                <InputName  
+                <InputName
                     name="Paying your own rent?"
                     />
-                <ToggleButtonGroup type="radio" name="include_rent" defaultValue="yes" >
-                    <ToggleButton variant="light" value="yes" onChange={handleShowRent}>Yes</ToggleButton>
-                    <ToggleButton variant="light" value="no" onChange={handleHideRent}>No</ToggleButton>
+                <ToggleButtonGroup type="radio" name="include_rent" value={includeRent}>
+                    <ToggleButton variant="light" value="yes" onChange={(event) => handleChange(event)}>Yes</ToggleButton>
+                    <ToggleButton variant="light" value="no" onChange={(event) => handleChange(event)}>No</ToggleButton>
                 </ToggleButtonGroup>
             </Card>
         </div>
     )
 }
-// value={showRent} 
+
 export default RentIncluded
-
-
-
-// {props.yesChecked}

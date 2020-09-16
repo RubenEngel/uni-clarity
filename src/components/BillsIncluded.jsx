@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, {useContext, useState} from "react"
 import {ToggleButtonGroup, Card, ToggleButton} from "react-bootstrap"
 import SubmitContext from "../context/submit-context"
 import InputName from "./InputName"
@@ -6,29 +6,22 @@ import InputName from "./InputName"
 
 const BillsIncluded = () => {
     
-    const {setShowBills, setInputObject} = useContext(SubmitContext)
+    const {inputObject, setInputObject} = useContext(SubmitContext)
 
 
-    function handleShowBills() {
-        setShowBills(true)
+    function handleChange(event) {
+        const newValue = event.target.value
+
         setInputObject( 
             (prevObject) => ({
                 ...prevObject,
-                bills_included: "no"
+                bills_included: newValue
             }) 
         )
+        setBillsIncluded(newValue)
     }
 
-    function handleHideBills() {
-        setShowBills(false)
-        setInputObject( 
-            (prevObject) => ({
-                ...prevObject,
-                bills_included: "yes"
-            }) 
-        )
-    }
-
+    const [billsIncluded, setBillsIncluded] = useState(inputObject.bills_included)
 
     return (
         <div className="card-section">
@@ -36,9 +29,9 @@ const BillsIncluded = () => {
                     <InputName  
                         name="Bills included in rent?"
                         />
-                    <ToggleButtonGroup type="radio" name="bills_included" defaultValue="no">
-                        <ToggleButton variant="light" value="yes" onChange={handleHideBills}>Yes</ToggleButton>
-                        <ToggleButton variant="light" value="no" onChange={handleShowBills}>No</ToggleButton>
+                    <ToggleButtonGroup type="radio" name="bills_included" value={billsIncluded}>
+                        <ToggleButton variant="light" value="yes" onChange={(event) => handleChange(event)}>Yes</ToggleButton>
+                        <ToggleButton variant="light" value="no" onChange={(event) => handleChange(event)}>No</ToggleButton>
                     </ToggleButtonGroup>
                 </Card>
         </div>
