@@ -31,12 +31,10 @@ const App = () => {
 
     firebase.analytics();
 
-//-------------------------------------------------- Object of User Inputs
-
    const today = new Date();
     const firstDayNextMonth = (new Date(today.getFullYear(), today.getMonth()+1, 1))
 
-    // Computer string formatted date
+    // Computer string formatted date - yyyy-mm-dd
     function formatDateComp(date) {
         const dt = new Date(date)
         let day = dt.getDate()
@@ -47,7 +45,7 @@ const App = () => {
         return year + '-' + month + '-' + day  
     }
 
-    // UK string formatted date
+    // UK string formatted date - dd/mm/yyyy
     function formatDateUk(date) {
         const dt = new Date(date)
         const day = dt.getDate()
@@ -58,7 +56,7 @@ const App = () => {
         )
     }
 
-    
+    //-------------------------------------------------- Object of User Inputs
 
     const defaultInputObject = ({
         //Dates
@@ -291,7 +289,7 @@ const App = () => {
         })
         .then(function() {
             setLastSaved(today.toString()) 
-            setSaveStatus(`Save Succesful on ${today}`);
+            setSaveStatus(`Save Successful on ${today}`);
             })
         .catch(function(error) {
             console.error("Error adding user data: ", error);
