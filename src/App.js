@@ -538,7 +538,7 @@ const App = () => {
 
                                 <Card.Body>
                                 <div className="account-details">
-                                    <h3 className="blue">Signed in as {firebase.auth().currentUser.displayName}</h3>
+                                    <h3 className="blue">Signed in as {firebase.auth().currentUser.displayName || firebase.auth().currentUser.email}</h3>
                                     {firebase.auth().currentUser.photoURL && 
                                         <img className="profile-picture" src={firebase.auth().currentUser.photoURL} alt=""/>}
                                     <Button variant="secondary" onClick={signOut}>Sign Out</Button>  
@@ -825,6 +825,9 @@ const App = () => {
                                 <p>
                                     The best way to stick to your budget is to set up a weekly standing order to a secondary bank account that will only be used for non-essentials. A good day for your standing order is a Monday, to avoid spending all of your weekly budget on the weekend!
                                 </p>
+                                <h3>
+                                    Come back and update regularly to make sure you're still on track.
+                                </h3>
                             </Alert>
                         </div>
                          : null}

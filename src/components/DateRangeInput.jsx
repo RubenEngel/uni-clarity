@@ -4,8 +4,7 @@ import { Form, Row, Col } from "react-bootstrap"
 
     const DateRangeInput = (props) => {
 
-        const {submitValue, 
-        } = useContext(SubmitContext)
+        const {submitValue} = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
             const [startDate, setStartDate] = useState(props.startDate)
@@ -32,12 +31,12 @@ import { Form, Row, Col } from "react-bootstrap"
                             <input
                             name={props.date1_id}
                             className="form-control"
+                            placeholder="dd-mm-yyyy"
                             type="date"
                             value={startDate}
                             onChange={handleStartChange}
                             id={props.date1_id}
                             />
-
                         </Col>
                         <Col md={6}>      
                             <label htmlFor="end-date-input" className="col-form-label input-description">{props.date2_name}</label>

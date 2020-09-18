@@ -14,6 +14,7 @@ html {
 
 .main {
     padding: 0;
+
 }
 
 /*  Scrolling Correction for Fixed NavBar */
@@ -266,6 +267,12 @@ a {
 
 #date-section .date-range {
     margin-bottom: 1.5rem;
+}
+
+.date-picker-calender {
+    max-width: 100%;
+    font-size: 0.9rem;
+    z-index: 50;
 }
 
 // ---------------Animations
