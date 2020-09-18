@@ -75,6 +75,9 @@ display: inline-block;
   bottom: 2px;
 }
 
+.table th {
+  border-top: none;
+}
 
 th {
   font-family: 'Amatic SC', sans-serif;

@@ -183,7 +183,7 @@ const App = () => {
             return +element.value * total_weeks/4.345;
         } else if (element.period === "weekly") {
             return +element.value * total_weeks;
-        }
+        } else return 0
     } 
     )
     // Reduce total additonal income array to single value
