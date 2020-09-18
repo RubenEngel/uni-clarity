@@ -17,7 +17,7 @@ html {
 
 }
 
-/*  Scrolling Correction for Fixed NavBar */
+/*  Scrolling Correction for Fixed Navbar */
 section:before {
     height: 80px;
     content: "";
@@ -284,7 +284,7 @@ a {
 // ---------------Help
 @import "./help";
 
-// ---------------NavBar 
+// ---------------Navbar 
 @import "./navbar";
 
 // ---------------Introduction Section
