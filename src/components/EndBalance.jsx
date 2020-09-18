@@ -14,7 +14,7 @@ const EndBalance = () => {
         </Col>
         
         <Col lg={6}>
-                {isNaN(endBalance) ? <p className="warning blue">Complete Rent Section</p> :
+                {isNaN(endBalance) ? <p className="warning blue amatic">COMPLETE RENT SECTION</p> :
                 <p className="end-value" ><span className="end-value-currency">£ </span>{endBalance}</p>}
         </Col>
     </Row>
