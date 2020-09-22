@@ -90,11 +90,11 @@ const Summary = (props) => {
 
 
                     <SummarySection
-                        title="Groceries"
+                        title="Food"
                         icon="fas fa-shopping-cart icon"
                         total={props.total_groceries}
                         total_weeks={props.total_weeks}
-                        href="groceries-section"/>
+                        href="food-section"/>
 
 
 

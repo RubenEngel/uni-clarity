@@ -699,16 +699,16 @@ const App = () => {
 
                 </section>
 
-                {/* -----------------------------------------Groceries Section ------------------------------------------*/}
-                <section id="groceries-section">
+                {/* -----------------------------------------Food Section ------------------------------------------*/}
+                <section id="food-section">
 
                     <Container fluid>
 
-                        <SectionHeading name="Groceries" icon="fas fa-shopping-cart icon"/> 
+                        <SectionHeading name="Food" icon="fas fa-shopping-cart icon"/> 
                         
                         {/* Groceries Cost */}
                         <InputCard
-                            name="How much do you typically spend on groceries in a week?"
+                            name="How much do you typically spend on food in a week? (No, not takeaways)"
                             inputType="money"
                             id="groceries_cost"
                             average="(Usually ~£30 per week)"
@@ -903,6 +903,8 @@ const App = () => {
                                           
                                 </Card>
                             </div>
+
+                            <p>We may receive a payment in connection with purchases of products or services featured in this section.</p>
 
                     </Container>
                     </section>

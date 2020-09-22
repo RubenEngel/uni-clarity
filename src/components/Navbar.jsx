@@ -45,7 +45,7 @@ const NavBar = () => {
                     <button className="nav-heading" onClick={(e) => handleClick(e, "date-section")}>Dates</button>
                     <button className="nav-heading" onClick={(e) => handleClick(e, "income-section")}>Income</button>
                     <button className="nav-heading" onClick={(e) => handleClick(e, "rent-section")}>Rent</button>
-                    <button className="nav-heading" onClick={(e) => handleClick(e, "groceries-section")}>Groceries</button>
+                    <button className="nav-heading" onClick={(e) => handleClick(e, "food-section")}>Food</button>
                     <button className="nav-heading" onClick={(e) => handleClick(e, "expenses-section")}>Expenses</button>
                     <button className="nav-heading" onClick={(e) => handleClick(e, "results-section")}>Results</button>
                     <NavDropdown bg="dark" className="nav-heading" title="Info">

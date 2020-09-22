@@ -31,7 +31,7 @@ const Help = () => {
                     <Dropdown.Item className="dropdown-item" as="button" value="Dates" onClick={handleChange}>Dates</Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" as="button" value="Income" onClick={handleChange}>Income</Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" as="button" value="Rent" onClick={handleChange}>Rent</Dropdown.Item>
-                    <Dropdown.Item className="dropdown-item" as="button" value="Groceries" onClick={handleChange}>Groceries</Dropdown.Item>
+                    <Dropdown.Item className="dropdown-item" as="button" value="Food" onClick={handleChange}>Food</Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" as="button" value="Expenses" onClick={handleChange}>Expenses</Dropdown.Item>
                     <Dropdown.Item className="dropdown-item" as="button" value="Results" onClick={handleChange}>Results</Dropdown.Item>
                 </DropdownButton>
@@ -90,10 +90,10 @@ const Help = () => {
                             <p>NOTE: If you do not pay your own rent but pay your own bills, the total bills cost will be calculated slightly differently by using the total length of time you have selected for your budgeting period.</p>
                     </div>
                 }
-                  {nav === "Groceries" &&
+                  {nav === "Food" &&
                     <div>
-                        <p>Specify the amount you usually spend per week (upper estimate) on your household essentials such as food and toiletries.</p>
-                        <p>These purchases should usually be your essential foods only. If you buy lunch at uni (e.g meal deals), you may want to include this in your groceries cost. Or if you feel you shouldn't be doing so, this may be part of your 'weekly cash to splash'. The choice is yours.</p>
+                        <p>Specify the amount you usually spend per week (upper estimate) on food.</p>
+                        <p>These purchases should usually be your essential foods only. It's not wise to include takeaway costs into this as you can save a lot cooking at home.</p>
                     </div>
                 }
                   {nav === "Expenses" &&
