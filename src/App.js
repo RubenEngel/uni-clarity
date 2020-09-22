@@ -708,7 +708,8 @@ const App = () => {
                         
                         {/* Groceries Cost */}
                         <InputCard
-                            name="How much do you typically spend on food in a week? (No, not takeaways)"
+                            name="How much do you typically spend on food in a week?"
+                            example="Not takeaways!"
                             inputType="money"
                             id="groceries_cost"
                             average="(Usually ~£30 per week)"
@@ -904,7 +905,7 @@ const App = () => {
                                 </Card>
                             </div>
 
-                            <p>We may receive a payment in connection with purchases of products or services featured in this section.</p>
+                            <p className="affiliate-disclosure">We may receive a payment in connection with purchases of products or services featured in this section.</p>
 
                     </Container>
                     </section>
