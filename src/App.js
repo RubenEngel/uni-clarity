@@ -416,10 +416,10 @@ const App = () => {
 
             {/* -------------------------------------Summary Div ----------------------------*/}
             
-            {(width > tabletBreakpoint || showSummary ?
+            {( showSummary || width > tabletBreakpoint ?
                 <Col 
                 className="summary"
-                 sm={12} md={4}>
+                 md={4}>
                     <Summary 
                         total_weeks={total_weeks} 
                         total_income={total_income}
@@ -511,7 +511,7 @@ const App = () => {
 
                     <div className="card-section">
                     <Alert className="card alert" variant="primary" >
-                        <h3>Try saving this web app to your mobile's homescreen to turn it into an app store app.</h3>
+                        <h3>To install this app, save it to your mobile's homescreen.</h3>
                     </Alert>
                     </div>}
 

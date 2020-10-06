@@ -1,10 +1,10 @@
-import React, {useState, useContext} from "react"
+import React, {useState, useContext, useEffect} from "react"
 import SubmitContext from "../context/submit-context"
 import { Form, Row, Col } from "react-bootstrap"
 
     const DateRangeInput = (props) => {
 
-        const {submitValue} = useContext(SubmitContext)
+        const {submitValue, setInputObject} = useContext(SubmitContext)
 
     // ------------------------------------------- Start date state
             const [startDate, setStartDate] = useState(props.startDate)
@@ -18,9 +18,22 @@ import { Form, Row, Col } from "react-bootstrap"
             const [endDate, setEndDate] = useState(props.endDate)
 
             function handleEndChange(event) {
-                setEndDate(event.target.value)
-                submitValue(event)
+                if (endDate < startDate) {
+                    // Stops user having end date before start date
+                    setEndDate(startDate)
+                    setInputObject( (prevObject) => ({...prevObject, [props.date2_id]: startDate }) ) 
+                } else {
+                    setEndDate(event.target.value)
+                    submitValue(event) 
+                }
             }
+
+    // ------- On inputObject update, update date states
+
+    useEffect(() => {
+        setStartDate(props.startDate)
+        setEndDate(props.endDate)
+    }, [props.startDate, props.endDate])
 
 
         return (
