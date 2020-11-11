@@ -354,9 +354,10 @@ const App = () => {
 
     // ----------------------------------------------------- Viewport State
     
+    
     //State of Screen width
     const [width, setWidth] = useState(window.innerWidth)
-    
+
     // Screen width pixels for tablets
     const tabletBreakpoint = 767
     
@@ -367,6 +368,13 @@ const App = () => {
         // Return a function from the effect that removes the event listener
         return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
+
+    // Fix instagram window.innerwidth issue
+    useEffect(() => {
+        if (window.screen.width < window.innerWidth) {
+            setWidth(window.screen.width)
+        }
+    }, [])
 
     // -------------------------------------- JavaScript Navigation (prevent URL change on link press)
 
@@ -416,10 +424,11 @@ const App = () => {
 
             {/* -------------------------------------Summary Div ----------------------------*/}
             
-            {( showSummary || width > tabletBreakpoint ?
-                <Col 
-                className="summary"
-                 md={4}>
+            {( showSummary === true || width > tabletBreakpoint ?
+                <Col
+                    className="summary"
+                    md={4}
+                    >
                     <Summary 
                         total_weeks={total_weeks} 
                         total_income={total_income}
