@@ -8,7 +8,7 @@ import 'firebase/analytics'
 import CookieConsent from "react-cookie-consent";
 
 //Components
-import NavBar from "./components/NavBar"
+import NavBar from "./components/Navbar"
 import Summary from './components/Summary'
 import SectionHeading from "./components/SectionHeading"
 import DateRangeInput from "./components/DateRangeInput"

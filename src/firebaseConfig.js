@@ -5,14 +5,14 @@ import 'firebase/firestore';
 
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
-    apiKey: "AIzaSyBybnFKJ8XidoCYIb1EPyUUi93evWSKo_g",
-    authDomain: "uniclarity-880cf.firebaseapp.com",
-    databaseURL: "https://uniclarity-880cf.firebaseio.com",
-    projectId: "uniclarity-880cf",
-    storageBucket: "uniclarity-880cf.appspot.com",
-    messagingSenderId: "333121435549",
-    appId: "1:333121435549:web:7b03eb8018ede6fa212174",
-    measurementId: "G-8BTZEKCDVE"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_DATABASE_URL,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID
 });
 
 
