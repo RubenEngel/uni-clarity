@@ -1,4 +1,4 @@
-# A student budegting web application developed using React, Bootstrap and Firebase.
+# A student budgeting web application developed using React, Bootstrap and Firebase.
 ## About UniClarity
 UniClarity was developed from identifying a lack of guided support for student budgeting. There are some great solutions for tracking what you have been spending, but you need to figure out what you should be spending first. Going through university, the only good way of calculating a budget was to set up an excel sheet, requiring technical knowledge of excel and the expenses you need to take into account.
 
