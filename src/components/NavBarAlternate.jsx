@@ -37,7 +37,7 @@ const NavBarAlternate = () => {
             >
                 <Nav className="ml-auto">
                             <Link className="nav-alt nav-heading" to="/about">About</Link>
-                            <Link className="nav-alt nav-heading" to="/contact">Contact</Link>
+                            {/* <Link className="nav-alt nav-heading" to="/contact">Contact</Link> */}
                             <Link className="nav-alt nav-heading" to="/privacy-policy">Privacy Policy</Link>
                             <Link className="nav-alt nav-heading" to="/terms-of-service">Terms of Service</Link>
                             <Link className="nav-alt nav-heading" to="/">Back to App</Link>

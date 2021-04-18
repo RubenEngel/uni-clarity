@@ -50,7 +50,7 @@ const NavBar = () => {
                     <button className="nav-heading" onClick={(e) => handleClick(e, "results-section")}>Results</button>
                     <NavDropdown bg="dark" className="nav-heading" title="Info">
                         <button className="nav-heading"><Link to="/about">About</Link></button>
-                        <button className="nav-heading"><Link to="/contact">Contact</Link></button>
+                        {/* <button className="nav-heading"><Link to="/contact">Contact</Link></button> */}
                         <button className="nav-heading"><Link to="/privacy-policy">Privacy</Link></button>
                         <button className="nav-heading"><Link to="/terms-of-service">Terms</Link></button>
                     </NavDropdown>

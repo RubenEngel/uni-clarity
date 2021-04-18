@@ -12,9 +12,9 @@ const Footer = () => {
                 <Col>
                     <Link to="/about">About</Link> 
                 </Col>
-                <Col>
+                {/* <Col>
                     <Link to="/contact" >Contact</Link>
-                </Col>
+                </Col> */}
                 <Col>
                     <Link to="/terms-of-service" >Terms</Link>
                 </Col>
