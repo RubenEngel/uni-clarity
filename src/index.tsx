@@ -9,36 +9,31 @@ import TermsOfService from './TermsOfService';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 
 function Index() {
   // const location = useLocation();
   return (
     <BrowserRouter>
       <ScrollToTop />
-
       <Route
         render={({ location }) => (
-          <AnimatePresence>
-            <Switch>
-              {/* <Route exact path */}
-              {/* <motion.div
+          // <AnimatePresence>
+          <Switch>
+            {/* <Route exact path */}
+            {/* <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
               > */}
-              <Route exact path="/" component={App} />
-              {/* </motion.div> */}
-              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-              <Route exact path="/contact" component={Contact} />
-              <Route exact path="/about" component={About} />
-              <Route
-                exact
-                path="/terms-of-service"
-                component={TermsOfService}
-              />
-            </Switch>
-          </AnimatePresence>
+            <Route exact path="/" component={App} />
+            {/* </motion.div> */}
+            <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+            <Route exact path="/contact" component={Contact} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/terms-of-service" component={TermsOfService} />
+          </Switch>
+          // </AnimatePresence>
         )}
       ></Route>
     </BrowserRouter>

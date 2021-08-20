@@ -4,6 +4,7 @@ body {
   font-size: 1rem;
   text-align: center;
   color: #9e9e9e;
+  background-color: #343a40;
 }
 
 html {
@@ -13,6 +14,10 @@ html {
 
 .main {
   padding: 0;
+  background-color: white;
+  // @media screen and (min-width: 1440px) {
+  //   zoom: 125%;
+  // }
 }
 
 /*  Scrolling Correction for Fixed Navbar */

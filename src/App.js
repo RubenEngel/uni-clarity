@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, Alert, Button, Row, Col, Container } from 'react-bootstrap';
-import Logo from './icon-512.png';
+// import Logo from './icon-512.png';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { authChange, signOut, db, uiConfig, firebase } from './firebaseConfig';
 import 'firebase/analytics';

@@ -50,7 +50,9 @@ function WelcomeScreen() {
         transition={{ type: 'spring', duration: 0.8, delay: 1.6 }}
         className="enter"
       >
-        <Button onClick={() => setWelcome(false)}>Get started</Button>
+        <Button onClick={() => setWelcome(false)}>
+          Calculate a budget, fast!
+        </Button>
       </motion.div>
     </div>
     // </section>
