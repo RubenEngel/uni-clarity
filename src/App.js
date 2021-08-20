@@ -27,7 +27,7 @@ import DisposableCash from './components/DisposableCash';
 import Help from './components/Help';
 import Footer from './components/Footer';
 import { motion } from 'framer-motion';
-import WelcomeScreen from './components/WelcomeScreen';
+import WelcomeScreen from './components/Welcome';
 
 const App = () => {
   firebase.analytics();
@@ -483,14 +483,6 @@ const App = () => {
           <NavBar />
 
           <Row>
-            {/* Help and summary descriptions */}
-            <div>
-              <p className="button-description-help">Help</p>
-              {width < tabletBreakpoint ? (
-                <p className="button-description-summary">Summary</p>
-              ) : null}
-            </div>
-
             {/* ------------------------------------ Help Section ------------------------------------ */}
 
             {showHelp ? <Help /> : null}
