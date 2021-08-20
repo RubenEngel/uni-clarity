@@ -1,46 +1,57 @@
-#intro-section{
-    height: 100vh;
-    h1{
-        font-size: 4rem;
-    }
-    p{
-        font-size: 1.4rem;
-    }
-    button{
-        outline: none;
-    }
-
-}
-
-.title{
-    font-size: 4rem;
-}
-
 .intro {
-    margin-top: 15vh;
+  margin-top: 20vh;
+
+  height: 50vh;
+  h1 {
+    font-size: 4rem;
+  }
+  p {
+    font-size: 1em;
+  }
+  button {
+    margin-top: 2em;
+    outline: none;
+    font-family: 'Amatic SC', sans-serif;
+    font-size: 1.5em;
+    padding: 0.3em 0.7em;
+  }
 }
 
-.logo{
-    width: 150px;
-    margin-bottom: 20px;
+#get-started-section {
+  margin-top: 90px;
+}
+
+.title {
+  font-size: 4rem;
+}
+
+.enter {
+  p {
+    margin-top: 2em;
+  }
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
 }
 
 /* Show help button description */
-.button-description-help{
-    font-family: 'Amatic SC', sans-serif;
-    font-size:2.2rem;
-    font-weight: bold;
-    position: absolute;
-    top: 120px;
-    left: 10px;
+.button-description-help {
+  font-family: 'Amatic SC', sans-serif;
+  font-size: 2.2rem;
+  font-weight: bold;
+  position: absolute;
+  top: 120px;
+  left: 10px;
 }
 
 /* Show summary button description */
 .button-description-summary {
-    font-family: 'Amatic SC', sans-serif;
-    font-size:2.2rem;
-    font-weight: bold;
-    position: absolute;
-    top: 120px;
-    right: 10px;
+  font-family: 'Amatic SC', sans-serif;
+  font-size: 2.2rem;
+  font-weight: bold;
+  position: absolute;
+  top: 120px;
+  right: 10px;
 }
