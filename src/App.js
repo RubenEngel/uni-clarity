@@ -325,6 +325,7 @@ const App = () => {
               setLastSaved(doc.data().last_saved);
             }
           });
+        setWelcome(false);
       } else if (!user) {
         setLastSaved();
         setLastLoad();
