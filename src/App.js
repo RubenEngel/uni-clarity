@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { Card, Alert, Button, Row, Col, Container } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { Card, Alert, Button, Row, Col, Container } from "react-bootstrap";
 // import Logo from './icon-512.png';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import { authChange, signOut, db, uiConfig, firebase } from './firebaseConfig';
-import 'firebase/analytics';
-import CookieConsent from 'react-cookie-consent';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { authChange, signOut, db, uiConfig, firebase } from "./firebaseConfig";
+import "firebase/analytics";
+import CookieConsent from "react-cookie-consent";
 
 //Components
-import NavBar from './components/Navbar';
-import Summary from './components/Summary';
-import SectionHeading from './components/SectionHeading';
-import DateRangeInput from './components/DateRangeInput';
-import InputCard from './components/InputCard';
-import RecurringExpenseTable from './components/RecurringExpenseTable';
-import ExpenseInput from './components/ExpenseInput';
-import OneOffExpenseTable from './components/OneOffExpenseTable';
-import SubmitContext from './context/submit-context';
-import RentIncluded from './components/RentIncluded';
-import BillsIncluded from './components/BillsIncluded';
-import RentPayments from './components/RentPayments';
-import AdditionalIncome from './components/AdditionalIncome';
-import InputName from './components/InputName';
-import EndBalance from './components/EndBalance';
-import DisposableCash from './components/DisposableCash';
-import Help from './components/Help';
-import Footer from './components/Footer';
-import { motion } from 'framer-motion';
-import WelcomeScreen from './components/Welcome';
+import NavBar from "./components/Navbar";
+import Summary from "./components/Summary";
+import SectionHeading from "./components/SectionHeading";
+import DateRangeInput from "./components/DateRangeInput";
+import InputCard from "./components/InputCard";
+import RecurringExpenseTable from "./components/RecurringExpenseTable";
+import ExpenseInput from "./components/ExpenseInput";
+import OneOffExpenseTable from "./components/OneOffExpenseTable";
+import SubmitContext from "./context/submit-context";
+import RentIncluded from "./components/RentIncluded";
+import BillsIncluded from "./components/BillsIncluded";
+import RentPayments from "./components/RentPayments";
+import AdditionalIncome from "./components/AdditionalIncome";
+import InputName from "./components/InputName";
+import EndBalance from "./components/EndBalance";
+import DisposableCash from "./components/DisposableCash";
+import Help from "./components/Help";
+import Footer from "./components/Footer";
+import { motion } from "framer-motion";
+import WelcomeScreen from "./components/Welcome";
 
 const App = () => {
   firebase.analytics();
@@ -43,11 +43,11 @@ const App = () => {
   function formatDateComp(date) {
     const dt = new Date(date);
     let day = dt.getDate();
-    if (day < 10) day = '0' + day.toString();
+    if (day < 10) day = "0" + day.toString();
     let month = dt.getMonth() + 1;
-    if (month < 10) month = '0' + month.toString();
+    if (month < 10) month = "0" + month.toString();
     const year = dt.getFullYear().toString();
-    return year + '-' + month + '-' + day;
+    return year + "-" + month + "-" + day;
   }
 
   // UK string formatted date - dd/mm/yyyy
@@ -63,30 +63,30 @@ const App = () => {
 
   const defaultInputObject = {
     //Dates
-    start_date: '2020-09-28',
-    end_date: '2021-06-01',
+    start_date: "2021-10-01",
+    end_date: "2022-06-01",
     //Income
-    maintenance_loan: '',
-    additional_income: '',
+    maintenance_loan: "",
+    additional_income: "",
     //Rent
-    include_rent: 'yes',
-    rent_cost: '',
-    rent_cost_MonthlyWeekly: 'monthly',
-    rent_payment_period: '',
+    include_rent: "yes",
+    rent_cost: "",
+    rent_cost_MonthlyWeekly: "monthly",
+    rent_payment_period: "",
     next_rent_payment: formatDateComp(firstDayNextMonth),
-    last_rent_payment: '2021-06-01',
-    contract_start: '2020-07-01',
-    contract_end: '2021-06-30',
-    total_payments: '',
-    payments_left: '',
-    bills_included: 'no',
-    bills_cost: '',
-    bills_cost_MonthlyWeekly: 'monthly',
+    last_rent_payment: "2021-06-01",
+    contract_start: "2020-07-01",
+    contract_end: "2021-06-30",
+    total_payments: "",
+    payments_left: "",
+    bills_included: "no",
+    bills_cost: "",
+    bills_cost_MonthlyWeekly: "monthly",
     //Groceries
-    groceries_cost: '',
-    start_balance: '0',
-    input_choice: 'range',
-    disposable_cash: '0',
+    groceries_cost: "",
+    start_balance: "0",
+    input_choice: "range",
+    disposable_cash: "0",
   };
 
   // -------------------------------------------- Main Input Object
@@ -103,7 +103,7 @@ const App = () => {
   // ------------------------------------------------ Additional Income Array
 
   const [incomeArray, setIncomeArray] = useState(
-    JSON.parse(localStorage.getItem('incomeArray')) || []
+    JSON.parse(localStorage.getItem("incomeArray")) || []
   );
 
   function submitIncomeSource(name, value, period) {
@@ -129,7 +129,7 @@ const App = () => {
   //-------------------------------------------------- Recurring Expenses Array
 
   const [recurringExpenseArray, setRecurringExpenseArray] = useState(
-    JSON.parse(localStorage.getItem('recurringExpenseArray')) || []
+    JSON.parse(localStorage.getItem("recurringExpenseArray")) || []
   );
 
   function submitRecurringExpense(expenseName, weeklyCost) {
@@ -150,7 +150,7 @@ const App = () => {
   //--------------------------------------------------One-Off Expenses Array
 
   const [oneOffExpenseArray, setOneOffExpenseArray] = useState(
-    JSON.parse(localStorage.getItem('oneOffExpenseArray')) || []
+    JSON.parse(localStorage.getItem("oneOffExpenseArray")) || []
   );
 
   function submitOneOffExpense(expenseName, weeklyCost) {
@@ -183,11 +183,11 @@ const App = () => {
 
   // Convert additonal income array into array of total income amounts
   const additional_income_array = incomeArray?.map(function (element) {
-    if (element.period === 'total') {
+    if (element.period === "total") {
       return +element.value;
-    } else if (element.period === 'monthly') {
+    } else if (element.period === "monthly") {
       return (+element.value * total_weeks) / 4.345;
-    } else if (element.period === 'weekly') {
+    } else if (element.period === "weekly") {
       return +element.value * total_weeks;
     } else return 0;
   });
@@ -202,25 +202,25 @@ const App = () => {
   // Total weeks rent is being paid
   const rent_weeks =
     inputObject.rent_payment_period &&
-    (inputObject.rent_payment_period === 'monthly'
+    (inputObject.rent_payment_period === "monthly"
       ? weeks(inputObject.next_rent_payment, inputObject.last_rent_payment)
       : weeks(inputObject.contract_start, inputObject.contract_end));
   // Weekly cost of rent
   const weekly_rent =
-    inputObject.rent_cost_MonthlyWeekly === 'monthly'
+    inputObject.rent_cost_MonthlyWeekly === "monthly"
       ? +inputObject.rent_cost / 4.345
       : +inputObject.rent_cost;
   // Weekly cost of bills
   const weekly_bills =
-    inputObject.bills_included === 'no'
-      ? inputObject.bills_cost_MonthlyWeekly === 'monthly'
+    inputObject.bills_included === "no"
+      ? inputObject.bills_cost_MonthlyWeekly === "monthly"
         ? +inputObject.bills_cost / 4.345
         : +inputObject.bills_cost
       : 0;
   // Combine rent and bills multiplied by total weeks
   const total_rent_bills =
-    inputObject.include_rent === 'yes'
-      ? inputObject.rent_payment_period === 'monthly'
+    inputObject.include_rent === "yes"
+      ? inputObject.rent_payment_period === "monthly"
         ? (weekly_rent + weekly_bills) *
           4.345 *
           Math.round(1 + rent_weeks / 4.345)
@@ -289,14 +289,14 @@ const App = () => {
 
   useEffect(() => {
     setEndBalance(end_balance);
-    localStorage.setItem('inputObject', JSON.stringify(inputObject));
-    localStorage.setItem('incomeArray', JSON.stringify(incomeArray));
+    localStorage.setItem("inputObject", JSON.stringify(inputObject));
+    localStorage.setItem("incomeArray", JSON.stringify(incomeArray));
     localStorage.setItem(
-      'recurringExpenseArray',
+      "recurringExpenseArray",
       JSON.stringify(recurringExpenseArray)
     );
     localStorage.setItem(
-      'oneOffExpenseArray',
+      "oneOffExpenseArray",
       JSON.stringify(oneOffExpenseArray)
     );
   }, [
@@ -317,7 +317,7 @@ const App = () => {
     authChange((user) => {
       setSignedIn(!!user);
       if (user) {
-        db.collection('users')
+        db.collection("users")
           .doc(firebase.auth().currentUser.uid)
           .get()
           .then(function (doc) {
@@ -341,7 +341,7 @@ const App = () => {
 
   // Save Data to Firestore
   function save(userID) {
-    db.collection('users')
+    db.collection("users")
       .doc(userID)
       .set({
         inputObject,
@@ -355,13 +355,13 @@ const App = () => {
         setSaveStatus(`Save Successful on ${today}`);
       })
       .catch(function (error) {
-        console.error('Error adding user data: ', error);
+        console.error("Error adding user data: ", error);
       });
   }
 
   // Load Data from Firestore
   function load(userID) {
-    db.collection('users')
+    db.collection("users")
       .doc(userID)
       .get()
       .then(function (doc) {
@@ -371,13 +371,13 @@ const App = () => {
           setRecurringExpenseArray(doc.data().recurringExpenseArray);
           setOneOffExpenseArray(doc.data().oneOffExpenseArray);
           setLastSaved(doc.data().last_saved);
-          setLastLoad('Data Loaded Successfully');
+          setLastLoad("Data Loaded Successfully");
         } else {
-          console.log('No user data!');
+          console.log("No user data!");
         }
       })
       .catch(function (error) {
-        console.log('Error getting user data:', error);
+        console.log("Error getting user data:", error);
       });
   }
 
@@ -403,9 +403,9 @@ const App = () => {
   const [showRent, setShowRent] = useState();
 
   useEffect(() => {
-    if (inputObject.include_rent === 'yes') {
+    if (inputObject.include_rent === "yes") {
       setShowRent(true);
-    } else if (inputObject.include_rent === 'no') {
+    } else if (inputObject.include_rent === "no") {
       setShowRent(false);
     }
   }, [inputObject.include_rent]);
@@ -413,9 +413,9 @@ const App = () => {
   const [showBills, setShowBills] = useState();
 
   useEffect(() => {
-    if (inputObject.bills_included === 'yes') {
+    if (inputObject.bills_included === "yes") {
       setShowBills(false);
-    } else if (inputObject.bills_included === 'no') {
+    } else if (inputObject.bills_included === "no") {
       setShowBills(true);
     }
   }, [inputObject.bills_included]);
@@ -431,9 +431,9 @@ const App = () => {
   // When screen is resized
   useEffect(() => {
     const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
     // Return a function from the effect that removes the event listener
-    return () => window.removeEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
   // Fix instagram window.innerwidth issue
@@ -478,7 +478,7 @@ const App = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ type: 'spring', duration: 1.5 }}
+          transition={{ type: "spring", duration: 1.5 }}
         >
           {/* --------------------------------------------Navbar --------------------------------------------*/}
           <NavBar />
@@ -621,7 +621,7 @@ const App = () => {
                           <Card.Body>
                             <div className="account-details">
                               <h3 className="blue">
-                                Signed in as{' '}
+                                Signed in as{" "}
                                 {firebase.auth().currentUser.displayName ||
                                   firebase.auth().currentUser.email}
                               </h3>
@@ -640,7 +640,7 @@ const App = () => {
                             <h3>Save Status</h3>
                             {lastSaved ? (
                               <p className="save-status blue">
-                                Last saved on{' '}
+                                Last saved on{" "}
                                 {new Date(lastSaved).toLocaleString()}
                               </p>
                             ) : (
@@ -727,7 +727,7 @@ const App = () => {
                         endDate={inputObject.end_date}
                       />
                       <p className="date-range">
-                        {' '}
+                        {" "}
                         Date Range: {total_weeks} Weeks
                       </p>
                     </Card>
@@ -921,7 +921,7 @@ const App = () => {
                       <Alert className="card alert" variant="danger">
                         {`It looks like your 'Weekly Cash to Splash' budget is negative. This means that unless you find another income source equivalent to at least £${
                           Math.round(disposable_cash) * -1
-                        } per week, or cut expenditure, you will finish your budgeting period with less than you started with regardless.`}{' '}
+                        } per week, or cut expenditure, you will finish your budgeting period with less than you started with regardless.`}{" "}
                         <p>
                           <strong>
                             Update your 'Weekly Cash to Splash' budget with a
@@ -947,7 +947,7 @@ const App = () => {
                     <div>
                       <button
                         className="save-unlock blue-hover"
-                        onClick={(e) => navigate(e, 'account-section')}
+                        onClick={(e) => navigate(e, "account-section")}
                       >
                         <h3>
                           <span className="blue">Sign-In</span> to unlock the
@@ -990,7 +990,7 @@ const App = () => {
               </section>
 
               {/* ------------------------ Recommended deals section --------- */}
-              <section id="recommended-section">
+              {/* <section id="recommended-section">
                 <Container fluid>
                   <SectionHeading
                     name="Recommended"
@@ -1116,7 +1116,7 @@ const App = () => {
                     products or services featured in this section.
                   </p>
                 </Container>
-              </section>
+              </section> */}
 
               <Footer />
             </Col>
