@@ -8,4 +8,4 @@ The final outcome helps you to find an amount that you can spend every week on w
 
 ## Improvements
 * Integrate Redux for a central store of application data and to improve performance on re-renders.
-* Use the Provider pattern to a FirebaseAuth context.
+* Use the Provider pattern to create a FirebaseAuth context.
